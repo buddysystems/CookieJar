@@ -40,7 +40,7 @@ The `chrome.cookies` API is used to query and modify cookies, as well as be noti
 If it turns out to be difficult to cache cookies using JS, we may use the 'chrome.storage' API. [Usage details](https://developer.chrome.com/docs/extensions/reference/storage/#usage)
 
 In a later phase, we will probably use the `chrome.tabs` API to "make note of
-which pages caused ... cookies to be served (active tab)." We will also need to use the [`activeTab`]https://developer.chrome.com/docs/extensions/mv3/manifest/activeTab/) permission.
+which pages caused ... cookies to be served (active tab)." We will also need to use the [`activeTab`](https://developer.chrome.com/docs/extensions/mv3/manifest/activeTab/) permission.
 
 ### Model
 
@@ -111,4 +111,4 @@ function addItem() {
 
 The UI during this phase can be very simplistic, with minimal styling or attention to UX.
 
-A more [detailed mockup](https://design.penpot.app/#/workspace/51e93290-b5b8-11ec-862a-da95c03a630b/53d06920-b5b8-11ec-862a-da95c03a630b?page-id=53d06921-b5b8-11ec-862a-da95c03a630b) has been created by Eli.
+A more [detailed mockup](https://design.penpot.app/#/workspace/51e93290-b5b8-11ec-862a-da95c03a630b/53d06920-b5b8-11ec-862a-da95c03a630b?page-id=53d06921-b5b8-11ec-862a-da95c03a630b) has been created by Elijah.
