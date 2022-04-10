@@ -1,6 +1,6 @@
 class Cookie {
 
-    constructor(chromeCookie) {
+    constructor(chromeCookie, isStored=false) {
         this.domain = chromeCookie.domain;
         this.name = chromeCookie.name;
         this.storeId = chromeCookie.storeId;
@@ -17,13 +17,17 @@ class Cookie {
             storeId: chromeCookie.storeId,
             url: chromeCookie.url
         }
+        this.isStored = isStored
     }
     
     store() {
-        var cookieDetails;
-        chrome.stroage.local.set({cookieDetails: this})
-
-        chrome.cookies.remove(cookieDetails)
+        if (this.isStored) return;
+        else {
+            this.isStored = true
+            const key = JSON.stringify(this.details)
+            chrome.stroage.local.set({key: this})
+            chrome.cookies.remove(this.details)
+        }
     }
     
     restore() {
@@ -37,7 +41,7 @@ function getCookies() {
     var cookies = chrome.cookies.getAll()
 
     for (var cookie of cookies) {
-        cookie = new Cookie(cookie);
+        cookie = new Cookie(cookie)
     }
 
     return cookies;
