@@ -5,7 +5,7 @@ A more detailed description of this phase may be found in the README.
 ## Requirements
 
 -   identify APIs which will be used
-    -   test basic functionality
+-   test basic functionality
 -   determine how to parse and render the cookie list (basic UI)
 -   use JS to cache cookies --- when the plugin in open, a button may be pressed to delete the cookie from the browser, then store it as a JS variable.
 -   use JS to reload cached cookies --- a load button may be pressed to reload a cookie which was cached

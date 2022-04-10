@@ -1,7 +1,10 @@
 class Cookie {
     
     store() {
-        
+        var cookieDetails;
+        chrome.stroage.local.set({cookieDetails: this})
+
+        chrome.cookies.remove(cookieDetails)
     }
     
     restore() {
@@ -10,5 +13,6 @@ class Cookie {
 }
 
 function getCookies() {
-
+    var cookies = chrome.cookies.getAll()
+    return cookies;
 }
