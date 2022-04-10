@@ -40,7 +40,8 @@ class Cookie {
 
 async function getCookies() {
     var chromeCookies = await chrome.cookies.getAll({});
-    var ourCookies;
+    var ourCookies = [];
+
 
     for (var cookie of chromeCookies) {
         cookie = new Cookie(cookie);
