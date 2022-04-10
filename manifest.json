@@ -2,9 +2,9 @@
     "name": "Cookie Jar",
     "description": "Cookie Jar",
     "version": "1.0",
-    "manifest-version": "1",
+    "manifest_version": 3,
     "permissions": ["storage", "cookies"],
     "action": {
-        "default_popup": "popup.html"
+        "default_popup": "html/popup.html"
     }
 }
