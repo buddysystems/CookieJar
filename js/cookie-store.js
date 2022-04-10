@@ -40,12 +40,16 @@ class Cookie {
 
 async function getCookies() {
     var chromeCookies = await chrome.cookies.getAll({});
-    var ourCookies;
+    console.log(`chromeCookies:`);
+    console.dir(chromeCookies);
+    const ourCookies = [];
 
     for (var cookie of chromeCookies) {
-        cookie = new Cookie(cookie);
-        ourCookies.push(cookie);
+        const ourCookie = new Cookie(cookie);
+        ourCookies.push(ourCookie);
     }
 
+    console.log(`ourCookies:`);
+    console.dir(ourCookies);
     return ourCookies;
 }
