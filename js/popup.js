@@ -41,5 +41,3 @@ async function populateCookieTable() {
     cookieTable.appendChild(cookieTableRowItem);
     }
 }
-
-getCookiesBtn.addEventListener("click", populateCookieTable);
