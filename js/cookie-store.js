@@ -1,3 +1,14 @@
+// Inspired by https://github.com/jamesdbloom/delete-all-cookies/blob/master/background.js.removeCookie() :)
+function getCookieUrl(cookie) {
+    return (
+        "http" +
+        (cookie.secure ? "s" : "") +
+        "://" +
+        cookie.domain +
+        cookie.path
+    );
+}
+
 class Cookie {
     constructor(chromeCookie, isStored = false) {
         this.domain = chromeCookie.domain;
@@ -14,7 +25,7 @@ class Cookie {
         this.details = {
             name: chromeCookie.name,
             storeId: chromeCookie.storeId,
-            url: chromeCookie.url,
+            url: getCookieUrl(this),
         };
         this.isStored = isStored;
     }
@@ -32,6 +43,7 @@ class Cookie {
         await chrome.storage.local.set(cookieStorage);
 
         // Remove the cookie from chrome cookies
+        console.dir(this.details);
         await chrome.cookies.remove(this.details);
     }
 
