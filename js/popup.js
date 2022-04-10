@@ -1,5 +1,4 @@
 const cookieTable = document.getElementById("cookieTable");
-const getCookiesBtn = document.getElementById("getCookies");
 
 window.onload = async function() {
     await populateCookieTable();
