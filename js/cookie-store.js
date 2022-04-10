@@ -19,29 +19,39 @@ class Cookie {
         this.isStored = isStored;
     }
 
-    store() {
+    async store() {
+        // Don't store the cookie if its already stored
         if (this.isStored) return;
-        else {
-            this.isStored = true;
-            const key = JSON.stringify(this.details);
-            chrome.stroage.local.set({ key: this });
-            chrome.cookies.remove(this.details);
-        }
+
+        this.isStored = true;
+
+        // Store the cookie in local storage
+        const key = JSON.stringify(this.details);
+        const cookieStorage = {};
+        cookieStorage[key] = this;
+        await chrome.storage.local.set(cookieStorage);
+
+        // Remove the cookie from chrome cookies
+        await chrome.cookies.remove(this.details);
     }
 
-    restore() {
-        if (this.isStored) {
-            this.isStored = false;
-            const key = JSON.stringify(this.details);
-            transferCookie = chrome.storage.local.get(key);
-        }
+    async restore() {
+        // Don't restore if restore
+        if (!this.isStored) return;
+        this.isStored = false;
+
+        // Add the cookies back to chrome cookies
+        const key = JSON.stringify(this.details);
+        const storedCookie = chrome.storage.local.get(key);
+        await chrome.cookies.set(storedCookie);
+
+        // Remove the cookie from local storage
+        await chrome.storage.local.remove(key);
     }
 }
 
 async function getCookies() {
     var chromeCookies = await chrome.cookies.getAll({});
-    console.log(`chromeCookies:`);
-    console.dir(chromeCookies);
     const ourCookies = [];
 
     for (var cookie of chromeCookies) {
@@ -49,7 +59,5 @@ async function getCookies() {
         ourCookies.push(ourCookie);
     }
 
-    console.log(`ourCookies:`);
-    console.dir(ourCookies);
     return ourCookies;
 }
