@@ -9,17 +9,17 @@
 
 <style>
     .cookie-button {
-        padding: 2em;
+        padding-bottom: 2em;
     }
     
     table.tb {
         border-collapse: collapse;
         width: 500px;
+        width: 100%;
     }
     
     .tb th,
     .tb td {
-        padding: 5px;
         border: solid 1px #777;
     }
     
@@ -27,9 +27,32 @@
         background-color: lightblue;
     }
 
+    table {
+        overflow-y: auto;
+        overflow-x: visible;
+        height: 300px;
+        width: 100%;
+        display: block;
+    }
+
+    tr {
+        width: auto;
+    }
+
     #first-row {
-        position: fixed;
-        top: 5em;
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: absolute;
+    }
+
+    #filler-row {
+        height: 0.8em;
+    }
+
+    body {
+        overflow: hidden;
+        width: 800px;
     }
 </style>
 
@@ -51,26 +74,11 @@
             <th>Store</th>
             <th>Restore</th>
         </tr>
-        <tr>
-            <td>Domain</td>
-            <td>Name</td>
-            <td>Path</td>
-            <td>Secure</td>
-            <td>Session</td>
-            <td>Store ID</td>
-            <td>URL</td>
-            <td><button id="'testButton">
-                Store
-            </button></td>
-            <td><button id="'testButton">
-                Restore
-            </button></td>
-        </tr>
-
+        <tr id="filler-row"></tr>
     </table>
+    </div>
     <script src="../js/cookie-store.js"></script>
     <script src="../js/popup.js"></script>
-    </div>
 </body>
 
 </html>
