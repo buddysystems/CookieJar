@@ -1,6 +1,5 @@
 class Cookie {
-
-    constructor(chromeCookie, isStored=false) {
+    constructor(chromeCookie, isStored = false) {
         this.domain = chromeCookie.domain;
         this.name = chromeCookie.name;
         this.storeId = chromeCookie.storeId;
@@ -15,39 +14,37 @@ class Cookie {
         this.details = {
             name: chromeCookie.name,
             storeId: chromeCookie.storeId,
-            url: chromeCookie.url
-        }
-        this.isStored = isStored
+            url: chromeCookie.url,
+        };
+        this.isStored = isStored;
     }
-    
+
     store() {
         if (this.isStored) return;
         else {
-            this.isStored = true
-            const key = JSON.stringify(this.details)
-            chrome.stroage.local.set({key: this})
-            chrome.cookies.remove(this.details)
+            this.isStored = true;
+            const key = JSON.stringify(this.details);
+            chrome.stroage.local.set({ key: this });
+            chrome.cookies.remove(this.details);
         }
     }
-    
+
     restore() {
         if (this.isStored) {
-            this.isStored = false
-            const key = JSON.stringify(this.details)
-            transferCookie = chrome.storage.local.get(key)
-
+            this.isStored = false;
+            const key = JSON.stringify(this.details);
+            transferCookie = chrome.storage.local.get(key);
         }
     }
 }
 
-
-function getCookies() {
-    var chromeCookies = chrome.cookies.getAll({})
+async function getCookies() {
+    var chromeCookies = await chrome.cookies.getAll({});
     var ourCookies;
 
     for (var cookie of chromeCookies) {
-        cookie = new Cookie(cookie)
-        ourCookies.push(cookie)
+        cookie = new Cookie(cookie);
+        ourCookies.push(cookie);
     }
 
     return ourCookies;
