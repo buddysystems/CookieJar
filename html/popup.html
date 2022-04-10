@@ -7,11 +7,29 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
 </head>
 
+<style>
+    table.tb {
+        border-collapse: collapse;
+        width: 500px;
+    }
+    
+    .tb th,
+    .tb td {
+        padding: 5px;
+        border: solid 1px #777;
+    }
+    
+    .tb th {
+        background-color: lightblue;
+    }
+</style>
+
 <body>
+
     <button id="getCookies">
                 get cookies
             </button>
-    <table id="cookieTable">
+    <table class='tb' id="cookieTable">
         <tr>
             <th>Domain</th>
             <th>Name</th>
@@ -22,6 +40,8 @@
             <th>URL</th>
             <th>Jar</th>
         </tr>
+
+
     </table>
     <!-- <script src="CookieWorker.js"></script> -->
     <script src="popup.js"></script>
