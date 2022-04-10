@@ -42,12 +42,13 @@ class Cookie {
 
 
 function getCookies() {
-    // Possible issue here with cooies not appending to cookies list (:
-    var cookies = chrome.cookies.getAll({})
+    var chromeCookies = chrome.cookies.getAll({})
+    var ourCookies;
 
-    for (var cookie of cookies) {
+    for (var cookie of chromeCookies) {
         cookie = new Cookie(cookie)
+        ourCookies.push(cookie)
     }
 
-    return cookies;
+    return ourCookies;
 }
