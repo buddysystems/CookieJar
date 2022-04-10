@@ -2,8 +2,9 @@
 const cookieTable = popup.getElementById("cookieTable");
 
 
-async function getCookies() {
-    const cookies = await cookieWorker.getAllCookiesAsync();
+
+async function populateCookieTable() {
+    const cookies = await getCookies();
     for (const cookie of cookies) {
         const cookieTableRowItem = document.createElement("tr");
         cookieTableRowItem.style.marginBottom = "10px";
