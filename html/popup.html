@@ -8,6 +8,10 @@
 </head>
 
 <style>
+    .cookie-button {
+        padding: 2em;
+    }
+    
     table.tb {
         border-collapse: collapse;
         width: 500px;
@@ -22,15 +26,21 @@
     .tb th {
         background-color: lightblue;
     }
+
+    #first-row {
+        position: fixed;
+        top: 5em;
+    }
 </style>
 
 <body>
-
-    <button id="getCookies">
-                get cookies
-            </button>
+    <div class="cookie-button">
+        <button id="getCookies">
+            get cookies
+        </button>
+    </div>
     <table class='tb' id="cookieTable">
-        <tr>
+        <tr id="first-row">
             <th>Domain</th>
             <th>Name</th>
             <th>Path</th>
