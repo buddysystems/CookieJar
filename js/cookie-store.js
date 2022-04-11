@@ -13,8 +13,9 @@ const COOKIE_JAR = "COOKIE_JAR";
 class CookieJar {
     async init() {
         const alreadyStored = await chrome.storage.local.get(COOKIE_JAR);
-
-        if (!alreadyStored.length) {
+        console.log(alreadyStored);
+        if (!alreadyStored.COOKIE_JAR) {
+            console.log("creating empty cookie store in storage");
             await chrome.storage.local.set({ COOKIE_JAR: [] });
         }
     }
@@ -104,10 +105,6 @@ class JarCookie {
         console.log("storing cookie...");
         // Store the cookie in local storage
         await cookieJar.addCookie(this);
-        // const key = JSON.stringify(this.details);
-        // const cookieStorage = {};
-        // cookieStorage[key] = this;
-        // await chrome.storage.local.set(cookieStorage);
 
         // Remove the cookie from chrome cookies
         console.log("removing cookie from chrome");
@@ -142,16 +139,22 @@ class JarCookie {
 
 async function getCookies() {
     const chromeCookies = await chrome.cookies.getAll({});
-    console.dir(chromeCookies);
-    let jarCookies = [];
+    const allCookies = [];
 
-    for (var cookie of chromeCookies) {
-        const ourCookie = new JarCookie(cookie, false);
-        jarCookies.push(ourCookie);
+    for (var chromeCookie of chromeCookies) {
+        const ourCookie = new JarCookie(chromeCookie, false);
+        allCookies.push(ourCookie);
     }
 
-    const j = await cookieJar.getJarCookies();
-    console.dir(j);
-    jarCookies = jarCookies.concat(j);
-    return jarCookies;
+    const jarCookies = await cookieJar.getJarCookies();
+    for (var jarCookie of jarCookies) {
+        const cookie = new JarCookie(jarCookie, true);
+        allCookies.push(cookie);
+    }
+
+    console.log("chrome cookies; jar cookies; all cookies");
+    console.dir(chromeCookies);
+    console.dir(jarCookies);
+    console.dir(allCookies);
+    return allCookies;
 }
