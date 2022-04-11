@@ -55,20 +55,7 @@ class Cookie {
         // Add the cookies back to chrome cookies
         const key = JSON.stringify(this.details);
         const storedCookie = chrome.storage.local.get(key);
-        /*
-domain
-expirationDate
-httpOnly
-name
-path
-sameSite
-SameSiteStatus 
-secure
-storeId
-url
-value
-    */
-        console.log(this);
+
         await chrome.cookies.set({
             domain: this.domain,
             httpOnly: this.httpOnly,
