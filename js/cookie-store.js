@@ -22,10 +22,11 @@ class Cookie {
         this.secure = chromeCookie.secure;
         this.session = chromeCookie.session;
         this.value = chromeCookie.value;
+        this.url = getCookieUrl(this);
         this.details = {
             name: chromeCookie.name,
             storeId: chromeCookie.storeId,
-            url: getCookieUrl(this),
+            url: this.url,
         };
         this.isStored = isStored;
     }
@@ -43,7 +44,6 @@ class Cookie {
         await chrome.storage.local.set(cookieStorage);
 
         // Remove the cookie from chrome cookies
-        console.dir(this.details);
         await chrome.cookies.remove(this.details);
     }
 
@@ -55,7 +55,31 @@ class Cookie {
         // Add the cookies back to chrome cookies
         const key = JSON.stringify(this.details);
         const storedCookie = chrome.storage.local.get(key);
-        await chrome.cookies.set(storedCookie);
+        /*
+domain
+expirationDate
+httpOnly
+name
+path
+sameSite
+SameSiteStatus 
+secure
+storeId
+url
+value
+    */
+        console.log(this);
+        await chrome.cookies.set({
+            domain: this.domain,
+            httpOnly: this.httpOnly,
+            name: this.name,
+            path: this.path,
+            sameSite: this.sameSite,
+            secure: this.secure,
+            storeId: this.storeId,
+            url: this.url,
+            value: this.value,
+        });
 
         // Remove the cookie from local storage
         await chrome.storage.local.remove(key);
