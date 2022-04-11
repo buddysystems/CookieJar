@@ -13,21 +13,15 @@ const COOKIE_JAR = "COOKIE_JAR";
 class CookieJar {
     async init() {
         const alreadyStored = await chrome.storage.local.get(COOKIE_JAR);
-        console.log(alreadyStored);
         if (!alreadyStored.COOKIE_JAR) {
-            console.log("creating empty cookie store in storage");
             await chrome.storage.local.set({ COOKIE_JAR: [] });
         }
     }
 
     async addCookie(cookie) {
         const inJar = await this.getJarCookies();
-        console.dir(inJar);
         inJar.push(cookie);
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
-
-        const x = await this.getJarCookies();
-        console.dir(x);
     }
 
     async getCookie(cookieDetails) {
@@ -41,7 +35,6 @@ class CookieJar {
     }
 
     async removeCookie(cookieDetails) {
-        console.log("removing 1 cookie");
         let inJar = await this.getJarCookies();
         // Remove the cookie matching the cookie details
         inJar = inJar.filter(
@@ -51,15 +44,10 @@ class CookieJar {
                 c.url != cookieDetails.url
         );
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
-
-        console.log("new cookies in jar:");
-        const x = await this.getJarCookies();
-        console.dir(x);
     }
 
     async getJarCookies() {
         const stored = await chrome.storage.local.get(COOKIE_JAR);
-        console.dir(stored);
         return stored.COOKIE_JAR;
     }
 }
@@ -102,12 +90,10 @@ class JarCookie {
 
         this.isStored = true;
 
-        console.log("storing cookie...");
         // Store the cookie in local storage
         await cookieJar.addCookie(this);
 
         // Remove the cookie from chrome cookies
-        console.log("removing cookie from chrome");
         await chrome.cookies.remove(this.details);
     }
 
@@ -116,7 +102,6 @@ class JarCookie {
         if (!this.isStored) return;
         this.isStored = false;
 
-        console.log("adding cookie to chrome");
         await chrome.cookies.set({
             domain: this.domain,
             httpOnly: this.httpOnly,
@@ -129,7 +114,6 @@ class JarCookie {
             value: this.value,
         });
 
-        console.log("removing cookie from jar");
         // Remove the cookie from the jar
         await cookieJar.removeCookie(this.details);
         // const key = JSON.stringify(this.details);
@@ -152,9 +136,5 @@ async function getCookies() {
         allCookies.push(cookie);
     }
 
-    console.log("chrome cookies; jar cookies; all cookies");
-    console.dir(chromeCookies);
-    console.dir(jarCookies);
-    console.dir(allCookies);
     return allCookies;
 }
