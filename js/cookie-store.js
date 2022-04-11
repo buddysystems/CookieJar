@@ -1,4 +1,3 @@
-// Inspired by https://github.com/jamesdbloom/delete-all-cookies/blob/master/background.js.removeCookie() :)
 function getCookieUrl(cookie) {
     return (
         "http" +
@@ -9,11 +8,53 @@ function getCookieUrl(cookie) {
     );
 }
 
+class JarCookie {
+    constructor(cookie, isStored = false) {
+        this.domain = cookie.domain;
+        this.name = cookie.name;
+        this.storeId = cookie.storeId;
+        this.expirationDate = cookie.expirationDate;
+        this.hostOnly = cookie.hostOnly;
+        this.httpOnly = cookie.httpOnly;
+        this.path = cookie.path;
+        this.sameSite = cookie.sameSite;
+        this.secure = cookie.secure;
+        this.session = cookie.session;
+        this.value = cookie.value;
+        this.details = {
+            name: cookie.name,
+            storeId: cookie.storeId,
+            url: getCookieUrl(this),
+        };
+        this.isStored = isStored;
+    }
+
+    async store() {
+        // Don't store the cookie if its already stored
+        if (this.isStored) return;
+        this.isStored = true;
+
+        await cookieJar.addCookie(this);
+        await chromeCookieStore.removeCookie(this.details);
+    }
+
+    async restore() {
+        // Don't restore if restore
+        if (!this.isStored) return;
+        this.isStored = false;
+
+        await chromeCookieStore.addCookie(this);
+        await cookieJar.removeCookie(this.details);
+    }
+}
+
 const COOKIE_JAR = "COOKIE_JAR";
 class CookieJar {
     async init() {
+        // Create an empty list for our stored cookies if it doesn't already exist
         const alreadyStored = await chrome.storage.local.get(COOKIE_JAR);
         if (!alreadyStored.COOKIE_JAR) {
+            console.info("Creating empty cookie jar.");
             await chrome.storage.local.set({ COOKIE_JAR: [] });
         }
     }
@@ -24,14 +65,16 @@ class CookieJar {
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
     }
 
+    /// returns: Promise<JarCookie>
     async getCookie(cookieDetails) {
         const inJar = await this.getJarCookies();
-        return inJar.find(
+        const cookie = inJar.find(
             (c) =>
                 c.name == cookieDetails.name &&
                 c.storeId == cookieDetails.storeId &&
                 c.url == cookieDetails.url
         );
+        return new JarCookie(cookie, true);
     }
 
     async removeCookie(cookieDetails) {
@@ -39,102 +82,95 @@ class CookieJar {
         // Remove the cookie matching the cookie details
         inJar = inJar.filter(
             (c) =>
-                c.name != cookieDetails.name &&
-                c.storeId != cookieDetails.storeId &&
-                c.url != cookieDetails.url
+                c.name != cookieDetails.name ||
+                c.storeId != cookieDetails.storeId ||
+                c.details.url != cookieDetails.url
         );
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
     }
 
+    /// returns: Promise<JarCookie[]>
     async getJarCookies() {
         const stored = await chrome.storage.local.get(COOKIE_JAR);
-        return stored.COOKIE_JAR;
+        const cookies = stored.COOKIE_JAR;
+
+        const jarCookies = [];
+        for (const c of cookies) {
+            jarCookies.push(new JarCookie(c, true));
+        }
+        return jarCookies;
+    }
+}
+
+class ChromeCookieStore {
+    async addCookie(cookie) {
+        let domain = cookie.domain;
+        const domainHasPrecedingDot = domain.charAt(0) == ".";
+        if (domainHasPrecedingDot) {
+            domain = domain.slice(1, -1);
+        }
+        const cookieDetails = {
+            domain: domain,
+            httpOnly: cookie.httpOnly,
+            name: cookie.name,
+            path: cookie.path,
+            sameSite: cookie.sameSite,
+            secure: cookie.secure,
+            storeId: cookie.storeId,
+            url: cookie.details.url,
+            value: cookie.value,
+        };
+
+        if (domainHasPrecedingDot) {
+            cookieDetails.url = getCookieUrl(cookieDetails);
+        }
+
+        await chrome.cookies.set(cookieDetails);
+    }
+
+    /// returns: Promise<JarCookie>
+    async getCookie(cookieDetails) {
+        const chromeCookie = await chrome.cookies.get(cookieDetails);
+        if (!chromeCookie) return null;
+        return new JarCookie(chromeCookie, false);
+    }
+
+    async removeCookie(cookieDetails) {
+        // TODO: make sure that the cookie details include predecing dot
+        const removedInfo = await chrome.cookies.remove({
+            name: cookieDetails.name,
+            url: cookieDetails.url,
+        });
+        if (removedInfo == null) {
+            console.error("Couldn't remove cookie.");
+        }
+    }
+
+    /// returns: Promise<JarCookie[]>
+    async getChromeCookies() {
+        const chromeCookies = await chrome.cookies.getAll({});
+
+        const jarCookies = [];
+        for (const cc of chromeCookies) {
+            jarCookies.push(new JarCookie(cc, false));
+        }
+        return jarCookies;
     }
 }
 
 const cookieJar = new CookieJar();
+const chromeCookieStore = new ChromeCookieStore();
 
 (async () => {
     await cookieJar.init();
 })();
 
-class JarCookie {
-    constructor(chromeCookie, isStored = false) {
-        if (chromeCookie.domain.charAt(0) == ".") {
-            this.domain = chromeCookie.domain.slice(1, -1);
-        } else {
-            this.domain = chromeCookie.domain;
-        }
-        this.name = chromeCookie.name;
-        this.storeId = chromeCookie.storeId;
-        this.expirationDate = chromeCookie.expirationDate;
-        this.hostOnly = chromeCookie.hostOnly;
-        this.httpOnly = chromeCookie.httpOnly;
-        this.path = chromeCookie.path;
-        this.sameSite = chromeCookie.sameSite;
-        this.secure = chromeCookie.secure;
-        this.session = chromeCookie.session;
-        this.value = chromeCookie.value;
-        this.url = getCookieUrl(this);
-        this.details = {
-            name: chromeCookie.name,
-            storeId: chromeCookie.storeId,
-            url: this.url,
-        };
-        this.isStored = isStored;
-    }
-
-    async store() {
-        // Don't store the cookie if its already stored
-        if (this.isStored) return;
-
-        this.isStored = true;
-
-        // Store the cookie in local storage
-        await cookieJar.addCookie(this);
-
-        // Remove the cookie from chrome cookies
-        await chrome.cookies.remove(this.details);
-    }
-
-    async restore() {
-        // Don't restore if restore
-        if (!this.isStored) return;
-        this.isStored = false;
-
-        await chrome.cookies.set({
-            domain: this.domain,
-            httpOnly: this.httpOnly,
-            name: this.name,
-            path: this.path,
-            sameSite: this.sameSite,
-            secure: this.secure,
-            storeId: this.storeId,
-            url: this.url,
-            value: this.value,
-        });
-
-        // Remove the cookie from the jar
-        await cookieJar.removeCookie(this.details);
-        // const key = JSON.stringify(this.details);
-        // const storedCookie = chrome.storage.local.get(key);
-    }
-}
-
+/// returns: Promsie<JarCookie[]>
 async function getCookies() {
-    const chromeCookies = await chrome.cookies.getAll({});
-    const allCookies = [];
-
-    for (var chromeCookie of chromeCookies) {
-        const ourCookie = new JarCookie(chromeCookie, false);
-        allCookies.push(ourCookie);
-    }
-
+    const chromeCookies = await chromeCookieStore.getChromeCookies();
     const jarCookies = await cookieJar.getJarCookies();
-    for (var jarCookie of jarCookies) {
-        const cookie = new JarCookie(jarCookie, true);
-        allCookies.push(cookie);
-    }
 
+    let allCookies = chromeCookies;
+    allCookies = allCookies.concat(jarCookies);
     return allCookies;
 }
