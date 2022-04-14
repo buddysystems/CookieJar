@@ -1,13 +1,6 @@
-function getCookieUrl(cookie) {
-    return (
-        "http" +
-        (cookie.secure ? "s" : "") +
-        "://" +
-        cookie.domain +
-        cookie.path
-    );
-}
-
+/// A JarCookie represents the apps representation of a traditional browser cookie.
+/// In addition the normal fields you would find on Chrome's Cookie object, you can find
+/// details on whether it is stored or not, as well as methods to store/restore it.
 class JarCookie {
     constructor(cookie, isStored = false) {
         this.domain = cookie.domain;
@@ -50,15 +43,6 @@ class JarCookie {
 
 const COOKIE_JAR = "COOKIE_JAR";
 class CookieJar {
-    async init() {
-        // Create an empty list for our stored cookies if it doesn't already exist
-        const alreadyStored = await chrome.storage.local.get(COOKIE_JAR);
-        if (!alreadyStored.COOKIE_JAR) {
-            console.info("Creating empty cookie jar.");
-            await chrome.storage.local.set({ COOKIE_JAR: [] });
-        }
-    }
-
     async addCookie(cookie) {
         const inJar = await this.getJarCookies();
         inJar.push(cookie);
@@ -160,10 +144,6 @@ class ChromeCookieStore {
 
 const cookieJar = new CookieJar();
 const chromeCookieStore = new ChromeCookieStore();
-
-(async () => {
-    await cookieJar.init();
-})();
 
 /// returns: Promsie<JarCookie[]>
 async function getCookies() {

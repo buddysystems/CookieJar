@@ -12,22 +12,9 @@ function removeLoadingIndicator() {
 }
 
 window.onload = async function () {
+    await ensureCookieJarStorageCreated();
     await populateCookieTable();
 };
-
-function truncateString(str, n) {
-    return str.length > n ? str.substr(0, n - 1) + "&hellip;" : str;
-}
-
-function alphabeticalComparison(a, b) {
-    if (a < b) {
-        return -1;
-    }
-    if (a > b) {
-        return 1;
-    }
-    return 0;
-}
 
 async function setCookieTableRowData(tableRow, cookie) {
     const truncatedName = truncateString(cookie.name, 40);
@@ -89,12 +76,5 @@ async function populateCookieTable() {
     for (const cookie of sortedCookies) {
         const cookieTableRowItem = await createCookieTableRow(cookie);
         cookieTable.appendChild(cookieTableRowItem);
-    }
-}
-
-async function resetCookieTable() {
-    const tableRows = cookieTable.getElementsByClassName("cookie-row");
-    while (tableRows.length > 0) {
-        tableRows[0].parentNode.removeChild(tableRows[0]);
     }
 }
