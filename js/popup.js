@@ -1,8 +1,22 @@
 const cookieTable = document.getElementById("cookieTable");
+const loadingIndicator = document.getElementById("loadingIndicator");
+
+function showLoadingIndicator() {
+    cookieTable.classList.add("hidden");
+    loadingIndicator.classList.remove("hidden");
+}
+
+function removeLoadingIndicator() {
+    cookieTable.classList.remove("hidden");
+    loadingIndicator.classList.add("hidden");
+}
 
 window.onload = async function () {
-    console.log("window loaded");
+    showLoadingIndicator();
+
     await populateCookieTable();
+
+    removeLoadingIndicator();
 };
 
 function truncateString(str, n) {
@@ -44,10 +58,14 @@ async function populateCookieTable() {
         storeBtn.innerHTML = "Store";
         storeBtn.disabled = cookie.isStored;
         storeBtn.addEventListener("click", async () => {
+            showLoadingIndicator();
+
             // For now, when the click the store button, we will store the cookie then reset the entire table. This is not performant
             await cookie.store();
             await resetCookieTable();
             await populateCookieTable(); // Who said we wouldn't use recursion?
+
+            removeLoadingIndicator();
         });
         storeCell.appendChild(storeBtn);
 
@@ -56,10 +74,14 @@ async function populateCookieTable() {
         restoreBtn.innerHTML = "Restore";
         restoreBtn.disabled = !cookie.isStored;
         restoreBtn.addEventListener("click", async () => {
+            showLoadingIndicator();
+
             // See store handler for how this is not performant
             await cookie.restore();
             await resetCookieTable();
             await populateCookieTable();
+
+            removeLoadingIndicator();
         });
         restoreCell.appendChild(restoreBtn);
 
