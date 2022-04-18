@@ -1,6 +1,20 @@
-.body {
+body {
     padding: 0;
     margin: 0;
+    overflow: hidden;
+    width: 800px;
+}
+
+img {
+    display: inline;
+}
+
+table {
+    overflow-y: auto;
+    overflow-x: visible;
+    height: 300px;
+    width: 100%;
+    display: block;
 }
 
 .popup {
@@ -10,12 +24,6 @@
 
 .cookie-button {
     padding-bottom: 2em;
-}
-
-table.tb {
-    border-collapse: collapse;
-    width: 500px;
-    width: 100%;
 }
 
 .title {
@@ -28,14 +36,20 @@ table.tb {
     background-color: bisque;
 }
 
-img {
-    display: inline;
-}
-
 .description {
     font-size: 3vw;
     text-align: center;
     padding-bottom: 1vw 0;
+}
+
+.hidden {
+    display: none;
+}
+
+table.tb {
+    border-collapse: collapse;
+    width: 500px;
+    width: 100%;
 }
 
 .tb th,
@@ -45,14 +59,6 @@ img {
 
 .tb th {
     background-color: rgb(213, 140, 67);
-}
-
-table {
-    overflow-y: auto;
-    overflow-x: visible;
-    height: 300px;
-    width: 100%;
-    display: block;
 }
 
 tr {
@@ -69,17 +75,6 @@ tr {
 
 #filler-row {
     height: 0.8em;
-}
-
-body {
-    overflow: hidden;
-    width: 800px;
-    padding: 0;
-    margin: 0;
-}
-
-.hidden {
-    display: none;
 }
 
 #loadingIndicator {
