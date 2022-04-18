@@ -9,20 +9,30 @@
 </head>
 
 <body>
-    <h3 id="loadingIndicator" class="hidden">Loading...</h3>
-    <table class='tb' id="cookieTable">
-        <tr id="first-row">
-            <th>Store</th>
-            <th>Restore</th>
-            <th>Name</th>
-            <th>Value</th>
-            <th>URL</th>
-            <th>Secure</th>
-            <th>Session</th>
-            <th>Store ID</th>
-        </tr>
-        <tr id="filler-row"></tr>
-    </table>
+    <div class="popup">
+        <div class="popup-head">
+            <div class="title">
+                The Cookie Jar
+            </div>
+            <div class="description">
+                Manage and hide your cookies from your browser
+            </div>
+            
+        </div>
+        <h3 id="loadingIndicator" class="hidden">Loading...</h3>
+        <table class='tb' id="cookieTable">
+            <tr id="first-row">
+                <th>Store</th>
+                <th>Restore</th>
+                <th>Name</th>
+                <th>Value</th>
+                <th>URL</th>
+                <th>Secure</th>
+                <th>Session</th>
+                <th>Store ID</th>
+            </tr>
+            <tr id="filler-row"></tr>
+        </table>
     </div>
     <script src="../js/helpers.js"></script>
     <script src="../js/cookie-store.js"></script>
