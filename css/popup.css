@@ -35,7 +35,7 @@ img {
 .description {
     font-size: 3vw;
     text-align: center;
-    padding-bottom: 1vw;
+    padding-bottom: 1vw 0;
 }
 
 .tb th,
