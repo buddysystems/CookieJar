@@ -22,6 +22,8 @@ function alphabeticalComparison(a, b) {
     return 0;
 }
 
+
+
 async function ensureCookieJarStorageCreated() {
     // Create an empty list for our stored cookies if it doesn't already exist
     const alreadyStored = await chrome.storage.local.get(COOKIE_JAR);

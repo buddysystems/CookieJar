@@ -1,5 +1,10 @@
 const cookieTable = document.getElementById("cookieTable");
 const loadingIndicator = document.getElementById("loadingIndicator");
+const activeBtn = document.getElementById("active-btn");
+const jarBtn = document.getElementById("jar-btn");
+
+activeBtn.addEventListener("click", () => clearCookieTable());
+jarBtn.addEventListener("click", () => clearCookieTable());
 
 function showLoadingIndicator() {
     cookieTable.classList.add("hidden");
@@ -11,7 +16,7 @@ function removeLoadingIndicator() {
     loadingIndicator.classList.add("hidden");
 }
 
-window.onload = async function () {
+window.onload = async function() {
     await ensureCookieJarStorageCreated();
     await populateCookieTable();
 };
@@ -31,7 +36,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     storeBtn = document.createElement("button");
     storeBtn.innerHTML = "Store";
     storeBtn.disabled = cookie.isStored;
-    storeBtn.addEventListener("click", async () => {
+    storeBtn.addEventListener("click", async() => {
         await cookie.store();
         await setCookieTableRowData(tableRow, cookie);
     });
@@ -41,7 +46,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     restoreBtn = document.createElement("button");
     restoreBtn.innerHTML = "Restore";
     restoreBtn.disabled = !cookie.isStored;
-    restoreBtn.addEventListener("click", async () => {
+    restoreBtn.addEventListener("click", async() => {
         await cookie.restore();
         await setCookieTableRowData(tableRow, cookie);
     });
@@ -77,4 +82,14 @@ async function populateCookieTable() {
         const cookieTableRowItem = await createCookieTableRow(cookie);
         cookieTable.appendChild(cookieTableRowItem);
     }
+}
+
+function clearCookieTable() {
+    let i, displayedCookies;
+
+    displayedCookies = document.getElementsByClassName("cookie-row");
+    for (i = displayedCookies.length - 1; i >= 0; i--) {
+        displayedCookies[i].remove();
+    }
+    console.log('page should be cleared!')
 }
