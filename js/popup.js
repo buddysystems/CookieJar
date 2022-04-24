@@ -3,8 +3,8 @@ const loadingIndicator = document.getElementById("loadingIndicator");
 const activeBtn = document.getElementById("active-btn");
 const jarBtn = document.getElementById("jar-btn");
 
-activeBtn.addEventListener("click", () => clearCookieTable());
-jarBtn.addEventListener("click", () => clearCookieTable());
+activeBtn.addEventListener("click", () => displayActiveTab());
+jarBtn.addEventListener("click", () => displayJarTab());
 
 function showLoadingIndicator() {
     cookieTable.classList.add("hidden");
@@ -17,8 +17,10 @@ function removeLoadingIndicator() {
 }
 
 window.onload = async function() {
+    const chromeCookies = await chromeCookieStore.getChromeCookies();
+
     await ensureCookieJarStorageCreated();
-    await populateCookieTable();
+    await populateCookieTable(chromeCookies);
 };
 
 async function setCookieTableRowData(tableRow, cookie) {
@@ -67,10 +69,12 @@ async function createCookieTableRow(cookie) {
     return cookieTableRowItem;
 }
 
-async function populateCookieTable() {
+
+async function populateCookieTable(cookies) {
     showLoadingIndicator();
 
-    const cookies = await getCookies();
+    // turned cookies into a parameter
+    // const cookies = await getCookies(); 
     const sortedCookies = cookies.sort((a, b) =>
         alphabeticalComparison(a.name, b.name)
     );
@@ -83,6 +87,19 @@ async function populateCookieTable() {
         cookieTable.appendChild(cookieTableRowItem);
     }
 }
+
+async function displayActiveTab() {
+    const chromeCookies = await chromeCookieStore.getChromeCookies();
+    clearCookieTable()
+    populateCookieTable(chromeCookies)
+}
+
+async function displayJarTab() {
+    const jarCookies = await cookieJar.getJarCookies();
+    clearCookieTable()
+    populateCookieTable(jarCookies)
+}
+
 
 function clearCookieTable() {
     let i, displayedCookies;
