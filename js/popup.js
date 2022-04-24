@@ -1,5 +1,10 @@
 const cookieTable = document.getElementById("cookieTable");
 const loadingIndicator = document.getElementById("loadingIndicator");
+const activeBtn = document.getElementById("active-btn");
+const jarBtn = document.getElementById("jar-btn");
+
+activeBtn.addEventListener("click", () => displayActiveTab());
+jarBtn.addEventListener("click", () => displayJarTab());
 
 function showLoadingIndicator() {
     cookieTable.classList.add("hidden");
@@ -12,8 +17,10 @@ function removeLoadingIndicator() {
 }
 
 window.onload = async function () {
+    const chromeCookies = await chromeCookieStore.getChromeCookies();
+
     await ensureCookieJarStorageCreated();
-    await populateCookieTable();
+    await populateCookieTable(chromeCookies);
 };
 
 async function setCookieTableRowData(tableRow, cookie) {
@@ -62,10 +69,11 @@ async function createCookieTableRow(cookie) {
     return cookieTableRowItem;
 }
 
-async function populateCookieTable() {
+async function populateCookieTable(cookies) {
     showLoadingIndicator();
 
-    const cookies = await getCookies();
+    // turned cookies into a parameter
+    // const cookies = await getCookies();
     const sortedCookies = cookies.sort((a, b) =>
         alphabeticalComparison(a.name, b.name)
     );
@@ -108,17 +116,17 @@ function populateEditCookieView(cookieBeingEdited) {
         session: "youknowthespot",
         storeId: 0,
     };
-    editNameInput.value = testCookie.name;
-    editDomainInput.value = testCookie.domain;
-    editValueInput.value = testCookie.value;
-    editExpirationDateInput.value = testCookie.expirationDate;
-    editHostOnlyInput.value = testCookie.expirationDate;
-    editHttpOnlyInput.value = testCookie.httpOnly;
-    editPathInput.value = testCookie.path;
-    editSameSiteInput.value = testCookie.sameSite;
-    editSecureInput.value = testCookie.secure;
-    editSessionInput.value = testCookie.session;
-    editStoreIdInput.value = testCookie.storeId;
+    editNameInput.value = cookieBeingEdited.name;
+    editDomainInput.value = cookieBeingEdited.domain;
+    editValueInput.value = cookieBeingEdited.value;
+    editExpirationDateInput.value = cookieBeingEdited.expirationDate;
+    editHostOnlyInput.value = cookieBeingEdited.expirationDate;
+    editHttpOnlyInput.value = cookieBeingEdited.httpOnly;
+    editPathInput.value = cookieBeingEdited.path;
+    editSameSiteInput.value = cookieBeingEdited.sameSite;
+    editSecureInput.value = cookieBeingEdited.secure;
+    editSessionInput.value = cookieBeingEdited.session;
+    editStoreIdInput.value = cookieBeingEdited.storeId;
 }
 
 async function saveEditedCookie(cookieBeingEdited) {
@@ -134,6 +142,28 @@ async function saveEditedCookie(cookieBeingEdited) {
     cookieBeingEdited.session = editSessionInput.value;
     cookieBeingEdited.storeId = editStoreIdInput.value;
     // TODO: save to local/jar store
+}
+
+async function displayActiveTab() {
+    const chromeCookies = await chromeCookieStore.getChromeCookies();
+    clearCookieTable();
+    populateCookieTable(chromeCookies);
+}
+
+async function displayJarTab() {
+    const jarCookies = await cookieJar.getJarCookies();
+    clearCookieTable();
+    populateCookieTable(jarCookies);
+}
+
+function clearCookieTable() {
+    let i, displayedCookies;
+
+    displayedCookies = document.getElementsByClassName("cookie-row");
+    for (i = displayedCookies.length - 1; i >= 0; i--) {
+        displayedCookies[i].remove();
+    }
+    console.log("page should be cleared!");
 }
 
 const editView = document.getElementById("test-edit-view");

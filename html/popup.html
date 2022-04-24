@@ -16,8 +16,12 @@
                 </div>
             </div>
             <h3 id="loadingIndicator" class="hidden">Loading...</h3>
+            <div class="tab">
+                <button id="active-btn" class="tablinks">Active</button>
+                <button id="jar-btn" class="tablinks">Jar</button>
+            </div>
             <table class="tb" id="cookieTable">
-                <tr class="first-row">
+                <tr id="first-row">
                     <th>Store</th>
                     <th>Restore</th>
                     <th>Name</th>
@@ -27,7 +31,7 @@
                     <th>Session</th>
                     <th>Store ID</th>
                 </tr>
-                <tr class="filler-row"></tr>
+                <tr id="filler-row"></tr>
                 <tr>
                     <td>
                         <button id="test-edit-button">test edit button</button>
@@ -114,14 +118,6 @@
                 <h1>edit view test</h1>
                 <button id="close-edit-view">close edit view</button>
             </div>
-        </div>
-        <div class="tab">
-            <button class="tablinks" onclick="INSERT_JAVASCRIPT_TO_LOAD_PAGE">
-                Active
-            </button>
-            <button class="tablinks" onclick="INSERT_JAVASCRIPT_TO_LOAD_PAGE">
-                Jar
-            </button>
         </div>
         <script src="../js/helpers.js"></script>
         <script src="../js/cookie-store.js"></script>
