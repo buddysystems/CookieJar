@@ -9,14 +9,6 @@
 
     <body>
         <div class="popup">
-            <button id="edit-modal-btn">test modal btn</button>
-            <div class="modal" id="test-modal">
-                <div class="modal-content">
-                    <h1>Edit cookie</h1>
-                    <p>Edit cookie view goes here :)</p>
-                    <button id="close-modal">close</button>
-                </div>
-            </div>
             <div class="popup-head">
                 <div class="title">The Cookie Jar</div>
                 <div class="description">
@@ -36,7 +28,16 @@
                     <th>Store ID</th>
                 </tr>
                 <tr id="filler-row"></tr>
+                <tr>
+                    <td>
+                        <button id="test-edit-button">test edit button</button>
+                    </td>
+                </tr>
             </table>
+            <div class="edit-view hidden" id="test-edit-view">
+                <h1>edit view test</h1>
+                <button id="close-edit-view">close edit view</button>
+            </div>
         </div>
         <script src="../js/helpers.js"></script>
         <script src="../js/cookie-store.js"></script>

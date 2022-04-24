@@ -79,14 +79,24 @@ async function populateCookieTable() {
     }
 }
 
-// MODAL TEST
-const testOpenModalBtn = document.getElementById("edit-modal-btn");
-const testModal = document.getElementById("test-modal");
-const closeModalBtn = document.getElementById("close-modal");
-testOpenModalBtn.addEventListener("click", () => {
-    testModal.style.display = "block";
-});
+const editView = document.getElementById("test-edit-view");
 
-closeModalBtn.addEventListener("click", () => {
-    testModal.style.display = "none";
-});
+async function switchToEditView(cookieBeingEdited) {
+    console.log(`Cookie being edited: ${cookieBeingEdited}`);
+    cookieTable.classList.add("hidden");
+    editView.classList.remove("hidden");
+}
+
+async function switchToTableView() {
+    editView.classList.add("hidden");
+    cookieTable.classList.remove("hidden");
+}
+
+const testEditButton = document.getElementById("test-edit-button");
+testEditButton.addEventListener(
+    "click",
+    async () => await switchToEditView(null)
+);
+
+const closeEditView = document.getElementById("close-edit-view");
+closeEditView.addEventListener("click", switchToTableView);
