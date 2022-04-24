@@ -73,6 +73,11 @@ class CookieJar {
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
     }
 
+    async removeAllCookies(cookieDetails) {
+        // Remove the cookies in the jar by setting the cookie jar to an empty list.
+        await chrome.storage.local.set({ COOKIE_JAR: [] });
+    }
+
     /// returns: Promise<JarCookie[]>
     async getJarCookies() {
         const stored = await chrome.storage.local.get(COOKIE_JAR);
@@ -128,6 +133,13 @@ class ChromeCookieStore {
         if (removedInfo == null) {
             console.error("Couldn't remove cookie.");
         }
+    }
+
+    async removeAllCookies(cookieDetails) {
+        // Remove the cookies in the jar by setting the cookie jar to an empty list.
+        
+
+        await chrome.storage.local.set({ COOKIE_JAR: [] });
     }
 
     /// returns: Promise<JarCookie[]>
