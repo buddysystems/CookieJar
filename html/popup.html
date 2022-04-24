@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>CookieJar</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="../css/popup.css" />
+    </head>
 
-<head>
-    <title>CookieJar</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../css/popup.css">
-</head>
-
-<body>
-    <div class="popup">
-        <div class="popup-head">
-            <div class="title">
-                The Cookie Jar
+    <body>
+        <div class="popup">
+            <button id="edit-modal-btn">test modal btn</button>
+            <div class="modal" id="test-modal">
+                <div class="modal-content">
+                    <h1>Edit cookie</h1>
+                    <p>Edit cookie view goes here :)</p>
+                    <button id="close-modal">close</button>
+                </div>
             </div>
-            <div class="description">
-                Manage and hide your cookies from your browser
+            <div class="popup-head">
+                <div class="title">The Cookie Jar</div>
+                <div class="description">
+                    Manage and hide your cookies from your browser
+                </div>
             </div>
-            
+            <h3 id="loadingIndicator" class="hidden">Loading...</h3>
+            <table class="tb" id="cookieTable">
+                <tr id="first-row">
+                    <th>Store</th>
+                    <th>Restore</th>
+                    <th>Name</th>
+                    <th>Value</th>
+                    <th>URL</th>
+                    <th>Secure</th>
+                    <th>Session</th>
+                    <th>Store ID</th>
+                </tr>
+                <tr id="filler-row"></tr>
+            </table>
         </div>
-        <h3 id="loadingIndicator" class="hidden">Loading...</h3>
-        <table class='tb' id="cookieTable">
-            <tr id="first-row">
-                <th>Store</th>
-                <th>Restore</th>
-                <th>Name</th>
-                <th>Value</th>
-                <th>URL</th>
-                <th>Secure</th>
-                <th>Session</th>
-                <th>Store ID</th>
-            </tr>
-            <tr id="filler-row"></tr>
-        </table>
-    </div>
-    <script src="../js/helpers.js"></script>
-    <script src="../js/cookie-store.js"></script>
-    <script src="../js/popup.js"></script>
-</body>
-
+        <script src="../js/helpers.js"></script>
+        <script src="../js/cookie-store.js"></script>
+        <script src="../js/popup.js"></script>
+    </body>
 </html>

@@ -78,3 +78,15 @@ async function populateCookieTable() {
         cookieTable.appendChild(cookieTableRowItem);
     }
 }
+
+// MODAL TEST
+const testOpenModalBtn = document.getElementById("edit-modal-btn");
+const testModal = document.getElementById("test-modal");
+const closeModalBtn = document.getElementById("close-modal");
+testOpenModalBtn.addEventListener("click", () => {
+    testModal.style.display = "block";
+});
+
+closeModalBtn.addEventListener("click", () => {
+    testModal.style.display = "none";
+});
