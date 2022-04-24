@@ -79,11 +79,68 @@ async function populateCookieTable() {
     }
 }
 
+// Edit cookie view
+const editNameInput = document.getElementById("edit-name-input");
+const editDomainInput = document.getElementById("edit-domain-input");
+const editValueInput = document.getElementById("edit-value-input");
+const editExpirationDateInput = document.getElementById(
+    "edit-expirationDate-input"
+);
+const editHostOnlyInput = document.getElementById("edit-hostOnly-input");
+const editHttpOnlyInput = document.getElementById("edit-httpOnly-input");
+const editPathInput = document.getElementById("edit-path-input");
+const editSameSiteInput = document.getElementById("edit-sameSite-input");
+const editSecureInput = document.getElementById("edit-secure-input");
+const editSessionInput = document.getElementById("edit-session-input");
+const editStoreIdInput = document.getElementById("edit-storeId-input");
+
+function populateEditCookieView(cookieBeingEdited) {
+    cookieBeingEdited = {
+        name: "test name",
+        domain: ".lol.lol.com",
+        value: "testlkjadsflkjlaksdf",
+        expirationDate: "4/20",
+        hostOnly: "true",
+        httpOnly: "true",
+        path: "/",
+        sameSite: "false",
+        secure: "true",
+        session: "youknowthespot",
+        storeId: 0,
+    };
+    editNameInput.value = testCookie.name;
+    editDomainInput.value = testCookie.domain;
+    editValueInput.value = testCookie.value;
+    editExpirationDateInput.value = testCookie.expirationDate;
+    editHostOnlyInput.value = testCookie.expirationDate;
+    editHttpOnlyInput.value = testCookie.httpOnly;
+    editPathInput.value = testCookie.path;
+    editSameSiteInput.value = testCookie.sameSite;
+    editSecureInput.value = testCookie.secure;
+    editSessionInput.value = testCookie.session;
+    editStoreIdInput.value = testCookie.storeId;
+}
+
+async function saveEditedCookie(cookieBeingEdited) {
+    cookieBeingEdited.name = editNameInput.value;
+    cookieBeingEdited.domain = editDomainInput.value;
+    cookieBeingEdited.value = editValueInput.value;
+    cookieBeingEdited.expirationDate = editExpirationDateInput.value;
+    cookieBeingEdited.hostOnly = editHostOnlyInput.value;
+    cookieBeingEdited.httpOnly = editHttpOnlyInput.value;
+    cookieBeingEdited.path = editPathInput.value;
+    cookieBeingEdited.sameSite = editSameSiteInput.value;
+    cookieBeingEdited.secure = editSecureInput.value;
+    cookieBeingEdited.session = editSessionInput.value;
+    cookieBeingEdited.storeId = editStoreIdInput.value;
+    // TODO: save to local/jar store
+}
+
 const editView = document.getElementById("test-edit-view");
 
 async function switchToEditView(cookieBeingEdited) {
-    console.log(`Cookie being edited: ${cookieBeingEdited}`);
     cookieTable.classList.add("hidden");
+    populateEditCookieView(cookieBeingEdited);
     editView.classList.remove("hidden");
 }
 
@@ -93,10 +150,7 @@ async function switchToTableView() {
 }
 
 const testEditButton = document.getElementById("test-edit-button");
-testEditButton.addEventListener(
-    "click",
-    async () => await switchToEditView(null)
-);
+testEditButton.addEventListener("click", () => switchToEditView(null));
 
 const closeEditView = document.getElementById("close-edit-view");
 closeEditView.addEventListener("click", switchToTableView);
