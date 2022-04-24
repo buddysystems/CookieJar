@@ -73,9 +73,8 @@ table {
     display: none;
 }
 
-table.tb {
+.tb {
     border-collapse: collapse;
-    width: 500px;
     width: 100%;
 }
 
@@ -93,15 +92,15 @@ tr {
     background-color: bisque;
 }
 
-#first-row {
+.first-row {
     position: sticky;
     top: 0;
     width: 100%;
     height: absolute;
 }
 
-#filler-row {
-    height: 0.8em;
+.filler-row {
+    height: 0em;
 }
 
 #loadingIndicator {
@@ -135,4 +134,10 @@ tr {
     border: 1px solid #888;
     width: 90%;
     /* Could be more or less, depending on screen size */
+}
+
+.edit-actions-header {}
+
+#edit-cookie-table tbody {
+    width: 100%;
 }
