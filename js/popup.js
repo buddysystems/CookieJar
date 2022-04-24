@@ -20,7 +20,7 @@ window.onload = async function() {
     const chromeCookies = await chromeCookieStore.getChromeCookies();
 
     await ensureCookieJarStorageCreated();
-    await populateCookieTable(chromeCookies);
+    await displayActiveTab();
 };
 
 async function setCookieTableRowData(tableRow, cookie) {
@@ -105,15 +105,24 @@ async function populateCookieTable(cookies) {
 }
 
 async function displayActiveTab() {
+    resetActiveTab()
     const chromeCookies = await chromeCookieStore.getChromeCookies();
     clearCookieTable()
     populateCookieTable(chromeCookies)
+    activeBtn.className += " active";
 }
 
 async function displayJarTab() {
+    resetActiveTab()
     const jarCookies = await cookieJar.getJarCookies();
     clearCookieTable()
     populateCookieTable(jarCookies)
+    jarBtn.className += " active";
+}
+
+async function resetActiveTab() {
+    activeBtn.className = "tablinks"
+    jarBtn.className = "tablinks"
 }
 
 function clearCookieTable() {
