@@ -2,7 +2,7 @@
 /// In addition the normal fields you would find on Chrome's Cookie object, you can find
 /// details on whether it is stored or not, as well as methods to store/restore it.
 class JarCookie {
-    constructor(cookie, isStored = false) {
+    constructor(cookie, isStored = false, isSelected = false) {
         this.domain = cookie.domain;
         this.name = cookie.name;
         this.storeId = cookie.storeId;
@@ -20,6 +20,7 @@ class JarCookie {
             url: getCookieUrl(this),
         };
         this.isStored = isStored;
+        this.isSelected = isSelected;
     }
 
     async store() {
