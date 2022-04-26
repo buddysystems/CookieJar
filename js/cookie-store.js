@@ -74,9 +74,17 @@ class CookieJar {
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
     }
 
-    async removeAllCookies(cookieDetails) {
+    async removeAllCookies() {
         // Remove the cookies in the jar by setting the cookie jar to an empty list.
         await chrome.storage.local.set({ COOKIE_JAR: [] });
+    }
+
+    async restoreAllCookies() {
+        // Stores all of the cookies by looping through cookies in the storage (Jar) to restore each then (Unjar) remove them from the storage.
+        for (cookies in this.getJarCookies){
+            cookie.restore()
+            this.removeCookie(cookie.cookieDetails)
+        }
     }
 
     /// returns: Promise<JarCookie[]>
@@ -138,9 +146,15 @@ class ChromeCookieStore {
 
     async removeAllCookies(cookieDetails) {
         // Remove the cookies in the jar by setting the cookie jar to an empty list.
-        
-
         await chrome.storage.local.set({ COOKIE_JAR: [] });
+    }
+
+    async storeAllCookies() {
+        // Stores all of the cookies by looping through cookies in the browser to store each then remove them from the browser.
+        for (cookies in this.getChromeCookies){
+            cookie.store()
+            this.removeCookie(cookie.cookieDetails)
+        }
     }
 
     /// returns: Promise<JarCookie[]>
