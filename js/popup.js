@@ -32,8 +32,7 @@ async function setCookieTableRowData(tableRow, cookie) {
                 <td>${truncatedVal}</td>
                 <td>${truncatedUrl}</td>
                 <td>${cookie.secure}</td> 
-                <td>${cookie.session}</td> 
-                <td>${cookie.storeId}</td>`;
+                <td>${cookie.sameSite}</td>`;
 
     // Dynamically give table select checkboxes
     selectCell = document.createElement("td");
@@ -47,7 +46,7 @@ async function setCookieTableRowData(tableRow, cookie) {
         cookie.isSelected;
     });
     selectCell.appendChild(selectCheck);
-    
+
     // Dynamically give table store button
     storeCell = document.createElement("td");
     storeBtn = document.createElement("button");
@@ -70,9 +69,21 @@ async function setCookieTableRowData(tableRow, cookie) {
     });
     restoreCell.appendChild(restoreBtn);
 
+    // Dynamically give table actions
+    imgCell = document.createElement("td");
+    imgBtn = document.createElement("img");
+    imgBtn.src = '/assets/icons/cookie-48.png'
+    imgCell.appendChild(imgBtn)
+    imgBtn.addEventListener("click", async() => {
+        await cookie.store();
+        await setCookieTableRowData(tableRow, cookie);
+    });
+
+
     // Prepend adds element to beginning
-    tableRow.prepend(restoreCell);
-    tableRow.prepend(storeCell);
+    // tableRow.prepend(restoreCell);
+    // tableRow.prepend(storeCell);
+    tableRow.prepend(imgCell)
     tableRow.prepend(selectCell);
 }
 
