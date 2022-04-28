@@ -31,6 +31,10 @@ table {
     border: solid 0.2vw black;
 }
 
+.tab-right button {
+    float: right !important;
+}
+
 .tab button {
     background-color: inherit;
     float: left;
