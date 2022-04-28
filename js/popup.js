@@ -22,7 +22,7 @@ function removeLoadingIndicator() {
     loadingIndicator.classList.add("hidden");
 }
 
-window.onload = async function() {
+window.onload = async function () {
     await ensureCookieJarStorageCreated();
     await displayActiveTab();
 };
@@ -46,7 +46,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     selectCheck.id = cookie.storeId;
     selectCheck.innerHTML = "Select";
     selectCheck.checked = cookie.isSelected;
-    selectCheck.addEventListener("click", async() => {
+    selectCheck.addEventListener("click", async () => {
         cookie.isSelected;
     });
     selectCell.appendChild(selectCheck);
@@ -56,7 +56,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     const storeBtn = document.createElement("button");
     storeBtn.innerHTML = "Store";
     storeBtn.disabled = cookie.isStored;
-    storeBtn.addEventListener("click", async() => {
+    storeBtn.addEventListener("click", async () => {
         await cookie.store();
         await setCookieTableRowData(tableRow, cookie);
     });
@@ -67,7 +67,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     const restoreBtn = document.createElement("button");
     restoreBtn.innerHTML = "Restore";
     restoreBtn.disabled = !cookie.isStored;
-    restoreBtn.addEventListener("click", async() => {
+    restoreBtn.addEventListener("click", async () => {
         await cookie.restore();
         await setCookieTableRowData(tableRow, cookie);
     });
@@ -75,12 +75,12 @@ async function setCookieTableRowData(tableRow, cookie) {
 
     // Dynamically give table actions
     const actionCell = document.createElement("td");
-    actionCell.classList = 'action';
+    actionCell.classList = "action";
     const jarCookieBtn = document.createElement("img");
     jarCookieBtn.src = "/assets/icons/action-bar/jar-icon.png";
     jarCookieBtn.style.height = "3em";
     actionCell.appendChild(jarCookieBtn);
-    jarCookieBtn.addEventListener("click", async() => {
+    jarCookieBtn.addEventListener("click", async () => {
         await cookie.store();
         await setCookieTableRowData(tableRow, cookie);
     });
@@ -89,7 +89,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     unjarCookieBtn.src = "/assets/icons/action-bar/unjar-png.png";
     unjarCookieBtn.style.height = "3em";
     actionCell.appendChild(unjarCookieBtn);
-    unjarCookieBtn.addEventListener("click", async() => {
+    unjarCookieBtn.addEventListener("click", async () => {
         await cookie.restore();
         await setCookieTableRowData(tableRow, cookie);
     });
@@ -98,7 +98,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     infoCookieBtn.src = "/assets/icons/action-bar/info-icon.png";
     infoCookieBtn.style.height = "3em";
     actionCell.appendChild(infoCookieBtn);
-    infoCookieBtn.addEventListener("click", async() => {
+    infoCookieBtn.addEventListener("click", async () => {
         // Build info here
     });
 
@@ -106,16 +106,11 @@ async function setCookieTableRowData(tableRow, cookie) {
     editCookieBtn.src = "/assets/icons/action-bar/edit-icon.png";
     editCookieBtn.style.height = "3em";
     actionCell.appendChild(editCookieBtn);
-    editCookieBtn.addEventListener("click", async() => {
-        await switchToEditView(cookie);
+    editCookieBtn.addEventListener("click", async () => {
+        await switchToEditView(cookie, tableRow);
     });
     actionCell.appendChild(editCookieBtn);
 
-
-
-    // Prepend adds element to beginning
-    // tableRow.prepend(restoreCell);
-    // tableRow.prepend(storeCell);
     tableRow.prepend(actionCell);
     tableRow.prepend(selectCell);
 }
@@ -158,36 +153,37 @@ async function displayActiveTab() {
 
 async function downloadCookiesAsJSON() {
     const chromeCookies = await chromeCookieStore.getChromeCookies();
-    const dict = {}
-    for (i=0; i<chromeCookies.length; i++) {
-        const cookie = chromeCookies[i]
-        dict[i] = {"name" : cookie.name,
-        "domain": cookie.domain,
-        "storeId" : cookie.storeId,
-        "expirationDate " : cookie.expirationDate,
-        "hostOnly " : cookie.hostOnly,
-        "httpOnly " : cookie.httpOnly,
-        "path " : cookie.path,
-        "sameSite " : cookie.sameSite,
-        "secure " : cookie.secure,
-        "session " : cookie.session,
-        "value " : cookie.value,
-        "details " : {
+    const dict = {};
+    for (i = 0; i < chromeCookies.length; i++) {
+        const cookie = chromeCookies[i];
+        dict[i] = {
             name: cookie.name,
+            domain: cookie.domain,
             storeId: cookie.storeId,
-            url: getCookieUrl(this),
-        },
-        "isStored " : cookie.isStored,
-        "isSelected " : cookie.isSelected,
-        }
+            "expirationDate ": cookie.expirationDate,
+            "hostOnly ": cookie.hostOnly,
+            "httpOnly ": cookie.httpOnly,
+            "path ": cookie.path,
+            "sameSite ": cookie.sameSite,
+            "secure ": cookie.secure,
+            "session ": cookie.session,
+            "value ": cookie.value,
+            "details ": {
+                name: cookie.name,
+                storeId: cookie.storeId,
+                url: getCookieUrl(this),
+            },
+            "isStored ": cookie.isStored,
+            "isSelected ": cookie.isSelected,
+        };
     }
-    const blob = new Blob([JSON.stringify(dict, null, 2)], {type : 'application/json'});
+    const blob = new Blob([JSON.stringify(dict, null, 2)], {
+        type: "application/json",
+    });
     var url = URL.createObjectURL(blob);
     chrome.downloads.download({
-        url: url 
+        url: url,
     });
-
-
 }
 
 async function displayJarTab() {
@@ -251,7 +247,7 @@ function castToBoolean(str) {
     return str === "true";
 }
 
-async function saveEditedCookie(cookieBeingEdited) {
+async function saveEditedCookie(cookieBeingEdited, tableRow) {
     const previousCookieDetails = {
         name: cookieBeingEdited.name,
         storeId: cookieBeingEdited.storeId,
@@ -269,12 +265,14 @@ async function saveEditedCookie(cookieBeingEdited) {
     cookieBeingEdited.session = castToBoolean(editSessionInput.value);
     cookieBeingEdited.storeId = editStoreIdInput.value;
     await cookieBeingEdited.updateCookie(previousCookieDetails);
+
+    await setCookieTableRowData(tableRow, cookieBeingEdited);
 }
 
 const editView = document.getElementById("edit-view");
 
 // Changes the view to allow the user to change information about the cookies
-async function switchToEditView(cookieBeingEdited) {
+async function switchToEditView(cookieBeingEdited, cookieRow) {
     // Remove all event listeners
     let oldElement = document.getElementById("save-edited-cookie-btn");
     let saveEditedCookieBtn = oldElement.cloneNode(true);
@@ -282,8 +280,8 @@ async function switchToEditView(cookieBeingEdited) {
 
     cookieTable.classList.add("hidden");
     populateEditCookieView(cookieBeingEdited);
-    saveEditedCookieBtn.addEventListener("click", async() =>
-        saveEditedCookie(cookieBeingEdited)
+    saveEditedCookieBtn.addEventListener("click", async () =>
+        saveEditedCookie(cookieBeingEdited, cookieRow)
     );
     editView.classList.remove("hidden");
 }
