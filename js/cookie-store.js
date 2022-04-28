@@ -45,6 +45,9 @@ class JarCookie {
 
         await cookieJar.addCookie(this);
         await chromeCookieStore.removeCookie(this.details);
+        // Update the tab
+        displayActiveTab();
+
     }
 
     async restore() {
@@ -54,6 +57,8 @@ class JarCookie {
 
         await chromeCookieStore.addCookie(this);
         await cookieJar.removeCookie(this.details);
+        // Update the tab
+        displayJarTab();
     }
 }
 
@@ -87,6 +92,7 @@ class CookieJar {
                 c.details.url != cookieDetails.url
         );
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
+        // To update the tab when cookie is removed from jar
     }
 
     async removeAllCookies() {

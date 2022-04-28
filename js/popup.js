@@ -156,6 +156,40 @@ async function displayActiveTab() {
     activeBtn.className += " active";
 }
 
+async function downloadCookiesAsJSON() {
+    const chromeCookies = await chromeCookieStore.getChromeCookies();
+    const dict = {}
+    for (i=0; i<chromeCookies.length; i++) {
+        const cookie = chromeCookies[i]
+        dict[i] = {"name" : cookie.name,
+        "domain": cookie.domain,
+        "storeId" : cookie.storeId,
+        "expirationDate " : cookie.expirationDate,
+        "hostOnly " : cookie.hostOnly,
+        "httpOnly " : cookie.httpOnly,
+        "path " : cookie.path,
+        "sameSite " : cookie.sameSite,
+        "secure " : cookie.secure,
+        "session " : cookie.session,
+        "value " : cookie.value,
+        "details " : {
+            name: cookie.name,
+            storeId: cookie.storeId,
+            url: getCookieUrl(this),
+        },
+        "isStored " : cookie.isStored,
+        "isSelected " : cookie.isSelected,
+        }
+    }
+    const blob = new Blob([JSON.stringify(dict, null, 2)], {type : 'application/json'});
+    var url = URL.createObjectURL(blob);
+    chrome.downloads.download({
+        url: url 
+    });
+
+
+}
+
 async function displayJarTab() {
     resetActiveTab();
     const jarCookies = await cookieJar.getJarCookies();
