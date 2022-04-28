@@ -278,11 +278,11 @@ async function switchToEditView(cookieBeingEdited, cookieRow) {
     let saveEditedCookieBtn = oldElement.cloneNode(true);
     oldElement.parentNode.replaceChild(saveEditedCookieBtn, oldElement);
 
-    cookieTable.classList.add("hidden");
     populateEditCookieView(cookieBeingEdited);
     saveEditedCookieBtn.addEventListener("click", async () =>
         saveEditedCookie(cookieBeingEdited, cookieRow)
     );
+    cookieTable.classList.add("hidden");
     editView.classList.remove("hidden");
 }
 
