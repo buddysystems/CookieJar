@@ -22,7 +22,7 @@ function removeLoadingIndicator() {
     loadingIndicator.classList.add("hidden");
 }
 
-window.onload = async function () {
+window.onload = async function() {
     await ensureCookieJarStorageCreated();
     await displayActiveTab();
 };
@@ -46,7 +46,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     selectCheck.id = cookie.storeId;
     selectCheck.innerHTML = "Select";
     selectCheck.checked = cookie.isSelected;
-    selectCheck.addEventListener("click", async () => {
+    selectCheck.addEventListener("click", async() => {
         cookie.isSelected;
     });
     selectCell.appendChild(selectCheck);
@@ -56,7 +56,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     const storeBtn = document.createElement("button");
     storeBtn.innerHTML = "Store";
     storeBtn.disabled = cookie.isStored;
-    storeBtn.addEventListener("click", async () => {
+    storeBtn.addEventListener("click", async() => {
         await cookie.store();
         await setCookieTableRowData(tableRow, cookie);
     });
@@ -67,7 +67,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     const restoreBtn = document.createElement("button");
     restoreBtn.innerHTML = "Restore";
     restoreBtn.disabled = !cookie.isStored;
-    restoreBtn.addEventListener("click", async () => {
+    restoreBtn.addEventListener("click", async() => {
         await cookie.restore();
         await setCookieTableRowData(tableRow, cookie);
     });
@@ -75,17 +75,25 @@ async function setCookieTableRowData(tableRow, cookie) {
 
     // Dynamically give table actions
     const actionCell = document.createElement("td");
-    const storeCookieBtn = document.createElement("img");
-    storeCookieBtn.src = "/assets/icons/cookie-48.png";
-    actionCell.appendChild(storeCookieBtn);
-    storeCookieBtn.addEventListener("click", async () => {
+    const jarCookieBtn = document.createElement("img");
+    jarCookieBtn.src = "/assets/icons/action-bar/jar-icon.png";
+    actionCell.appendChild(jarCookieBtn);
+    jarCookieBtn.addEventListener("click", async() => {
         await cookie.store();
+        await setCookieTableRowData(tableRow, cookie);
+    });
+
+    const unjarCookieBtn = document.createElement("img");
+    unjarCookieBtn.src = "/assets/icons/action-bar/unjar-png.png";
+    actionCell.appendChild(unjarCookieBtn);
+    unjarCookieBtn.addEventListener("click", async() => {
+        await cookie.restore();
         await setCookieTableRowData(tableRow, cookie);
     });
 
     const editCookieBtn = document.createElement("button");
     editCookieBtn.innerHTML = "Test edit btn";
-    editCookieBtn.addEventListener("click", async () => {
+    editCookieBtn.addEventListener("click", async() => {
         await switchToEditView(cookie);
     });
     actionCell.appendChild(editCookieBtn);
@@ -225,7 +233,7 @@ async function switchToEditView(cookieBeingEdited) {
 
     cookieTable.classList.add("hidden");
     populateEditCookieView(cookieBeingEdited);
-    saveEditedCookieBtn.addEventListener("click", async () =>
+    saveEditedCookieBtn.addEventListener("click", async() =>
         saveEditedCookie(cookieBeingEdited)
     );
     editView.classList.remove("hidden");
