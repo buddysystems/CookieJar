@@ -24,10 +24,9 @@ class JarCookie {
     }
 
     /**
-     * @param {*} newCookie The cookie object with updated fields
      * @param {{name: str, storeId: number, url: str}} previousCookieDetails The details used to identify the cookie to be updated
      */
-    async updateCookie(newCookie, previousCookieDetails) {
+    async updateCookie(previousCookieDetails) {
         if (this.isStored) {
             // Is in cookie jar, need to update in local storage
             await cookieJar.removeCookie(previousCookieDetails);
