@@ -5,16 +5,37 @@ const jarBtn = document.getElementById("jar-btn");
 const deleteAllBtn = document.getElementById("delete-all-btn");
 const jarAllBtn = document.getElementById("store-all-btn");
 const unjarAllBtn = document.getElementById("unstore-all-btn");
+const searchInput = document.getElementById("search-input");
 
 activeBtn.addEventListener("click", () => displayActiveTab());
 jarBtn.addEventListener("click", () => displayJarTab());
-deleteAllBtn.addEventListener("click", () => deleteAllCookies());
+deleteAllBtn.addEventListener("click", () => searchFunction());
 jarAllBtn.addEventListener("click", () => chromeCookieStore.storeAllCookies());
 unjarAllBtn.addEventListener("click", () => cookieJar.restoreAllCookies());
-
+searchInput.addEventListener("keyup", () => searchFunction());
 function showLoadingIndicator() {
     cookieTable.classList.add("hidden");
     loadingIndicator.classList.remove("hidden");
+}
+
+function searchFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("search-input");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("cookieTable");
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+        }
+    }
 }
 
 function removeLoadingIndicator() {
@@ -29,14 +50,14 @@ window.onload = async function() {
 
 async function setCookieTableRowData(tableRow, cookie) {
     // Update table based on cookie fields
-    const truncatedName = truncateString(cookie.name, 35);
-    const truncatedVal = truncateString(cookie.value, 20);
+    const truncatedName = truncateString(cookie.name, 40);
+    const truncatedVal = truncateString(cookie.value, 15);
     const truncatedUrl = truncateString(cookie.details.url, 20);
     tableRow.innerHTML = `<td>${truncatedName}</td> 
                 <td>${truncatedVal}</td>
-                <td>${truncatedUrl}</td>`;
-    // <td>${cookie.secure}</td> 
-    // <td>${cookie.sameSite}</td>`;
+                <td>${truncatedUrl}</td>
+                <td>${cookie.secure}</td> 
+                <td>${cookie.sameSite}</td>`;
 
     // Dynamically give table select checkboxes
     const selectCell = document.createElement("td");
@@ -75,10 +96,9 @@ async function setCookieTableRowData(tableRow, cookie) {
 
     // Dynamically give table actions
     const actionCell = document.createElement("td");
-    actionCell.classList = 'action';
     const jarCookieBtn = document.createElement("img");
     jarCookieBtn.src = "/assets/icons/action-bar/jar-icon.png";
-    jarCookieBtn.style.height = "3em";
+    jarCookieBtn.style.height = "50px";
     actionCell.appendChild(jarCookieBtn);
     jarCookieBtn.addEventListener("click", async() => {
         await cookie.store();
@@ -87,39 +107,19 @@ async function setCookieTableRowData(tableRow, cookie) {
 
     const unjarCookieBtn = document.createElement("img");
     unjarCookieBtn.src = "/assets/icons/action-bar/unjar-png.png";
-    unjarCookieBtn.style.height = "3em";
+    unjarCookieBtn.style.height = "50px";
     actionCell.appendChild(unjarCookieBtn);
     unjarCookieBtn.addEventListener("click", async() => {
         await cookie.restore();
         await setCookieTableRowData(tableRow, cookie);
     });
 
-    // Remove the jar/unjar button that doesn't belong
-    if(cookie.isStored) {
-        jarCookieBtn.remove()
-    } else {
-        unjarCookieBtn.remove()
-    }
-    const infoCookieBtn = document.createElement("img");
-    infoCookieBtn.src = "/assets/icons/action-bar/info-icon.png";
-    infoCookieBtn.style.height = "3em";
-    actionCell.appendChild(infoCookieBtn);
-    infoCookieBtn.addEventListener("click", async() => {
-        // Build info here
-    });
-
-    
-
-    const editCookieBtn = document.createElement("img");
-    editCookieBtn.src = "/assets/icons/action-bar/edit-icon.png";
-    editCookieBtn.style.height = "3em";
-    actionCell.appendChild(editCookieBtn);
+    const editCookieBtn = document.createElement("button");
+    editCookieBtn.innerHTML = "Test edit btn";
     editCookieBtn.addEventListener("click", async() => {
         await switchToEditView(cookie);
     });
     actionCell.appendChild(editCookieBtn);
-
-
 
     // Prepend adds element to beginning
     // tableRow.prepend(restoreCell);
@@ -166,34 +166,34 @@ async function displayActiveTab() {
 
 async function downloadCookiesAsJSON() {
     const chromeCookies = await chromeCookieStore.getChromeCookies();
-    const dict = {}
-    for (i = 0; i < chromeCookies.length; i++) {
+    const list = []
+    for (i=0; i<chromeCookies.length; i++) {
         const cookie = chromeCookies[i]
-        dict[i] = {
-            "name": cookie.name,
-            "domain": cookie.domain,
-            "storeId": cookie.storeId,
-            "expirationDate ": cookie.expirationDate,
-            "hostOnly ": cookie.hostOnly,
-            "httpOnly ": cookie.httpOnly,
-            "path ": cookie.path,
-            "sameSite ": cookie.sameSite,
-            "secure ": cookie.secure,
-            "session ": cookie.session,
-            "value ": cookie.value,
-            "details ": {
-                name: cookie.name,
-                storeId: cookie.storeId,
-                url: getCookieUrl(this),
-            },
-            "isStored ": cookie.isStored,
-            "isSelected ": cookie.isSelected,
+        const dict = {"name" : cookie.name,
+        "domain": cookie.domain,
+        "storeId" : cookie.storeId,
+        "expirationDate " : cookie.expirationDate,
+        "hostOnly " : cookie.hostOnly,
+        "httpOnly " : cookie.httpOnly,
+        "path " : cookie.path,
+        "sameSite " : cookie.sameSite,
+        "secure " : cookie.secure,
+        "session " : cookie.session,
+        "value " : cookie.value,
+        "details " : {
+            name: cookie.name,
+            storeId: cookie.storeId,
+            url: getCookieUrl(this),
+        },
+        "isStored " : cookie.isStored,
+        "isSelected " : cookie.isSelected,
         }
+        list.push(dict)
     }
-    const blob = new Blob([JSON.stringify(dict, null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(list, null, 2)], {type : 'application/json'});
     var url = URL.createObjectURL(blob);
     chrome.downloads.download({
-        url: url
+        url: url 
     });
 
 
