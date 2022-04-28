@@ -30,11 +30,11 @@ class JarCookie {
         if (this.isStored) {
             // Is in cookie jar, need to update in local storage
             await cookieJar.removeCookie(previousCookieDetails);
-            await cookieJar.addCookie(newCookie);
+            await cookieJar.addCookie(this);
         } else {
             // Is in browser cookies
             await chromeCookieStore.removeCookie(previousCookieDetails);
-            await chromeCookieStore.addCookie(newCookie);
+            await chromeCookieStore.addCookie(this);
         }
     }
 

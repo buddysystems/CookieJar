@@ -190,6 +190,10 @@ function populateEditCookieView(cookieBeingEdited) {
     editStoreIdInput.value = cookieBeingEdited.storeId;
 }
 
+function castToBoolean(str) {
+    return str === "true";
+}
+
 async function saveEditedCookie(cookieBeingEdited) {
     const previousCookieDetails = {
         name: cookieBeingEdited.name,
@@ -201,11 +205,11 @@ async function saveEditedCookie(cookieBeingEdited) {
     cookieBeingEdited.value = editValueInput.value;
     cookieBeingEdited.expirationDate = editExpirationDateInput.value;
     cookieBeingEdited.hostOnly = editHostOnlyInput.value;
-    cookieBeingEdited.httpOnly = editHttpOnlyInput.value;
+    cookieBeingEdited.httpOnly = castToBoolean(editHttpOnlyInput.value);
     cookieBeingEdited.path = editPathInput.value;
     cookieBeingEdited.sameSite = editSameSiteInput.value;
-    cookieBeingEdited.secure = editSecureInput.value;
-    cookieBeingEdited.session = editSessionInput.value;
+    cookieBeingEdited.secure = castToBoolean(editSecureInput.value);
+    cookieBeingEdited.session = castToBoolean(editSessionInput.value);
     cookieBeingEdited.storeId = editStoreIdInput.value;
     await cookieBeingEdited.updateCookie(previousCookieDetails);
 }
@@ -214,8 +218,16 @@ const editView = document.getElementById("edit-view");
 
 // Changes the view to allow the user to change information about the cookies
 async function switchToEditView(cookieBeingEdited) {
+    // Remove all event listeners
+    let oldElement = document.getElementById("save-edited-cookie-btn");
+    let saveEditedCookieBtn = oldElement.cloneNode(true);
+    oldElement.parentNode.replaceChild(saveEditedCookieBtn, oldElement);
+
     cookieTable.classList.add("hidden");
     populateEditCookieView(cookieBeingEdited);
+    saveEditedCookieBtn.addEventListener("click", async () =>
+        saveEditedCookie(cookieBeingEdited)
+    );
     editView.classList.remove("hidden");
 }
 
