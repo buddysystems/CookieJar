@@ -77,6 +77,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     const actionCell = document.createElement("td");
     const jarCookieBtn = document.createElement("img");
     jarCookieBtn.src = "/assets/icons/action-bar/jar-icon.png";
+    jarCookieBtn.style.height = "50px";
     actionCell.appendChild(jarCookieBtn);
     jarCookieBtn.addEventListener("click", async() => {
         await cookie.store();
@@ -85,6 +86,7 @@ async function setCookieTableRowData(tableRow, cookie) {
 
     const unjarCookieBtn = document.createElement("img");
     unjarCookieBtn.src = "/assets/icons/action-bar/unjar-png.png";
+    unjarCookieBtn.style.height = "50px";
     actionCell.appendChild(unjarCookieBtn);
     unjarCookieBtn.addEventListener("click", async() => {
         await cookie.restore();
