@@ -3,7 +3,7 @@
     "description": "Cookie Jar",
     "version": "1.0",
     "manifest_version": 3,
-    "permissions": ["storage", "cookies"],
+    "permissions": ["storage", "cookies", "downloads"],
     "host_permissions": ["<all_urls>"],
     "action": {
         "default_popup": "html/popup.html"
