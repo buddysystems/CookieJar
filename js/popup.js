@@ -29,14 +29,14 @@ window.onload = async function () {
 
 async function setCookieTableRowData(tableRow, cookie) {
     // Update table based on cookie fields
-    const truncatedName = truncateString(cookie.name, 40);
-    const truncatedVal = truncateString(cookie.value, 15);
+    const truncatedName = truncateString(cookie.name, 35);
+    const truncatedVal = truncateString(cookie.value, 20);
     const truncatedUrl = truncateString(cookie.details.url, 20);
     tableRow.innerHTML = `<td>${truncatedName}</td> 
                 <td>${truncatedVal}</td>
-                <td>${truncatedUrl}</td>
-                <td>${cookie.secure}</td> 
-                <td>${cookie.sameSite}</td>`;
+                <td>${truncatedUrl}</td>`;
+    // <td>${cookie.secure}</td>
+    // <td>${cookie.sameSite}</td>`;
 
     // Dynamically give table select checkboxes
     const selectCell = document.createElement("td");
@@ -94,6 +94,12 @@ async function setCookieTableRowData(tableRow, cookie) {
         await setCookieTableRowData(tableRow, cookie);
     });
 
+    // Remove the jar/unjar button that doesn't belong
+    if (cookie.isStored) {
+        jarCookieBtn.remove();
+    } else {
+        unjarCookieBtn.remove();
+    }
     const infoCookieBtn = document.createElement("img");
     infoCookieBtn.src = "/assets/icons/action-bar/info-icon.png";
     infoCookieBtn.style.height = "3em";
@@ -149,6 +155,26 @@ async function displayActiveTab() {
     clearCookieTable();
     populateCookieTable(chromeCookies);
     activeBtn.className += " active";
+}
+
+async function importJsonToJar(jsonJar) {
+    for (cookieJson in jsonJar) {
+        const cookie = {
+            domain: cookieJson.domain,
+            expirationDate: cookieJson.expirationDate,
+            hostOnly: cookieJson.hostOnly,
+            httpOnly: cookieJson.httpOnly,
+            name: cookieJson.name,
+            path: cookieJson.path,
+            sameSite: cookie.sameSite,
+            secure: cookie.secure,
+            session: cookie.session,
+            storeId: cookie.storeId,
+            value: cookie.value,
+        };
+        const jarCookie = new JarCookie(cookie);
+        await jarCookie.store();
+    }
 }
 
 async function downloadCookiesAsJSON() {

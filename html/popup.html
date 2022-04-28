@@ -1,133 +1,127 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>CookieJar</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="../css/popup.css" />
-    </head>
 
-    <body>
-        <div class="popup">
-            <div class="popup-head">
-                <div class="title">The Cookie Jar</div>
-                <div class="description">
-                    Manage and hide your cookies from your browser
-                </div>
-            </div>
-            <h3 id="loadingIndicator" class="hidden">Loading...</h3>
-            <div class="tab">
-                <button id="active-btn" class="tablinks">Active</button>
-                <button id="jar-btn" class="tablinks">Jar</button>
-                <div class="right-tab">
-                    <button id="delete-all-btn" class="tablinks">
-                        Delete All
-                    </button>
-                    <button id="store-all-btn" class="tablinks">Jar All</button>
-                    <button id="unstore-all-btn" class="tablinks">
-                        UnJar All
-                    </button>
-                </div>
-            </div>
-            <table class="tb" id="cookieTable">
-                <tr id="first-row">
-                    <th id="select-all">
-                        <input type="checkbox" id="all-checkbox" />
-                    </th>
-                    <th>Actions</th>
-                    <th>Name</th>
-                    <th>Value</th>
-                    <th>URL</th>
-                    <th>Secure</th>
-                    <th>sameSite</th>
-                </tr>
-                <tr id="filler-row"></tr>
-            </table>
-            <div class="edit-view hidden" id="edit-view">
-                <table class="tb" id="edit-cookie-table">
-                    <tr class="first-row">
-                        <th>
-                            <div class="edit-actions-header">
-                                <button id="save-edited-cookie-btn">
-                                    Save
-                                </button>
-                            </div>
-                        </th>
-                    </tr>
-                    <tr class="filler-row"></tr>
-                    <tr>
-                        <td>name</td>
-                        <td>
-                            <input type="text" id="edit-name-input" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>domain</td>
-                        <td>
-                            <input type="text" id="edit-domain-input" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>value</td>
-                        <td>
-                            <input type="text" id="edit-value-input" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>expirationDate</td>
-                        <td>
-                            <input type="text" id="edit-expirationDate-input" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>hostOnly</td>
-                        <td>
-                            <input type="text" id="edit-hostOnly-input" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>httpOnly</td>
-                        <td>
-                            <input type="text" id="edit-httpOnly-input" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>path</td>
-                        <td>
-                            <input type="text" id="edit-path-input" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>sameSite</td>
-                        <td>
-                            <input type="text" id="edit-sameSite-input" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>secure</td>
-                        <td>
-                            <input type="text" id="edit-secure-input" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>session</td>
-                        <td>
-                            <input type="text" id="edit-session-input" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>storeId</td>
-                        <td>
-                            <input type="text" id="edit-storeId-input" />
-                        </td>
-                    </tr>
-                </table>
-                <h1>edit view test</h1>
-                <button id="close-edit-view">close edit view</button>
+<head>
+    <title>CookieJar</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/popup.css" />
+</head>
+
+<body>
+    <div class="popup">
+        <div class="popup-head">
+            <div class="title">The Cookie Jar</div>
+            <div class="description">
+                Manage and hide your cookies from your browser
             </div>
         </div>
-        <script src="../js/helpers.js"></script>
-        <script src="../js/cookie-store.js"></script>
-        <script src="../js/popup.js"></script>
-    </body>
+        <h3 id="loadingIndicator" class="hidden">Loading...</h3>
+        <div class="right-tab">
+            <button id="delete-all-btn" class="tablinks">Delete All</button>
+            <button id="store-all-btn" class="tablinks">Jar All</button>
+            <button id="unstore-all-btn" class="tablinks">UnJar All</button>
+        </div>
+        <div class="tab">
+            <button id="active-btn" class="tablinks">Active</button>
+            <button id="jar-btn" class="tablinks">Jar</button>
+        </div>
+        <table class="tb" id="cookieTable">
+            <tr id="first-row">
+                <th id="select-all">
+                    <input type="checkbox" id="all-checkbox">
+                </th>
+                <th>Actions</th>
+                <th>Name</th>
+                <th>Value</th>
+                <th>URL</th>
+            </tr>
+            <tr id="filler-row"></tr>
+        </table>
+        <div class="edit-view hidden" id="test-edit-view">
+            <table class="tb" id="edit-cookie-table">
+                <tr class="first-row">
+                    <th>
+                        <div class="edit-actions-header">
+                            <button>Save</button>
+                        </div>
+                    </th>
+                </tr>
+                <tr class="filler-row"></tr>
+                <tr>
+                    <td>name</td>
+                    <td>
+                        <input type="text" id="edit-name-input" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>domain</td>
+                    <td>
+                        <input type="text" id="edit-domain-input" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <input type="text" id="edit-value-input" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>expirationDate</td>
+                    <td>
+                        <input type="text" id="edit-expirationDate-input" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>hostOnly</td>
+                    <td>
+                        <input type="text" id="edit-hostOnly-input" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>httpOnly</td>
+                    <td>
+                        <input type="text" id="edit-httpOnly-input" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>path</td>
+                    <td>
+                        <input type="text" id="edit-path-input" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>sameSite</td>
+                    <td>
+                        <input type="text" id="edit-sameSite-input" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>secure</td>
+                    <td>
+                        <input type="text" id="edit-secure-input" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>session</td>
+                    <td>
+                        <input type="text" id="edit-session-input" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>storeId</td>
+                    <td>
+                        <input type="text" id="edit-storeId-input" />
+                    </td>
+                </tr>
+            </table>
+            <h1>edit view test</h1>
+            <button id="close-edit-view">close edit view</button>
+        </div>
+    </div>
+    <script src="../js/helpers.js"></script>
+    <script src="../js/cookie-store.js"></script>
+    <script src="../js/popup.js"></script>
+</body>
+
 </html>
