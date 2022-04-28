@@ -136,6 +136,16 @@ tr {
     /* Could be more or less, depending on screen size */
 }
 
+th:nth-child(1){
+    width: 1vw;
+    align-items: center;
+}
+
+td:nth-child(1){
+    width: 1vw;
+    align-items: center;
+}
+
 .edit-actions-header {}
 
 #edit-cookie-table tbody {
