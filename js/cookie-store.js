@@ -23,6 +23,21 @@ class JarCookie {
         this.isSelected = isSelected;
     }
 
+    /**
+     * @param {{name: str, storeId: number, url: str}} previousCookieDetails The details used to identify the cookie to be updated
+     */
+    async updateCookie(previousCookieDetails) {
+        if (this.isStored) {
+            // Is in cookie jar, need to update in local storage
+            await cookieJar.removeCookie(previousCookieDetails);
+            await cookieJar.addCookie(this);
+        } else {
+            // Is in browser cookies
+            await chromeCookieStore.removeCookie(previousCookieDetails);
+            await chromeCookieStore.addCookie(this);
+        }
+    }
+
     async store() {
         // Don't store the cookie if its already stored
         if (this.isStored) return;
@@ -81,9 +96,9 @@ class CookieJar {
 
     async restoreAllCookies() {
         // Stores all of the cookies by looping through cookies in the storage (Jar) to restore each then (Unjar) remove them from the storage.
-        for (cookies in this.getJarCookies){
-            cookie.restore()
-            this.removeCookie(cookie.cookieDetails)
+        for (cookies in this.getJarCookies) {
+            cookie.restore();
+            this.removeCookie(cookie.cookieDetails);
         }
     }
 
@@ -152,9 +167,9 @@ class ChromeCookieStore {
 
     async storeAllCookies() {
         // Stores all of the cookies by looping through cookies in the browser to store each then remove them from the browser.
-        for (cookies in this.getChromeCookies){
-            cookie.store()
-            this.removeCookie(cookie.cookieDetails)
+        for (cookies in this.getChromeCookies) {
+            cookie.store();
+            this.removeCookie(cookie.cookieDetails);
         }
     }
 

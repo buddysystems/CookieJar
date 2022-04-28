@@ -23,8 +23,6 @@ function removeLoadingIndicator() {
 }
 
 window.onload = async function() {
-    const chromeCookies = await chromeCookieStore.getChromeCookies();
-
     await ensureCookieJarStorageCreated();
     await displayActiveTab();
 };
@@ -41,8 +39,8 @@ async function setCookieTableRowData(tableRow, cookie) {
                 <td>${cookie.sameSite}</td>`;
 
     // Dynamically give table select checkboxes
-    selectCell = document.createElement("td");
-    selectCheck = document.createElement("input");
+    const selectCell = document.createElement("td");
+    const selectCheck = document.createElement("input");
     selectCheck.type = "checkbox";
     selectCheck.name = cookie.truncatedName;
     selectCheck.id = cookie.storeId;
@@ -54,8 +52,8 @@ async function setCookieTableRowData(tableRow, cookie) {
     selectCell.appendChild(selectCheck);
 
     // Dynamically give table store button
-    storeCell = document.createElement("td");
-    storeBtn = document.createElement("button");
+    const storeCell = document.createElement("td");
+    const storeBtn = document.createElement("button");
     storeBtn.innerHTML = "Store";
     storeBtn.disabled = cookie.isStored;
     storeBtn.addEventListener("click", async() => {
@@ -65,8 +63,8 @@ async function setCookieTableRowData(tableRow, cookie) {
     storeCell.appendChild(storeBtn);
 
     // Dynamically give table unstore button
-    restoreCell = document.createElement("td");
-    restoreBtn = document.createElement("button");
+    const restoreCell = document.createElement("td");
+    const restoreBtn = document.createElement("button");
     restoreBtn.innerHTML = "Restore";
     restoreBtn.disabled = !cookie.isStored;
     restoreBtn.addEventListener("click", async() => {
@@ -76,20 +74,36 @@ async function setCookieTableRowData(tableRow, cookie) {
     restoreCell.appendChild(restoreBtn);
 
     // Dynamically give table actions
-    imgCell = document.createElement("td");
-    imgBtn = document.createElement("img");
-    imgBtn.src = '/assets/icons/cookie-48.png'
-    imgCell.appendChild(imgBtn)
-    imgBtn.addEventListener("click", async() => {
+    const actionCell = document.createElement("td");
+    const jarCookieBtn = document.createElement("img");
+    jarCookieBtn.src = "/assets/icons/action-bar/jar-icon.png";
+    jarCookieBtn.style.height = "50px";
+    actionCell.appendChild(jarCookieBtn);
+    jarCookieBtn.addEventListener("click", async() => {
         await cookie.store();
         await setCookieTableRowData(tableRow, cookie);
     });
 
+    const unjarCookieBtn = document.createElement("img");
+    unjarCookieBtn.src = "/assets/icons/action-bar/unjar-png.png";
+    unjarCookieBtn.style.height = "50px";
+    actionCell.appendChild(unjarCookieBtn);
+    unjarCookieBtn.addEventListener("click", async() => {
+        await cookie.restore();
+        await setCookieTableRowData(tableRow, cookie);
+    });
+
+    const editCookieBtn = document.createElement("button");
+    editCookieBtn.innerHTML = "Test edit btn";
+    editCookieBtn.addEventListener("click", async() => {
+        await switchToEditView(cookie);
+    });
+    actionCell.appendChild(editCookieBtn);
 
     // Prepend adds element to beginning
     // tableRow.prepend(restoreCell);
     // tableRow.prepend(storeCell);
-    tableRow.prepend(imgCell)
+    tableRow.prepend(actionCell);
     tableRow.prepend(selectCell);
 }
 
@@ -107,7 +121,7 @@ async function populateCookieTable(cookies) {
     showLoadingIndicator();
 
     // turned cookies into a parameter
-    // const cookies = await getCookies(); 
+    // const cookies = await getCookies();
     const sortedCookies = cookies.sort((a, b) =>
         alphabeticalComparison(a.name, b.name)
     );
@@ -122,10 +136,10 @@ async function populateCookieTable(cookies) {
 }
 
 async function displayActiveTab() {
-    resetActiveTab()
+    resetActiveTab();
     const chromeCookies = await chromeCookieStore.getChromeCookies();
-    clearCookieTable()
-    populateCookieTable(chromeCookies)
+    clearCookieTable();
+    populateCookieTable(chromeCookies);
     activeBtn.className += " active";
 }
 
@@ -164,16 +178,16 @@ async function downloadCookiesAsJSON() {
 }
 
 async function displayJarTab() {
-    resetActiveTab()
+    resetActiveTab();
     const jarCookies = await cookieJar.getJarCookies();
-    clearCookieTable()
-    populateCookieTable(jarCookies)
+    clearCookieTable();
+    populateCookieTable(jarCookies);
     jarBtn.className += " active";
 }
 
 async function resetActiveTab() {
-    activeBtn.className = "tablinks"
-    jarBtn.className = "tablinks"
+    activeBtn.className = "tablinks";
+    jarBtn.className = "tablinks";
 }
 
 function clearCookieTable() {
@@ -183,22 +197,81 @@ function clearCookieTable() {
     for (i = displayedCookies.length - 1; i >= 0; i--) {
         displayedCookies[i].remove();
     }
-    console.log('page should be cleared!')
+    console.log("page should be cleared!");
 }
 
 async function deleteAllCookies() {
-    chromeCookieStore.removeAllCookies()
-    cookieJar.removeAllCookies()
+    chromeCookieStore.removeAllCookies();
+    cookieJar.removeAllCookies();
 }
 
-// Edit View Button workings
+// Edit cookie view
+const editNameInput = document.getElementById("edit-name-input");
+const editDomainInput = document.getElementById("edit-domain-input");
+const editValueInput = document.getElementById("edit-value-input");
+const editExpirationDateInput = document.getElementById(
+    "edit-expirationDate-input"
+);
+const editHostOnlyInput = document.getElementById("edit-hostOnly-input");
+const editHttpOnlyInput = document.getElementById("edit-httpOnly-input");
+const editPathInput = document.getElementById("edit-path-input");
+const editSameSiteInput = document.getElementById("edit-sameSite-input");
+const editSecureInput = document.getElementById("edit-secure-input");
+const editSessionInput = document.getElementById("edit-session-input");
+const editStoreIdInput = document.getElementById("edit-storeId-input");
 
-const editView = document.getElementById("test-edit-view");
+function populateEditCookieView(cookieBeingEdited) {
+    editNameInput.value = cookieBeingEdited.name;
+    editDomainInput.value = cookieBeingEdited.domain;
+    editValueInput.value = cookieBeingEdited.value;
+    editExpirationDateInput.value = cookieBeingEdited.expirationDate;
+    editHostOnlyInput.value = cookieBeingEdited.expirationDate;
+    editHttpOnlyInput.value = cookieBeingEdited.httpOnly;
+    editPathInput.value = cookieBeingEdited.path;
+    editSameSiteInput.value = cookieBeingEdited.sameSite;
+    editSecureInput.value = cookieBeingEdited.secure;
+    editSessionInput.value = cookieBeingEdited.session;
+    editStoreIdInput.value = cookieBeingEdited.storeId;
+}
+
+function castToBoolean(str) {
+    return str === "true";
+}
+
+async function saveEditedCookie(cookieBeingEdited) {
+    const previousCookieDetails = {
+        name: cookieBeingEdited.name,
+        storeId: cookieBeingEdited.storeId,
+        url: cookieBeingEdited.details.url,
+    };
+    cookieBeingEdited.name = editNameInput.value;
+    cookieBeingEdited.domain = editDomainInput.value;
+    cookieBeingEdited.value = editValueInput.value;
+    cookieBeingEdited.expirationDate = editExpirationDateInput.value;
+    cookieBeingEdited.hostOnly = editHostOnlyInput.value;
+    cookieBeingEdited.httpOnly = castToBoolean(editHttpOnlyInput.value);
+    cookieBeingEdited.path = editPathInput.value;
+    cookieBeingEdited.sameSite = editSameSiteInput.value;
+    cookieBeingEdited.secure = castToBoolean(editSecureInput.value);
+    cookieBeingEdited.session = castToBoolean(editSessionInput.value);
+    cookieBeingEdited.storeId = editStoreIdInput.value;
+    await cookieBeingEdited.updateCookie(previousCookieDetails);
+}
+
+const editView = document.getElementById("edit-view");
 
 // Changes the view to allow the user to change information about the cookies
 async function switchToEditView(cookieBeingEdited) {
-    console.log(`Cookie being edited: ${cookieBeingEdited}`);
+    // Remove all event listeners
+    let oldElement = document.getElementById("save-edited-cookie-btn");
+    let saveEditedCookieBtn = oldElement.cloneNode(true);
+    oldElement.parentNode.replaceChild(saveEditedCookieBtn, oldElement);
+
     cookieTable.classList.add("hidden");
+    populateEditCookieView(cookieBeingEdited);
+    saveEditedCookieBtn.addEventListener("click", async() =>
+        saveEditedCookie(cookieBeingEdited)
+    );
     editView.classList.remove("hidden");
 }
 
@@ -209,11 +282,6 @@ async function switchToTableView() {
 }
 
 // Event listeners for the cookie menu
-const testEditButton = document.getElementById("test-edit-button");
-testEditButton.addEventListener(
-    "click",
-    async() => await switchToEditView(null)
-);
 
 const closeEditView = document.getElementById("close-edit-view");
 closeEditView.addEventListener("click", switchToTableView);
