@@ -75,9 +75,10 @@ async function setCookieTableRowData(tableRow, cookie) {
 
     // Dynamically give table actions
     const actionCell = document.createElement("td");
+    actionCell.classList = 'action';
     const jarCookieBtn = document.createElement("img");
     jarCookieBtn.src = "/assets/icons/action-bar/jar-icon.png";
-    jarCookieBtn.style.height = "50px";
+    jarCookieBtn.style.height = "3em";
     actionCell.appendChild(jarCookieBtn);
     jarCookieBtn.addEventListener("click", async() => {
         await cookie.store();
@@ -86,19 +87,31 @@ async function setCookieTableRowData(tableRow, cookie) {
 
     const unjarCookieBtn = document.createElement("img");
     unjarCookieBtn.src = "/assets/icons/action-bar/unjar-png.png";
-    unjarCookieBtn.style.height = "50px";
+    unjarCookieBtn.style.height = "3em";
     actionCell.appendChild(unjarCookieBtn);
     unjarCookieBtn.addEventListener("click", async() => {
         await cookie.restore();
         await setCookieTableRowData(tableRow, cookie);
     });
 
-    const editCookieBtn = document.createElement("button");
-    editCookieBtn.innerHTML = "Test edit btn";
+    const infoCookieBtn = document.createElement("img");
+    infoCookieBtn.src = "/assets/icons/action-bar/info-icon.png";
+    infoCookieBtn.style.height = "3em";
+    actionCell.appendChild(infoCookieBtn);
+    infoCookieBtn.addEventListener("click", async() => {
+        // Build info here
+    });
+
+    const editCookieBtn = document.createElement("img");
+    editCookieBtn.src = "/assets/icons/action-bar/edit-icon.png";
+    editCookieBtn.style.height = "3em";
+    actionCell.appendChild(editCookieBtn);
     editCookieBtn.addEventListener("click", async() => {
         await switchToEditView(cookie);
     });
     actionCell.appendChild(editCookieBtn);
+
+
 
     // Prepend adds element to beginning
     // tableRow.prepend(restoreCell);
