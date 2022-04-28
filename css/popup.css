@@ -140,10 +140,9 @@ tr {
     /* Could be more or less, depending on screen size */
 }
 
-
-/* .action {
-    width: 20em;
-} */
+.action {
+    display: flex;
+}
 
 th:nth-child(1) {
     width: 1vw;

@@ -29,14 +29,14 @@ window.onload = async function() {
 
 async function setCookieTableRowData(tableRow, cookie) {
     // Update table based on cookie fields
-    const truncatedName = truncateString(cookie.name, 40);
-    const truncatedVal = truncateString(cookie.value, 15);
+    const truncatedName = truncateString(cookie.name, 35);
+    const truncatedVal = truncateString(cookie.value, 20);
     const truncatedUrl = truncateString(cookie.details.url, 20);
     tableRow.innerHTML = `<td>${truncatedName}</td> 
                 <td>${truncatedVal}</td>
-                <td>${truncatedUrl}</td>
-                <td>${cookie.secure}</td> 
-                <td>${cookie.sameSite}</td>`;
+                <td>${truncatedUrl}</td>`;
+    // <td>${cookie.secure}</td> 
+    // <td>${cookie.sameSite}</td>`;
 
     // Dynamically give table select checkboxes
     const selectCell = document.createElement("td");
@@ -159,32 +159,33 @@ async function displayActiveTab() {
 async function downloadCookiesAsJSON() {
     const chromeCookies = await chromeCookieStore.getChromeCookies();
     const dict = {}
-    for (i=0; i<chromeCookies.length; i++) {
+    for (i = 0; i < chromeCookies.length; i++) {
         const cookie = chromeCookies[i]
-        dict[i] = {"name" : cookie.name,
-        "domain": cookie.domain,
-        "storeId" : cookie.storeId,
-        "expirationDate " : cookie.expirationDate,
-        "hostOnly " : cookie.hostOnly,
-        "httpOnly " : cookie.httpOnly,
-        "path " : cookie.path,
-        "sameSite " : cookie.sameSite,
-        "secure " : cookie.secure,
-        "session " : cookie.session,
-        "value " : cookie.value,
-        "details " : {
-            name: cookie.name,
-            storeId: cookie.storeId,
-            url: getCookieUrl(this),
-        },
-        "isStored " : cookie.isStored,
-        "isSelected " : cookie.isSelected,
+        dict[i] = {
+            "name": cookie.name,
+            "domain": cookie.domain,
+            "storeId": cookie.storeId,
+            "expirationDate ": cookie.expirationDate,
+            "hostOnly ": cookie.hostOnly,
+            "httpOnly ": cookie.httpOnly,
+            "path ": cookie.path,
+            "sameSite ": cookie.sameSite,
+            "secure ": cookie.secure,
+            "session ": cookie.session,
+            "value ": cookie.value,
+            "details ": {
+                name: cookie.name,
+                storeId: cookie.storeId,
+                url: getCookieUrl(this),
+            },
+            "isStored ": cookie.isStored,
+            "isSelected ": cookie.isSelected,
         }
     }
-    const blob = new Blob([JSON.stringify(dict, null, 2)], {type : 'application/json'});
+    const blob = new Blob([JSON.stringify(dict, null, 2)], { type: 'application/json' });
     var url = URL.createObjectURL(blob);
     chrome.downloads.download({
-        url: url 
+        url: url
     });
 
 
