@@ -95,7 +95,7 @@ async function setCookieTableRowData(tableRow, cookie) {
     });
 
     // Remove the jar/unjar button that doesn't belong
-    if(cookie.isStored) {
+    if (cookie.isStored) {
         jarCookieBtn.remove()
     } else {
         unjarCookieBtn.remove()
@@ -108,7 +108,7 @@ async function setCookieTableRowData(tableRow, cookie) {
         // Build info here
     });
 
-    
+
 
     const editCookieBtn = document.createElement("img");
     editCookieBtn.src = "/assets/icons/action-bar/edit-icon.png";
