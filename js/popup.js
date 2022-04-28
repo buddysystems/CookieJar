@@ -114,8 +114,31 @@ async function setCookieTableRowData(tableRow, cookie) {
         await setCookieTableRowData(tableRow, cookie);
     });
 
+<<<<<<< HEAD
     const editCookieBtn = document.createElement("button");
     editCookieBtn.innerHTML = "Test edit btn";
+=======
+    // Remove the jar/unjar button that doesn't belong
+    if (cookie.isStored) {
+        jarCookieBtn.remove()
+    } else {
+        unjarCookieBtn.remove()
+    }
+    const infoCookieBtn = document.createElement("img");
+    infoCookieBtn.src = "/assets/icons/action-bar/info-icon.png";
+    infoCookieBtn.style.height = "3em";
+    actionCell.appendChild(infoCookieBtn);
+    infoCookieBtn.addEventListener("click", async() => {
+        // Build info here
+    });
+
+
+
+    const editCookieBtn = document.createElement("img");
+    editCookieBtn.src = "/assets/icons/action-bar/edit-icon.png";
+    editCookieBtn.style.height = "3em";
+    actionCell.appendChild(editCookieBtn);
+>>>>>>> 6108f97d34ed2f1c66d3cee51761d9d3e91aaca3
     editCookieBtn.addEventListener("click", async() => {
         await switchToEditView(cookie);
     });
