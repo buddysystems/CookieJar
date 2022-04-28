@@ -94,6 +94,12 @@ async function setCookieTableRowData(tableRow, cookie) {
         await setCookieTableRowData(tableRow, cookie);
     });
 
+    // Remove the jar/unjar button that doesn't belong
+    if(cookie.isStored) {
+        jarCookieBtn.remove()
+    } else {
+        unjarCookieBtn.remove()
+    }
     const infoCookieBtn = document.createElement("img");
     infoCookieBtn.src = "/assets/icons/action-bar/info-icon.png";
     infoCookieBtn.style.height = "3em";
@@ -101,6 +107,8 @@ async function setCookieTableRowData(tableRow, cookie) {
     infoCookieBtn.addEventListener("click", async() => {
         // Build info here
     });
+
+    
 
     const editCookieBtn = document.createElement("img");
     editCookieBtn.src = "/assets/icons/action-bar/edit-icon.png";
