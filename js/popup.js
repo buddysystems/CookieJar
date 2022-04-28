@@ -76,19 +76,26 @@ async function setCookieTableRowData(tableRow, cookie) {
     restoreCell.appendChild(restoreBtn);
 
     // Dynamically give table actions
-    const imgCell = document.createElement("td");
-    const imgBtn = document.createElement("img");
-    imgBtn.src = "/assets/icons/cookie-48.png";
-    imgCell.appendChild(imgBtn);
-    imgBtn.addEventListener("click", async () => {
+    const actionCell = document.createElement("td");
+    const storeCookieBtn = document.createElement("img");
+    storeCookieBtn.src = "/assets/icons/cookie-48.png";
+    actionCell.appendChild(storeCookieBtn);
+    storeCookieBtn.addEventListener("click", async () => {
         await cookie.store();
         await setCookieTableRowData(tableRow, cookie);
     });
 
+    const editCookieBtn = document.createElement("button");
+    editCookieBtn.innerHTML = "Test edit btn";
+    editCookieBtn.addEventListener("click", async () => {
+        await switchToEditView(cookie);
+    });
+    actionCell.appendChild(editCookieBtn);
+
     // Prepend adds element to beginning
     // tableRow.prepend(restoreCell);
     // tableRow.prepend(storeCell);
-    tableRow.prepend(imgCell);
+    tableRow.prepend(actionCell);
     tableRow.prepend(selectCell);
 }
 
@@ -158,7 +165,7 @@ async function deleteAllCookies() {
 
 // Edit View Button workings
 
-const editView = document.getElementById("test-edit-view");
+const editView = document.getElementById("edit-view");
 
 // Changes the view to allow the user to change information about the cookies
 async function switchToEditView(cookieBeingEdited) {
@@ -174,11 +181,6 @@ async function switchToTableView() {
 }
 
 // Event listeners for the cookie menu
-const testEditButton = document.getElementById("test-edit-button");
-testEditButton.addEventListener(
-    "click",
-    async () => await switchToEditView(null)
-);
 
 const closeEditView = document.getElementById("close-edit-view");
 closeEditView.addEventListener("click", switchToTableView);
