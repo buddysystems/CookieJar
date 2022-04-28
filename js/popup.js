@@ -2,9 +2,15 @@ const cookieTable = document.getElementById("cookieTable");
 const loadingIndicator = document.getElementById("loadingIndicator");
 const activeBtn = document.getElementById("active-btn");
 const jarBtn = document.getElementById("jar-btn");
+const deleteAllBtn = document.getElementById("delete-all-btn");
+const jarAllBtn = document.getElementById("store-all-btn");
+const unjarAllBtn = document.getElementById("unstore-all-btn");
 
 activeBtn.addEventListener("click", () => displayActiveTab());
 jarBtn.addEventListener("click", () => displayJarTab());
+deleteAllBtn.addEventListener("click", () => deleteAllCookies());
+jarAllBtn.addEventListener("click", () => chromeCookieStore.storeAllCookies());
+unjarAllBtn.addEventListener("click", () => cookieJar.restoreAllCookies());
 
 function showLoadingIndicator() {
     cookieTable.classList.add("hidden");
@@ -144,6 +150,11 @@ function clearCookieTable() {
         displayedCookies[i].remove();
     }
     console.log('page should be cleared!')
+}
+
+async function deleteAllCookies() {
+    chromeCookieStore.removeAllCookies()
+    cookieJar.removeAllCookies()
 }
 
 // Edit View Button workings

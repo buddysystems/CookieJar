@@ -145,6 +145,7 @@ class ChromeCookieStore {
     }
 
     async removeAllCookies(cookieDetails) {
+        // Aka 'Empty Jar'
         // Remove the cookies in the jar by setting the cookie jar to an empty list.
         await chrome.storage.local.set({ COOKIE_JAR: [] });
     }
