@@ -3,9 +3,16 @@
     --beige-dark: rgb(204, 184, 157);
     --border-gray: #e2e8f0;
     --font-black: rgb(26, 32, 44);
+    --font-gray: rgba(0, 0, 0, 0.48);
     --fonts-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
         Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol";
+
+    --m1: 5px;
+    --m2: 10px;
+    --m3: 16px;
+    --m4: 24px;
+    --m5: 32px;
 }
 
 body,
@@ -43,7 +50,7 @@ html {
 .view-tab {
     background-color: var(--beige-dark);
     padding: 0.5em;
-    margin: 0 5px;
+    margin: 0 var(--m1);
     flex-grow: 1;
     text-align: center;
 }
@@ -51,4 +58,69 @@ html {
 .view-tab:first-child,
 .view-tab:last-child {
     margin: 0;
+}
+
+.cookies-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+}
+
+.cookie-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.cookie-row > * {
+    margin-right: var(--m1);
+}
+
+.cookie-row-content {
+    flex-grow: 1;
+}
+
+.cookie-row-content:hover {
+    cursor: pointer;
+}
+
+.main-cookie-info .cookie-name {
+    font-weight: bold;
+}
+
+.main-cookie-info .cookie-domain {
+    color: var(--font-gray);
+    font-size: 0.8em;
+}
+
+.secondary-cookie-info {
+    font-size: 0.8em;
+}
+
+.cookie-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.cookie-actions-column {
+    display: flex;
+    flex-direction: column;
+    margin-right: var(--m2);
+}
+
+.cookie-edit-form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.cookie-edit-form > * {
+    margin-bottom: var(--m1);
+}
+
+.form-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

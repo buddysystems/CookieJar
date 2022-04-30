@@ -30,56 +30,61 @@
                 <span class="view-tab">Cookie Jar</span>
                 <span class="view-tab">Shelf (Import/Export)</span>
             </div>
-            <div id="active-cookies">
+            <div id="active-cookies" class="cookies-list">
                 <div class="cookie-row">
                     <input type="checkbox" />
-                    <div class="cookie-row-selector">
-                        <div class="main-cookie-info">
-                            <span class="cookie-name">COOKIE_NAME_HERE</span>
-                            <span class="cookie-domain"
-                                >(cookie.domain.com)</span
-                            >
+                    <span>v</span>
+                    <div
+                        class="cookie-row-content"
+                        id="TEST-cookie-row-content"
+                    >
+                        <div>
+                            <div class="main-cookie-info">
+                                <span class="cookie-name"
+                                    >COOKIE_NAME_HERE</span
+                                >
+                                <span class="cookie-domain"
+                                    >(cookie.domain.com)</span
+                                >
+                            </div>
+                            <div class="secondary-cookie-info">
+                                thecookievaluewillgohere
+                            </div>
                         </div>
-                        <div class="secondary-cookie-info">
-                            thecookievaluewillgohere
+                        <div class="cookie-info" id="TEST-cookie-info">
+                            <div class="cookie-actions-column">
+                                <button>Store cookie</button>
+                                <button>Delete cookie</button>
+                                <button>Quick export</button>
+                            </div>
+                            <form class="cookie-edit-form" onsubmit="">
+                                <label>Name</label>
+                                <input
+                                    type="text"
+                                    name=""
+                                    id=""
+                                    value="COOKIE_NAME_HERE"
+                                />
+                                <label>Value</label>
+                                <input
+                                    type="text"
+                                    name=""
+                                    id=""
+                                    value="thecookievaluewillgohere"
+                                />
+                                <code>other form fields go here...</code>
+                                <div class="form-actions">
+                                    <button>Cancel</button>
+                                    <button>Save</button>
+                                </div>
+                            </form>
                         </div>
-                    </div>
-                    <div class="cookie-data">
-                        <div class="cookie-actions-column">
-                            <button>Store cookie</button>
-                            <button>Delete cookie</button>
-                            <button>Quick export</button>
-                        </div>
-                        <form class="cookie-edit-form" onsubmit="">
-                            <label>Name</label>
-                            <input
-                                type="text"
-                                name=""
-                                id=""
-                                value="COOKIE_NAME_HERE"
-                            />
-                            <label>Value</label>
-                            <input
-                                type="text"
-                                name=""
-                                id=""
-                                value="thecookievaluewillgohere"
-                            />
-                            <code>other form fields go here...</code>
-                            <button>Cancel</button>
-                            <button>Save</button>
-                        </form>
                     </div>
                 </div>
-                <thead>
-                    <th><input type="checkbox" /></th>
-                    <th><button>Delete</button></th>
-                    <th><button>Place in jar</button></th>
-                    <th><button>Quick export</button></th>
-                </thead>
             </div>
         </div>
         <script src="../js/helpers.js"></script>
+        <script src="../js/cookie-row.js"></script>
         <script src="../js/cookie-store.js"></script>
         <script src="../js/popup.js"></script>
     </body>
