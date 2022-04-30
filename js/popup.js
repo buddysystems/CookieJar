@@ -157,6 +157,8 @@ async function displayActiveTab() {
     activeBtn.className += " active";
 }
 
+// import feature
+
 async function importJsonToJar(jsonJar) {
     for (cookieJson in jsonJar) {
         const cookie = {
@@ -177,12 +179,18 @@ async function importJsonToJar(jsonJar) {
     }
 }
 
+// export feature
+const exportCookieJarBtn = document.getElementById("export-cookie-jar-btn");
+exportCookieJarBtn.addEventListener("click", async () =>
+    downloadCookiesAsJSON()
+);
+
 async function downloadCookiesAsJSON() {
     const chromeCookies = await chromeCookieStore.getChromeCookies();
-    const dict = {};
+    const cookieList = [];
     for (i = 0; i < chromeCookies.length; i++) {
         const cookie = chromeCookies[i];
-        dict[i] = {
+        cookieList.push({
             name: cookie.name,
             domain: cookie.domain,
             storeId: cookie.storeId,
@@ -201,12 +209,13 @@ async function downloadCookiesAsJSON() {
             },
             "isStored ": cookie.isStored,
             "isSelected ": cookie.isSelected,
-        };
+        });
     }
-    const blob = new Blob([JSON.stringify(dict, null, 2)], {
+    const blob = new Blob([JSON.stringify(cookieList, null, 2)], {
         type: "application/json",
     });
     var url = URL.createObjectURL(blob);
+    console.dir(chrome);
     chrome.downloads.download({
         url: url,
     });
@@ -322,3 +331,18 @@ async function switchToTableView() {
 
 const closeEditView = document.getElementById("close-edit-view");
 closeEditView.addEventListener("click", switchToTableView);
+
+// Import cookie jar feature
+const jsonFileInput = document.getElementById("json-file-input");
+const reader = new FileReader();
+reader.onload = async function (e) {};
+async function importCookieJsonFile() {
+    console.log("reading json file...");
+    selectedJsonFile = jsonFileInput.files[0];
+    reader.readAsText(selectedJsonFile);
+}
+const importCookieJarBtn = document.getElementById("import-cookies-btn");
+importCookieJarBtn.addEventListener(
+    "click",
+    async () => await importCookieJsonFile()
+);
