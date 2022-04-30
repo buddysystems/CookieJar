@@ -8,8 +8,8 @@
     "action": {
         "default_popup": "html/popup.html"
     },
-    "icons": { 
+    "icons": {
         "48": "assets/icons/cookie-48.png",
-       "128": "assets/icons/cookie-128.png"
+        "128": "assets/icons/cookie-128.png"
     }
 }
