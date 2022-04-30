@@ -64,6 +64,7 @@ html {
     display: flex;
     flex-direction: column;
     margin-top: 0.5em;
+    overflow-y: auto;
 }
 
 .cookie-row {
@@ -100,12 +101,23 @@ html {
 .cookie-info {
     display: flex;
     flex-direction: row;
+    margin-top: var(--m2);
 }
 
 .cookie-actions-column {
     display: flex;
     flex-direction: column;
     margin-right: var(--m2);
+}
+
+.cookie-actions-column .action-icon {
+    width: 32px;
+    object-fit: cover;
+    margin-left: -5px;
+}
+
+.cookie-actions-column .action-icon:hover {
+    cursor: pointer;
 }
 
 .cookie-edit-form {

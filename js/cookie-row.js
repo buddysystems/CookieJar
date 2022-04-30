@@ -4,7 +4,7 @@ const cookieInfo = document.getElementById("TEST-cookie-info");
 cookieRowContent.addEventListener("click", () => {
     console.log("cookie row clicked");
     if (cookieInfo.style.display == "none") {
-        cookieInfo.style.display = "flex";
+        cookieInfo.style.display = "block";
     } else {
         cookieInfo.style.display = "none";
     }

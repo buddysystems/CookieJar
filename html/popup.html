@@ -34,12 +34,12 @@
                 <div class="cookie-row">
                     <input type="checkbox" />
                     <span>v</span>
-                    <div
-                        class="cookie-row-content"
-                        id="TEST-cookie-row-content"
-                    >
+                    <div class="cookie-row-content">
                         <div>
-                            <div class="main-cookie-info">
+                            <div
+                                class="main-cookie-info"
+                                id="TEST-cookie-row-content"
+                            >
                                 <span class="cookie-name"
                                     >COOKIE_NAME_HERE</span
                                 >
@@ -53,9 +53,14 @@
                         </div>
                         <div class="cookie-info" id="TEST-cookie-info">
                             <div class="cookie-actions-column">
-                                <button>Store cookie</button>
-                                <button>Delete cookie</button>
-                                <button>Quick export</button>
+                                <img
+                                    src="/assets/icons/action-bar/jar-icon.png"
+                                    class="action-icon"
+                                />
+                                <img
+                                    src="/assets/icons/action-bar/trash-icon.png"
+                                    class="action-icon"
+                                />
                             </div>
                             <form class="cookie-edit-form" onsubmit="">
                                 <label>Name</label>
@@ -68,8 +73,6 @@
                                 <label>Value</label>
                                 <input
                                     type="text"
-                                    name=""
-                                    id=""
                                     value="thecookievaluewillgohere"
                                 />
                                 <code>other form fields go here...</code>
