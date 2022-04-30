@@ -26,13 +26,41 @@
                 <button>Search</button>
             </div>
             <div class="view-tabs">
-                <span class="view-tab">Active Cookies</span>
+                <span
+                    class="view-tab"
+                    style="text-decoration: underline; font-weight: bold"
+                    >Active Cookies</span
+                >
                 <span class="view-tab">Cookie Jar</span>
                 <span class="view-tab">Shelf (Import/Export)</span>
             </div>
+
+            <div class="horizontal-line-break"></div>
+
             <div id="active-cookies" class="cookies-list">
+                <div class="bulk-row">
+                    <input type="checkbox" class="cookie-row-selector" />
+                    <div class="action-button">
+                        <span>Jar selected</span>
+                        <img
+                            src="/assets/icons/action-bar/jar-icon.png"
+                            class="action-icon"
+                        />
+                    </div>
+                    <div class="action-button">
+                        <span>Delete selected</span>
+
+                        <img
+                            src="/assets/icons/action-bar/trash-icon.png"
+                            class="action-icon"
+                        />
+                    </div>
+                    <div class="action-button">
+                        <span>Export selected</span>
+                    </div>
+                </div>
                 <div class="cookie-row">
-                    <input type="checkbox" />
+                    <input type="checkbox" class="cookie-row-selector" />
                     <span>v</span>
                     <div class="cookie-row-content">
                         <div>

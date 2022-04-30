@@ -1,9 +1,11 @@
 :root {
     --beige: rgb(240, 231, 219);
     --beige-dark: rgb(204, 184, 157);
-    --border-gray: #e2e8f0;
+    --beige-dark: rgb(228, 213, 193);
+    --offwhite: rgb(243, 239, 235);
     --font-black: rgb(26, 32, 44);
     --font-gray: rgba(0, 0, 0, 0.48);
+    --border-gray: rgba(0, 0, 0, 0.215);
     --fonts-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
         Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol";
@@ -65,6 +67,30 @@ html {
     flex-direction: column;
     margin-top: 0.5em;
     overflow-y: auto;
+}
+
+.bulk-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--m2);
+}
+
+.bulk-row .action-button {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    margin-right: var(--m3);
+}
+
+.bulk-row .action-button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.bulk-row .action-icon {
+    width: 24px;
+    object-fit: cover;
 }
 
 .cookie-row {
@@ -135,4 +161,13 @@ html {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.cookie-row-selector {
+    margin-right: var(--m2);
+}
+
+.horizontal-line-break {
+    border: 0.5px solid var(--border-gray);
+    margin: var(--m2) 0;
 }
