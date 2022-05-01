@@ -10,6 +10,11 @@
 
     <body>
         <div class="main-layout">
+            <div class="view-tabs">
+                <span class="view-tab active-tab">Active Cookies</span>
+                <span class="view-tab">Cookie Jar</span>
+                <span class="view-tab">Shelf (Import/Export)</span>
+            </div>
             <div class="cookie-filters">
                 <div class="search">
                     <input
@@ -25,17 +30,6 @@
                 </select>
                 <button>Search</button>
             </div>
-            <div class="view-tabs">
-                <span
-                    class="view-tab"
-                    style="text-decoration: underline; font-weight: bold"
-                    >Active Cookies</span
-                >
-                <span class="view-tab">Cookie Jar</span>
-                <span class="view-tab">Shelf (Import/Export)</span>
-            </div>
-
-            <div class="horizontal-line-break"></div>
 
             <div id="active-cookies" class="cookies-list">
                 <div class="bulk-row">
@@ -59,10 +53,15 @@
                         <span>Export selected</span>
                     </div>
                 </div>
+                <!-- <hr class="horizontal-line-break" /> -->
                 <div class="cookie-row">
-                    <input type="checkbox" class="cookie-row-selector" />
-                    <span>v</span>
-                    <div class="cookie-row-content">
+                    <div class="accordian-header" id="TEST-cookie-row-header">
+                        <input type="checkbox" class="cookie-row-selector" />
+                        <img
+                            src="/assets/caret-right.png"
+                            class="caret"
+                            id="TEST-caret"
+                        />
                         <div>
                             <div
                                 class="main-cookie-info"
@@ -79,36 +78,78 @@
                                 thecookievaluewillgohere
                             </div>
                         </div>
-                        <div class="cookie-info" id="TEST-cookie-info">
-                            <div class="cookie-actions-column">
-                                <img
-                                    src="/assets/icons/action-bar/jar-icon.png"
-                                    class="action-icon"
-                                />
-                                <img
-                                    src="/assets/icons/action-bar/trash-icon.png"
-                                    class="action-icon"
-                                />
-                            </div>
-                            <form class="cookie-edit-form" onsubmit="">
-                                <label>Name</label>
-                                <input
-                                    type="text"
-                                    name=""
-                                    id=""
-                                    value="COOKIE_NAME_HERE"
-                                />
-                                <label>Value</label>
-                                <input
-                                    type="text"
-                                    value="thecookievaluewillgohere"
-                                />
-                                <code>other form fields go here...</code>
-                                <div class="form-actions">
-                                    <button>Cancel</button>
-                                    <button>Save</button>
+                    </div>
+                    <div class="cookie-row-content">
+                        <div id="TEST-cookie-info">
+                            <div class="cookie-info">
+                                <div class="cookie-actions-column">
+                                    <img
+                                        src="/assets/icons/action-bar/jar-icon.png"
+                                        class="action-icon"
+                                    />
+                                    <img
+                                        src="/assets/icons/action-bar/trash-icon.png"
+                                        class="action-icon"
+                                    />
                                 </div>
-                            </form>
+                                <form class="cookie-edit-form" onsubmit="">
+                                    <span class="cookie-value">Name</span>
+                                    <label>Name</label>
+                                    <input
+                                        type="text"
+                                        name=""
+                                        id=""
+                                        value="COOKIE_NAME_HERE"
+                                    />
+                                    <label>Value</label>
+                                    <input
+                                        type="text"
+                                        value="thecookievaluewillgohere"
+                                    />
+                                    <label>Domain</label>
+                                    <input
+                                        type="text"
+                                        value="cookie.domain.com"
+                                    />
+                                    <label>Path</label>
+                                    <input type="text" value="/" />
+                                    <label>Expiration</label>
+                                    <input
+                                        type="datetime"
+                                        value="Sun May 01 2022 00:46:30 GMT-0500 (Central Daylight Time)"
+                                    />
+                                    <label>SameSite</label>
+                                    <select name="same-site">
+                                        <option value="no-restriction">
+                                            No Restriction
+                                        </option>
+                                        <option value="lax">Lax</option>
+                                        <option value="strict">Strict</option>
+                                    </select>
+                                    <div class="cookie-bools">
+                                        <div>
+                                            <label>HostOnly</label>
+                                            <input type="checkbox" />
+                                        </div>
+                                        <div>
+                                            <label>HostOnly</label>
+                                            <input type="checkbox" />
+                                        </div>
+                                        <div>
+                                            <label>HostOnly</label>
+                                            <input type="checkbox" />
+                                        </div>
+                                        <div>
+                                            <label>HostOnly</label>
+                                            <input type="checkbox" />
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button>Cancel</button>
+                                        <button>Save</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

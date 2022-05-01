@@ -1,25 +1,25 @@
 :root {
-    --beige: rgb(240, 231, 219);
+    --beige: rgb(228, 213, 193);
+    --beige-light: rgb(240, 231, 219);
     --beige-dark: rgb(204, 184, 157);
-    --beige-dark: rgb(228, 213, 193);
     --offwhite: rgb(243, 239, 235);
     --font-black: rgb(26, 32, 44);
     --font-gray: rgba(0, 0, 0, 0.48);
     --border-gray: rgba(0, 0, 0, 0.215);
-    --fonts-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
-        Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-        "Segoe UI Symbol";
-
+    --border-gray-light: rgba(0, 0, 0, 0.11);
+    --fonts-body: Verdana, Geneva, sans-serif;
+    --font-size-small: 0.8em;
     --m1: 5px;
     --m2: 10px;
     --m3: 16px;
     --m4: 24px;
     --m5: 32px;
+    --outer-padding: 1em;
 }
 
 body,
 html {
-    background-color: var(--beige);
+    background-color: var(--beige-light);
     color: var(--font-black);
     font-family: var(--fonts-body);
 }
@@ -27,39 +27,53 @@ html {
 .main-layout {
     display: flex;
     flex-direction: column;
-    padding: 1rem;
-    width: 500px;
-}
-
-.cookie-filters {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 0.75em;
-}
-
-.search input {
-    min-width: 20em;
+    min-width: 500px;
+    width: 550px;
+    min-height: 300px;
 }
 
 .view-tabs {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-top: 0.5em;
+    background-color: var(--beige-dark);
 }
 
 .view-tab {
-    background-color: var(--beige-dark);
     padding: 0.5em;
     margin: 0 var(--m1);
     flex-grow: 1;
     text-align: center;
 }
 
+.view-tab:hover {
+    background-color: var(--beige);
+    cursor: pointer;
+}
+
+.active-tab,
+.active-tab:hover {
+    text-decoration: underline;
+    font-weight: bold;
+    background-color: var(--beige-light);
+}
+
 .view-tab:first-child,
 .view-tab:last-child {
     margin: 0;
+}
+
+.cookie-filters {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: var(--outer-padding);
+    margin-bottom: 0.75em;
+}
+
+.search input {
+    min-width: 20em;
 }
 
 .cookies-list {
@@ -73,7 +87,8 @@ html {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: var(--m2);
+    margin-bottom: var(--m1);
+    padding: var(--m1);
 }
 
 .bulk-row .action-button {
@@ -95,39 +110,57 @@ html {
 
 .cookie-row {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
-}
-
-.cookie-row > * {
-    margin-right: var(--m1);
 }
 
 .cookie-row-content {
     flex-grow: 1;
 }
 
-.cookie-row-content:hover {
+.accordian-header {
+    padding: var(--m1);
+    background-color: var(--beige);
+    border: 1px solid var(--border-gray);
+    display: flex;
+    flex-direction: row;
+}
+
+.accordian-header:hover {
     cursor: pointer;
+    border: 1px solid var(--border-gray-light);
+}
+
+.caret {
+    object-fit: cover;
+    height: 10px;
+    margin: var(--m1);
+}
+
+.main-cookie-info {
+    margin-bottom: var(--m1);
+    line-height: 16pt;
 }
 
 .main-cookie-info .cookie-name {
-    font-weight: bold;
+    font-size: 11pt;
 }
 
 .main-cookie-info .cookie-domain {
     color: var(--font-gray);
-    font-size: 0.8em;
+    font-size: var(--font-size-small);
 }
 
 .secondary-cookie-info {
-    font-size: 0.8em;
+    font-size: var(--font-size-small);
 }
 
 .cookie-info {
+    border: 1px solid var(--border-gray);
     display: flex;
     flex-direction: row;
-    margin-top: var(--m2);
+    padding: var(--m2);
+    background-color: var(--offwhite);
 }
 
 .cookie-actions-column {
@@ -140,6 +173,7 @@ html {
     width: 32px;
     object-fit: cover;
     margin-left: -5px;
+    margin-bottom: var(--m2);
 }
 
 .cookie-actions-column .action-icon:hover {
@@ -153,14 +187,31 @@ html {
     width: 100%;
 }
 
-.cookie-edit-form > * {
-    margin-bottom: var(--m1);
+.cookie-edit-form label {
+    font-size: var(--font-size-small);
+    line-height: 12pt;
+    margin-top: var(--m2);
+    margin-bottom: 3px;
+}
+
+.cookie-edit-form .cookie-bools {
+    margin: var(--m2) 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .form-actions {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: end;
+}
+
+.form-actions button {
+    min-width: 100px;
+    padding: 0.25em;
+    margin-left: var(--m2);
 }
 
 .cookie-row-selector {
@@ -169,5 +220,5 @@ html {
 
 .horizontal-line-break {
     border: 0.5px solid var(--border-gray);
-    margin: var(--m2) 0;
+    margin: 0 0 var(--m1) 0;
 }
