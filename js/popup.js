@@ -1,19 +1,27 @@
+const cookieJar = new CookieJar();
 const activeCookies = document.getElementById("active-cookies");
-for (let i = 0; i < 100; i++) {
-    const cookieRow = new CookieRow({
-        name: "TEST NAME",
-        value: "testvalueomgthisislong",
-        domain: "test.domain.com",
-        path: "/path",
-        expiration: "test expiration date",
-        sameSite: "Strict",
-        hostOnly: true,
-        session: false,
-        secure: true,
-        httpOnly: false,
-    });
-    activeCookies.appendChild(cookieRow.getHtmlElement());
-}
+
+(async () => {
+    const jarCookies = await cookieJar.getAllCookies();
+    for (const jarCookie of jarCookies) {
+        activeCookies.appendChild(new CookieRow(jarCookie).getHtmlElement());
+    }
+    // for (let i = 0; i < 100; i++) {
+    //     const cookieRow = new CookieRow({
+    //         name: "TEST NAME",
+    //         value: "testvalueomgthisislong",
+    //         domain: "test.domain.com",
+    //         path: "/path",
+    //         expiration: "test expiration date",
+    //         sameSite: "Strict",
+    //         hostOnly: true,
+    //         session: false,
+    //         secure: true,
+    //         httpOnly: false,
+    //     });
+    //     activeCookies.appendChild(cookieRow.getHtmlElement());
+    // }
+})();
 // const cookieTable = document.getElementById("cookieTable");
 // const loadingIndicator = document.getElementById("loadingIndicator");
 // const activeBtn = document.getElementById("active-btn");

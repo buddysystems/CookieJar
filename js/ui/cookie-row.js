@@ -48,7 +48,7 @@ class CookieRow extends UiElement {
         const secondaryCookieInfo = document.createElement("div");
         accordianInfoContainer.appendChild(secondaryCookieInfo);
         secondaryCookieInfo.classList.add("secondary-cookie-info");
-        secondaryCookieInfo.innerText = this.cookie.value;
+        secondaryCookieInfo.innerHTML = truncateString(this.cookie.value, 50);
 
         const cookieActions = document.createElement("div");
         accordianHeader.appendChild(cookieActions);
@@ -113,10 +113,8 @@ class CookieRowContent extends UiElement {
                 value="${this.cookie.name}"
             />
             <label>Value</label>
-            <input
-                type="text"
-                value="${this.cookie.value}"
-            />
+            <textarea cols="50" rows="5"
+            >${this.cookie.value}</textarea>
             <label>Domain</label>
             <input
                 type="text"

@@ -49,7 +49,8 @@ class CookieJar {
     /**
      * @returns Promise<JarCookie[]>
      */
-    async getJarCookies() {
+    async getAllCookies(details) {
+        // TODO: filter by details
         const stored = await chrome.storage.local.get(COOKIE_JAR);
         const cookies = stored.COOKIE_JAR;
 
@@ -58,9 +59,5 @@ class CookieJar {
             jarCookies.push(new JarCookie(c, true));
         }
         return jarCookies;
-    }
-
-    async getAllCookies(details) {
-        // TODO
     }
 }
