@@ -91,6 +91,13 @@ html {
     padding: var(--m1);
 }
 
+.bulk-actions {
+    display: flex;
+    flex-grow: 1;
+    justify-content: end;
+    font-size: var(--font-size-small);
+}
+
 .bulk-row .action-button {
     display: flex;
     flex-direction: row-reverse;
@@ -163,20 +170,23 @@ html {
     background-color: var(--offwhite);
 }
 
-.cookie-actions-column {
+.cookie-actions {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: end;
+    align-items: flex-start;
     margin-right: var(--m2);
 }
 
-.cookie-actions-column .action-icon {
+.cookie-actions .action-icon {
     width: 32px;
     object-fit: cover;
     margin-left: -5px;
     margin-bottom: var(--m2);
 }
 
-.cookie-actions-column .action-icon:hover {
+.cookie-actions .action-icon:hover {
     cursor: pointer;
 }
 
