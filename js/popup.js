@@ -9,15 +9,15 @@ window.onload = async function () {
         cookiesListContainer
     );
 
-    await popup.selectActiveTab();
+    await popup.selectJarTab();
 };
 
 class Popup {
     constructor(viewTabsContainer, loadingIndicator, cookiesListContainer) {
         this.viewTabs = new ViewTabs(
-            this.selectActiveTab,
-            this.selectJarTab,
-            this.selectShelfTab
+            async () => await this.selectActiveTab(),
+            async () => await this.selectJarTab(),
+            async () => await this.selectShelfTab()
         );
         viewTabsContainer.appendChild(this.viewTabs.getHtmlElement());
 
@@ -34,19 +34,43 @@ class Popup {
     }
 
     async selectActiveTab() {
+        this.clearCookiesList();
         this.showLoading();
+
         const activeCookies = await this.cookiesManager.getChromeCookies({});
         for (const jarCookie of activeCookies) {
-            this.cookiesListContainer.appendChild(
-                new CookieRow(jarCookie).getHtmlElement()
-            );
+            const cookieRow = new CookieRow(jarCookie).getHtmlElement();
+            this.addCookieRow(cookieRow);
         }
+
         this.hideLoading();
     }
 
-    async selectJarTab() {}
+    async selectJarTab() {
+        this.clearCookiesList();
+        this.showLoading();
+        const jarCookies = await this.cookiesManager.getJarredCookies({});
+        for (const jarCookie of jarCookies) {
+            const cookieRow = new CookieRow(jarCookie).getHtmlElement();
+            this.addCookieRow(cookieRow);
+        }
+
+        this.hideLoading();
+    }
 
     async selectShelfTab() {}
+
+    addCookieRow(cookieRow) {
+        this.cookiesListContainer.appendChild(cookieRow);
+    }
+
+    clearCookiesList() {
+        while (this.cookiesListContainer.firstChild) {
+            this.cookiesListContainer.removeChild(
+                this.cookiesListContainer.lastChild
+            );
+        }
+    }
 
     showLoading() {
         this.loadingIndicator.style.display = "flex";
