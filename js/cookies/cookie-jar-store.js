@@ -1,6 +1,10 @@
 const COOKIE_JAR = "COOKIE_JAR";
 
 class CookieJarStore {
+    constructor() {
+        ensureCookieJarStorageCreated();
+    }
+
     async addCookie(cookie) {
         const inJar = await this.getJarCookies();
         inJar.push(cookie);
