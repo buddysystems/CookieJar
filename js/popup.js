@@ -1,10 +1,19 @@
 const activeCookies = document.getElementById("active-cookies");
-const cookieRow = new CookieRow({
-    name: "TEST NAME",
-    domain: "test.domain.com",
-    value: "testvalueomgthisislong",
-});
-activeCookies.appendChild(cookieRow.getHtmlElement());
+for (let i = 0; i < 100; i++) {
+    const cookieRow = new CookieRow({
+        name: "TEST NAME",
+        value: "testvalueomgthisislong",
+        domain: "test.domain.com",
+        path: "/path",
+        expiration: "test expiration date",
+        sameSite: "Strict",
+        hostOnly: true,
+        session: false,
+        secure: true,
+        httpOnly: false,
+    });
+    activeCookies.appendChild(cookieRow.getHtmlElement());
+}
 // const cookieTable = document.getElementById("cookieTable");
 // const loadingIndicator = document.getElementById("loadingIndicator");
 // const activeBtn = document.getElementById("active-btn");

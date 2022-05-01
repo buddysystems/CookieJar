@@ -8,6 +8,8 @@
     --border-gray: rgba(0, 0, 0, 0.215);
     --border-gray-light: rgba(0, 0, 0, 0.11);
     --fonts-body: Verdana, Geneva, sans-serif;
+    --fonts-code: Courier New, Courier, Lucida Sans Typewriter,
+        Lucida Typewriter, monospace;
     --font-size-small: 0.8em;
     --m1: 5px;
     --m2: 10px;

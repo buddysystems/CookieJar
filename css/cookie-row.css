@@ -43,7 +43,8 @@
 }
 
 .secondary-cookie-info {
-    font-size: var(--font-size-small);
+    font-size: 10pt;
+    font-family: var(--fonts-code);
 }
 
 .cookie-info {

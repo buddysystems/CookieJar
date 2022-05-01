@@ -3,6 +3,7 @@ class CookieRow extends UiElement {
         super();
         this.cookie = jarCookie;
         this.createHtmlElement();
+        this.isOpen = false;
     }
 
     createHtmlElement() {
@@ -63,6 +64,12 @@ class CookieRow extends UiElement {
         trashIconImg.classList.add("action-icon");
         trashIconImg.src = "/assets/icons/action-bar/trash-icon.png";
 
+        // Cookie row content
+        const cookieRowContent = new CookieRowContent(this.cookie);
+        cookieRow.appendChild(cookieRowContent.getHtmlElement());
+        this.cookieRowContent = cookieRowContent;
+        accordianHeader.addEventListener("click", () => this.toggleForm());
+
         this.cookieRowElement = cookieRow;
     }
 
@@ -70,5 +77,129 @@ class CookieRow extends UiElement {
         return this.cookieRowElement;
     }
 
-    toggleForm() {}
+    toggleForm() {
+        this.isOpen = !this.isOpen;
+        this.cookieRowContent.toggleForm(this.isOpen);
+    }
+}
+
+class CookieRowContent extends UiElement {
+    constructor(jarCookie) {
+        super();
+        this.cookie = jarCookie;
+        this.createHtmlElement();
+    }
+
+    createHtmlElement() {
+        const cookieRowContent = document.createElement("div");
+        cookieRowContent.classList.add("cookie-row-content");
+
+        const cookieInfoContainer = document.createElement("div");
+        cookieRowContent.appendChild(cookieInfoContainer);
+        cookieInfoContainer.classList.add("cookie-info");
+        cookieInfoContainer.style.display = "none";
+        this.cookieInfoContainer = cookieInfoContainer;
+
+        const cookieEditForm = document.createElement("form");
+        cookieInfoContainer.appendChild(cookieEditForm);
+        cookieEditForm.classList.add("cookie-edit-form");
+
+        cookieEditForm.innerHTML = `
+            <label>Name</label>
+            <input
+                type="text"
+                name=""
+                id=""
+                value="${this.cookie.name}"
+            />
+            <label>Value</label>
+            <input
+                type="text"
+                value="${this.cookie.value}"
+            />
+            <label>Domain</label>
+            <input
+                type="text"
+                value="${this.cookie.domain}"
+            />
+            <label>Path</label>
+            <input type="text" value="${this.cookie.path}" />
+            <label>Expiration</label>
+            <input
+                type="datetime"
+                value="${this.cookie.expiration}"
+            />
+            <label>SameSite</label>
+            `;
+        const sameSiteSelect = document.createElement("select");
+        cookieEditForm.appendChild(sameSiteSelect);
+        sameSiteSelect.name = "same-site";
+        sameSiteSelect.innerHTML = `
+             <select name="same-site">
+                <option value="No Restriction">
+                    No Restriction
+                </option>
+                <option value="Lax">Lax</option>
+                <option value="Strict">Strict</option>
+            </select>
+            `;
+        sameSiteSelect.value = this.cookie.sameSite;
+
+        cookieEditForm.innerHTML += `
+            <div class="cookie-bools">
+                <div>
+                    <label>HostOnly</label>
+                    <input type="checkbox" ${
+                        this.cookie.hostOnly ? "checked" : ""
+                    } />
+                </div>
+                <div>
+                    <label>Session</label>
+                    <input type="checkbox" ${
+                        this.cookie.session ? "checked" : ""
+                    }
+                     />
+                </div>
+                <div>
+                    <label>Secure</label>
+                    <input type="checkbox" ${
+                        this.cookie.secure ? "checked" : ""
+                    } />
+                </div>
+                <div>
+                    <label>HttpOnly</label>
+                    <input type="checkbox" ${
+                        this.cookie.httpOnly ? "checked" : ""
+                    } />
+                </div>
+            </div>`;
+
+        const formActionsContainer = document.createElement("div");
+        cookieEditForm.appendChild(formActionsContainer);
+        formActionsContainer.classList.add("form-actions");
+
+        const cancelButton = document.createElement("button");
+        formActionsContainer.appendChild(cancelButton);
+        cancelButton.innerText = "Cancel";
+        cancelButton.addEventListener("click", () => console.log("cancel"));
+
+        const saveButton = document.createElement("button");
+        formActionsContainer.appendChild(saveButton);
+        saveButton.innerText = "Save";
+        saveButton.addEventListener("click", () => console.log("save"));
+
+        this.cookieRowContent = cookieRowContent;
+    }
+
+    getHtmlElement() {
+        return this.cookieRowContent;
+    }
+
+    toggleForm(isVisible) {
+        if (isVisible) {
+            this.cookieInfoContainer.style.display = "block";
+        } else {
+            this.cookieInfoContainer.style.display = "none";
+        }
+    }
 }
