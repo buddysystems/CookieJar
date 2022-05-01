@@ -16,82 +16,101 @@ window.onload = async function () {
         cookieJarStore
     );
 
-    const viewTabs = new ViewTabs();
+    const viewTabs = new ViewTabs("active");
     const viewTabsElem = await viewTabs.getHtmlElement();
     viewTabsContainer.appendChild(viewTabsElem);
 
     const domainFilter = new DomainFilter();
     const domainFilterElem = await domainFilter.getHtmlElement();
     domainFilterContainer.appendChild(domainFilterElem);
+    await domainFilter.setAsCurrentDomain(); // Set the domain filter to the current tab by default (to avoid loading all cookies)
 
     const popup = new Popup(
         cookiesManager,
         viewTabs,
+        searchInput,
         domainFilter,
         cookiesListContainer,
         loadingIndicator
     );
 
-    viewTabs.handleSelectActive = async () => await popup.selectActiveTab();
-    viewTabs.handleSelectJar = async () => await popup.selectJarTab();
+    viewTabs.handleSelectActive = async () =>
+        await popup.selectActiveTab(
+            searchInput.value,
+            domainFilter.getCurrentDomain()
+        );
+    viewTabs.handleSelectJar = async () =>
+        await popup.selectJarTab(
+            searchInput.value,
+            domainFilter.getCurrentDomain()
+        );
     viewTabs.handleSelectShelf = async () => await popup.selectShelfTab();
 
-    await popup.selectActiveTab();
-
     searchButton.addEventListener("click", async () => {
-        const searchTerm = searchInput.value;
-        const domain = await domainFilter.getCurrentDomain();
-        await popup.search(searchTerm, domain);
+        await popup.search(searchInput.value, domainFilter.getCurrentDomain());
     });
+
+    await popup.selectActiveTab(
+        searchInput.value,
+        domainFilter.getCurrentDomain()
+    );
 };
 
 class Popup {
     constructor(
         cookiesManager,
         viewTabs,
+        searchInput,
         domainFilter,
         cookiesListContainer,
         loadingIndicator
     ) {
         this.cookiesManager = cookiesManager;
         this.viewTabs = viewTabs;
+        this.searchInput = searchInput;
         this.domainFilter = domainFilter;
         this.cookiesListContainer = cookiesListContainer;
         this.loadingIndicator = loadingIndicator;
     }
 
-    async search(searchTerm, domain) {}
-
-    async selectActiveTab() {
-        this.clearCookiesList();
-        this.showLoading();
-
-        const domain = await this.domainFilter.getCurrentDomain();
-        const activeCookies = await this.cookiesManager.getChromeCookies({
-            domain,
-        });
-        for (const jarCookie of activeCookies) {
-            const cookieRow = new CookieRow(jarCookie);
-            const elem = await cookieRow.getHtmlElement();
-            this.addCookieRow(elem);
+    async search(searchTerm, domain) {
+        console.log(domain);
+        console.log(this.viewTabs.selectedTabName);
+        const tabName = this.viewTabs.selectedTabName;
+        if (tabName === "active") {
+            await this.selectActiveTab(searchTerm, domain);
+        } else if (tabName === "jar") {
+            await this.selectJarTab(searchTerm, domain);
+        } else if (tabName === "shelf") {
+            // TODO
         }
-
-        this.hideLoading();
     }
 
-    async selectJarTab() {
-        this.clearCookiesList();
-        this.showLoading();
-        const domain = await this.domainFilter.getCurrentDomain();
-        const jarCookies = await this.cookiesManager.getJarredCookies({
-            domain,
-        });
+    async setAllCookieRows(jarCookies) {
         for (const jarCookie of jarCookies) {
             const cookieRow = new CookieRow(jarCookie);
             const elem = await cookieRow.getHtmlElement();
             this.addCookieRow(elem);
         }
+    }
 
+    async selectActiveTab(searchTerm, domain) {
+        this.clearCookiesList();
+        this.showLoading();
+        const activeCookies = await this.cookiesManager.getChromeCookies({
+            domain,
+        });
+        await this.setAllCookieRows(activeCookies);
+        this.hideLoading();
+    }
+
+    async selectJarTab(searchTerm, domain) {
+        this.clearCookiesList();
+        this.showLoading();
+        const jarCookies = await this.cookiesManager.getJarredCookies({
+            domain,
+        });
+        await this.setAllCookieRows(jarCookies);
         this.hideLoading();
     }
 

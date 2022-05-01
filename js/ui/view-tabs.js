@@ -1,10 +1,11 @@
 class ViewTabs extends UiElement {
-    constructor() {
+    constructor(selectedTabName) {
         super();
         this.createHtmlElement();
         this.handleSelectActive = async () => {};
         this.handleSelectJar = async () => {};
         this.handleSelectShelf = async () => {};
+        this.selectedTabName = selectedTabName;
     }
 
     createHtmlElement() {
@@ -19,6 +20,7 @@ class ViewTabs extends UiElement {
         activeCookiesTab.innerText = "Active Cookies";
         activeCookiesTab.addEventListener("click", async () => {
             this.resetActiveTab();
+            this.selectedTabName = "active";
             activeCookiesTab.classList.add("active-tab");
             await this.handleSelectActive();
         });
@@ -30,6 +32,7 @@ class ViewTabs extends UiElement {
         jarCookiesTab.innerText = "Jar Cookies";
         jarCookiesTab.addEventListener("click", async () => {
             this.resetActiveTab();
+            this.selectedTabName = "jar";
             jarCookiesTab.classList.add("active-tab");
             await this.handleSelectJar();
         });
@@ -41,6 +44,7 @@ class ViewTabs extends UiElement {
         shelfTab.innerText = "Shelf (Import/Export)";
         shelfTab.addEventListener("click", async () => {
             this.resetActiveTab();
+            this.selectedTabName = "shelf";
             shelfTab.classList.add("active-tab");
             await this.handleSelectShelf();
         });

@@ -14,5 +14,5 @@ function alphabeticalComparison(a, b) {
 
 function getUrlDomain(url) {
     const u = new URL(url);
-    return u.hostname;
+    return u.hostname.replace("www", "");
 }
