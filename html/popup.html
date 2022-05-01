@@ -11,11 +11,7 @@
 
     <body>
         <div class="main-layout">
-            <div class="view-tabs">
-                <span class="view-tab active-tab">Active Cookies</span>
-                <span class="view-tab">Cookie Jar</span>
-                <span class="view-tab">Shelf (Import/Export)</span>
-            </div>
+            <div id="view-tab-container"></div>
             <div class="cookie-filters">
                 <div class="search">
                     <input
@@ -32,7 +28,7 @@
                 <button>Search</button>
             </div>
 
-            <div id="active-cookies" class="cookies-list">
+            <div id="cookies-list" class="cookies-list">
                 <div class="bulk-row">
                     <input type="checkbox" class="cookie-row-selector" />
                     <div class="bulk-actions">
@@ -56,6 +52,9 @@
                         </div>
                     </div>
                 </div>
+                <div id="loading-indicator" class="loading-indicator">
+                    Loading&hellip;
+                </div>
             </div>
         </div>
         <script src="../js/helpers/string-util.js"></script>
@@ -63,9 +62,10 @@
         <script src="../js/cookies/jar-cookie.js"></script>
         <script src="../js/cookies/chrome-cookie-store.js"></script>
         <script src="../js/cookies/cookie-jar-store.js"></script>
-        <script src="../js/cookies/cookies.js"></script>
+        <script src="../js/cookies/cookies-manager.js"></script>
         <script src="../js/ui/ui-element.js"></script>
         <script src="../js/ui/cookie-row.js"></script>
+        <script src="../js/ui/view-tabs.js"></script>
         <script src="../js/popup.js"></script>
     </body>
 </html>

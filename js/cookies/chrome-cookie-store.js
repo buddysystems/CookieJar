@@ -61,7 +61,8 @@ class ChromeCookieStore {
     /**
      * @returns Promise<JarCookie[]>
      */
-    async getChromeCookies() {
+    async getAll(details) {
+        // TODO: use details to filter
         const chromeCookies = await chrome.cookies.getAll({});
 
         const jarCookies = [];

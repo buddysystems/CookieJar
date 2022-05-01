@@ -121,3 +121,12 @@ html {
     border: 0.5px solid var(--border-gray);
     margin: 0 0 var(--m1) 0;
 }
+
+.loading-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24pt;
+    color: var(--font-gray);
+    min-height: 175px;
+}

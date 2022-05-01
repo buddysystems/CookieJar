@@ -38,7 +38,7 @@ class CookieRow extends UiElement {
         const cookieName = document.createElement("span");
         mainCookieInfo.appendChild(cookieName);
         cookieName.classList.add("cookie-name");
-        cookieName.innerText = this.cookie.name;
+        cookieName.innerHTML = truncateString(this.cookie.name, 40);
 
         const cookieDomain = document.createElement("span");
         mainCookieInfo.appendChild(cookieDomain);

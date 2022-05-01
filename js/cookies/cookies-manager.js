@@ -1,4 +1,4 @@
-class Cookies {
+class CookiesManager {
     constructor(chromeCookieStore, cookieJarStore) {
         this.chromeCookieStore = chromeCookieStore;
         this.cookieJarStore = cookieJarStore;

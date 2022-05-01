@@ -1,27 +1,57 @@
-const cookieJar = new CookieJar();
-const activeCookies = document.getElementById("active-cookies");
+const viewTabContainer = document.getElementById("view-tab-container");
+const viewTabs = new ViewTabs(
+    handleSelectActiveTab,
+    handleSelectJarTab,
+    handleSelectShelfTab
+);
+viewTabContainer.appendChild(viewTabs.getHtmlElement());
 
-(async () => {
-    const jarCookies = await cookieJar.getAllCookies();
-    for (const jarCookie of jarCookies) {
-        activeCookies.appendChild(new CookieRow(jarCookie).getHtmlElement());
-    }
-    // for (let i = 0; i < 100; i++) {
-    //     const cookieRow = new CookieRow({
-    //         name: "TEST NAME",
-    //         value: "testvalueomgthisislong",
-    //         domain: "test.domain.com",
-    //         path: "/path",
-    //         expiration: "test expiration date",
-    //         sameSite: "Strict",
-    //         hostOnly: true,
-    //         session: false,
-    //         secure: true,
-    //         httpOnly: false,
-    //     });
-    //     activeCookies.appendChild(cookieRow.getHtmlElement());
+const chromeCookieStore = new ChromeCookieStore();
+const cookieJarStore = new CookieJarStore();
+const cookiesManager = new CookiesManager(chromeCookieStore, cookieJarStore);
+
+const cookiesListContainer = document.getElementById("cookies-list");
+
+const loadingIndicator = document.getElementById("loading-indicator");
+
+window.onload = async function () {
+    await ensureCookieJarStorageCreated();
+    await handleSelectActiveTab();
+};
+
+async function handleSelectActiveTab() {
+    showLoading();
+
+    const activeCookies = await cookiesManager.getChromeCookies({});
+    // for (let i = 0; i < 50; i++) {
+    //     cookiesListContainer.appendChild(
+    //         new CookieRow(activeCookies[i]).getHtmlElement()
+    //     );
     // }
-})();
+    for (const jarCookie of activeCookies) {
+        cookiesListContainer.appendChild(
+            new CookieRow(jarCookie).getHtmlElement()
+        );
+    }
+    hideLoading();
+}
+
+function showLoading() {
+    loadingIndicator.style.display = "flex";
+}
+
+function hideLoading() {
+    loadingIndicator.style.display = "none";
+}
+
+async function handleSelectJarTab() {
+    console.log("jar");
+}
+
+async function handleSelectShelfTab() {
+    console.log("shelf");
+}
+
 // const cookieTable = document.getElementById("cookieTable");
 // const loadingIndicator = document.getElementById("loadingIndicator");
 // const activeBtn = document.getElementById("active-btn");
