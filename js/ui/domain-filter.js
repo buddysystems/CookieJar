@@ -9,7 +9,7 @@ class DomainFilter extends UiElement {
         this.domainFilterElement.type = "text";
     }
 
-    async getHtmlElementAsync() {
+    async getHtmlElement() {
         const currTab = await getCurrentTab();
         this.domainFilterElement.value = getUrlDomain(currTab.url);
         return this.domainFilterElement;

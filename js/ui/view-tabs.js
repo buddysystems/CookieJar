@@ -1,14 +1,10 @@
 class ViewTabs extends UiElement {
-    constructor(
-        handleSelectActiveAsync,
-        handleSelectJarAsync,
-        handleSelectShelfAsync
-    ) {
+    constructor() {
         super();
         this.createHtmlElement();
-        this.handleSelectActive = handleSelectActiveAsync;
-        this.handleSelectJar = handleSelectJarAsync;
-        this.handleSelectShelf = handleSelectShelfAsync;
+        this.handleSelectActive = async () => {};
+        this.handleSelectJar = async () => {};
+        this.handleSelectShelf = async () => {};
     }
 
     createHtmlElement() {
@@ -58,7 +54,7 @@ class ViewTabs extends UiElement {
         this.shelfTab.classList.remove("active-tab");
     }
 
-    async getHtmlElementAsync() {
+    async getHtmlElement() {
         return new Promise((resolve, reject) => resolve(this.viewTabsElement));
     }
 }

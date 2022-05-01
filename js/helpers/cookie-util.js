@@ -14,7 +14,6 @@ function getCookieUrl(cookie) {
 function ensureCookieJarStorageCreated(localStorageKey = "COOKIE_JAR") {
     // Create an empty list for our stored cookies if it doesn't already exist
     chrome.storage.local.get(localStorageKey).then((alreadyStored) => {
-        console.dir(alreadyStored);
         if (!alreadyStored.COOKIE_JAR) {
             console.info("Creating empty cookie jar.");
             chrome.storage.local

@@ -66,14 +66,14 @@ class CookieRow extends UiElement {
 
         // Cookie row content
         const cookieRowContent = new CookieRowContent(this.cookie);
-        cookieRow.appendChild(cookieRowContent.getHtmlElementAsync());
+        cookieRow.appendChild(cookieRowContent.getHtmlElement());
         this.cookieRowContent = cookieRowContent;
         accordianHeader.addEventListener("click", () => this.toggleForm());
 
         this.cookieRowElement = cookieRow;
     }
 
-    async getHtmlElementAsync() {
+    async getHtmlElement() {
         return new Promise((resolve, reject) => resolve(this.cookieRowElement));
     }
 
@@ -189,7 +189,7 @@ class CookieRowContent extends UiElement {
         this.cookieRowContent = cookieRowContent;
     }
 
-    getHtmlElementAsync() {
+    getHtmlElement() {
         return this.cookieRowContent;
     }
 

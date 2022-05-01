@@ -1,4 +1,4 @@
-const viewTabContainer = document.getElementById("view-tab-container");
+const viewTabsContainer = document.getElementById("view-tab-container");
 const loadingIndicator = document.getElementById("loading-indicator");
 const cookiesListContainer = document.getElementById("cookies-list");
 
@@ -6,72 +6,73 @@ const searchInput = document.getElementById("search-box");
 const domainFilterContainer = document.getElementById(
     "domain-filter-container"
 );
+const searchButton = document.getElementById("search-btn");
 
 window.onload = async function () {
-    const popup = new Popup(
-        viewTabContainer,
-        loadingIndicator,
-        cookiesListContainer,
-        searchInput,
-        domainFilterContainer
+    const chromeCookieStore = new ChromeCookieStore();
+    const cookieJarStore = new CookieJarStore();
+    const cookiesManager = new CookiesManager(
+        chromeCookieStore,
+        cookieJarStore
     );
-    await popup.loadElements();
+
+    const viewTabs = new ViewTabs();
+    const viewTabsElem = await viewTabs.getHtmlElement();
+    viewTabsContainer.appendChild(viewTabsElem);
+
+    const domainFilter = new DomainFilter();
+    const domainFilterElem = await domainFilter.getHtmlElement();
+    domainFilterContainer.appendChild(domainFilterElem);
+
+    const popup = new Popup(
+        cookiesManager,
+        viewTabs,
+        domainFilter,
+        cookiesListContainer,
+        loadingIndicator
+    );
+
+    viewTabs.handleSelectActive = async () => await popup.selectActiveTab();
+    viewTabs.handleSelectJar = async () => await popup.selectJarTab();
+    viewTabs.handleSelectShelf = async () => await popup.selectShelfTab();
 
     await popup.selectActiveTab();
+
+    searchButton.addEventListener("click", async () => {
+        const searchTerm = searchInput.value;
+        const domain = await domainFilter.getCurrentDomain();
+        await popup.search(searchTerm, domain);
+    });
 };
 
 class Popup {
     constructor(
-        viewTabsContainer,
-        loadingIndicator,
+        cookiesManager,
+        viewTabs,
+        domainFilter,
         cookiesListContainer,
-        searchInput,
-        domainFilterContainer
+        loadingIndicator
     ) {
-        this.viewTabsContainer = viewTabsContainer;
-        this.loadingIndicator = loadingIndicator;
+        this.cookiesManager = cookiesManager;
+        this.viewTabs = viewTabs;
+        this.domainFilter = domainFilter;
         this.cookiesListContainer = cookiesListContainer;
-        this.searchInput = searchInput;
-        this.domainFilterContainer = domainFilterContainer;
-
-        this.viewTabs = new ViewTabs(
-            async () => await this.selectActiveTab(),
-            async () => await this.selectJarTab(),
-            async () => await this.selectShelfTab()
-        );
-
-        const chromeCookieStore = new ChromeCookieStore();
-        const cookieJarStore = new CookieJarStore();
-        this.cookiesManager = new CookiesManager(
-            chromeCookieStore,
-            cookieJarStore
-        );
-
-        this.domainFilter = new DomainFilter();
+        this.loadingIndicator = loadingIndicator;
     }
 
-    async loadElements() {
-        const viewTabsElem = await this.viewTabs.getHtmlElementAsync();
-        this.viewTabsContainer.appendChild(viewTabsElem);
-
-        const domainFilterElem = await this.domainFilter.getHtmlElementAsync();
-        this.domainFilterContainer.appendChild(domainFilterElem);
-    }
+    async search(searchTerm, domain) {}
 
     async selectActiveTab() {
         this.clearCookiesList();
         this.showLoading();
 
-        const elem = await this.domainFilter.getHtmlElementAsync();
-        this.domainFilterContainer.appendChild(elem);
-
         const domain = await this.domainFilter.getCurrentDomain();
         const activeCookies = await this.cookiesManager.getChromeCookies({
-            domain: domain,
+            domain,
         });
         for (const jarCookie of activeCookies) {
             const cookieRow = new CookieRow(jarCookie);
-            const elem = await cookieRow.getHtmlElementAsync();
+            const elem = await cookieRow.getHtmlElement();
             this.addCookieRow(elem);
         }
 
@@ -81,12 +82,13 @@ class Popup {
     async selectJarTab() {
         this.clearCookiesList();
         this.showLoading();
+        const domain = await this.domainFilter.getCurrentDomain();
         const jarCookies = await this.cookiesManager.getJarredCookies({
-            domain: this.domainFilter.getSelectedDomain(),
+            domain,
         });
         for (const jarCookie of jarCookies) {
             const cookieRow = new CookieRow(jarCookie);
-            const elem = await cookieRow.getHtmlElementAsync();
+            const elem = await cookieRow.getHtmlElement();
             this.addCookieRow(elem);
         }
 
