@@ -58,7 +58,7 @@ class ViewTabs extends UiElement {
         this.shelfTab.classList.remove("active-tab");
     }
 
-    getHtmlElement() {
-        return this.viewTabsElement;
+    async getHtmlElementAsync() {
+        return new Promise((resolve, reject) => resolve(this.viewTabsElement));
     }
 }

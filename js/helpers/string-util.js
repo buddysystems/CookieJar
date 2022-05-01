@@ -11,3 +11,8 @@ function alphabeticalComparison(a, b) {
     }
     return 0;
 }
+
+function getUrlDomain(url) {
+    const u = new URL(url);
+    return u.hostname;
+}

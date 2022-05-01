@@ -6,7 +6,7 @@ class CookiesManager {
 
     async getAll(details) {
         const chromeCookies = await this.chromeCookieStore.getAll(details);
-        const jarCookies = await this.cookieJarStore.getJarCookies(details);
+        const jarCookies = await this.cookieJarStore.getAll(details);
 
         let allCookies = chromeCookies;
         return allCookies.concat(jarCookies);

@@ -1,29 +1,44 @@
-window.onload = async function () {
-    const viewTabContainer = document.getElementById("view-tab-container");
-    const loadingIndicator = document.getElementById("loading-indicator");
-    const cookiesListContainer = document.getElementById("cookies-list");
+const viewTabContainer = document.getElementById("view-tab-container");
+const loadingIndicator = document.getElementById("loading-indicator");
+const cookiesListContainer = document.getElementById("cookies-list");
 
+const searchInput = document.getElementById("search-box");
+const domainFilterContainer = document.getElementById(
+    "domain-filter-container"
+);
+
+window.onload = async function () {
     const popup = new Popup(
         viewTabContainer,
         loadingIndicator,
-        cookiesListContainer
+        cookiesListContainer,
+        searchInput,
+        domainFilterContainer
     );
+    await popup.loadElements();
 
-    await popup.selectJarTab();
+    await popup.selectActiveTab();
 };
 
 class Popup {
-    constructor(viewTabsContainer, loadingIndicator, cookiesListContainer) {
+    constructor(
+        viewTabsContainer,
+        loadingIndicator,
+        cookiesListContainer,
+        searchInput,
+        domainFilterContainer
+    ) {
+        this.viewTabsContainer = viewTabsContainer;
+        this.loadingIndicator = loadingIndicator;
+        this.cookiesListContainer = cookiesListContainer;
+        this.searchInput = searchInput;
+        this.domainFilterContainer = domainFilterContainer;
+
         this.viewTabs = new ViewTabs(
             async () => await this.selectActiveTab(),
             async () => await this.selectJarTab(),
             async () => await this.selectShelfTab()
         );
-        viewTabsContainer.appendChild(this.viewTabs.getHtmlElement());
-
-        this.loadingIndicator = loadingIndicator;
-
-        this.cookiesListContainer = cookiesListContainer;
 
         const chromeCookieStore = new ChromeCookieStore();
         const cookieJarStore = new CookieJarStore();
@@ -31,16 +46,33 @@ class Popup {
             chromeCookieStore,
             cookieJarStore
         );
+
+        this.domainFilter = new DomainFilter();
+    }
+
+    async loadElements() {
+        const viewTabsElem = await this.viewTabs.getHtmlElementAsync();
+        this.viewTabsContainer.appendChild(viewTabsElem);
+
+        const domainFilterElem = await this.domainFilter.getHtmlElementAsync();
+        this.domainFilterContainer.appendChild(domainFilterElem);
     }
 
     async selectActiveTab() {
         this.clearCookiesList();
         this.showLoading();
 
-        const activeCookies = await this.cookiesManager.getChromeCookies({});
+        const elem = await this.domainFilter.getHtmlElementAsync();
+        this.domainFilterContainer.appendChild(elem);
+
+        const domain = await this.domainFilter.getCurrentDomain();
+        const activeCookies = await this.cookiesManager.getChromeCookies({
+            domain: domain,
+        });
         for (const jarCookie of activeCookies) {
-            const cookieRow = new CookieRow(jarCookie).getHtmlElement();
-            this.addCookieRow(cookieRow);
+            const cookieRow = new CookieRow(jarCookie);
+            const elem = await cookieRow.getHtmlElementAsync();
+            this.addCookieRow(elem);
         }
 
         this.hideLoading();
@@ -49,10 +81,13 @@ class Popup {
     async selectJarTab() {
         this.clearCookiesList();
         this.showLoading();
-        const jarCookies = await this.cookiesManager.getJarredCookies({});
+        const jarCookies = await this.cookiesManager.getJarredCookies({
+            domain: this.domainFilter.getSelectedDomain(),
+        });
         for (const jarCookie of jarCookies) {
-            const cookieRow = new CookieRow(jarCookie).getHtmlElement();
-            this.addCookieRow(cookieRow);
+            const cookieRow = new CookieRow(jarCookie);
+            const elem = await cookieRow.getHtmlElementAsync();
+            this.addCookieRow(elem);
         }
 
         this.hideLoading();

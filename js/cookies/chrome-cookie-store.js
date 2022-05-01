@@ -62,12 +62,11 @@ class ChromeCookieStore {
      * @returns Promise<JarCookie[]>
      */
     async getAll(details) {
-        // TODO: use details to filter
-        const chromeCookies = await chrome.cookies.getAll({});
+        const chromeCookies = await chrome.cookies.getAll(details);
 
         const jarCookies = [];
-        for (const cc of chromeCookies) {
-            jarCookies.push(new JarCookie(cc, false));
+        for (const cookie of chromeCookies) {
+            jarCookies.push(new JarCookie(cookie, false));
         }
         return jarCookies;
     }
