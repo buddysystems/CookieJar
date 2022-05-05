@@ -11,49 +11,10 @@
 
     <body>
         <div class="main-layout">
-            <div id="view-tab-container"></div>
-            <div class="cookie-filters">
-                <div class="search">
-                    <input
-                        type="text"
-                        name="search-box"
-                        id="search-box"
-                        placeholder="Search for cookies"
-                    />
-                </div>
-                <div id="domain-filter-container"></div>
-                <button id="search-btn">Search</button>
-            </div>
-
-            <div class="cookies-list">
-                <div class="bulk-row">
-                    <input type="checkbox" class="cookie-row-selector" />
-                    <div class="bulk-actions">
-                        <div class="action-button">
-                            <span>Jar selected</span>
-                            <img
-                                src="/assets/icons/action-bar/jar-icon.png"
-                                class="action-icon"
-                            />
-                        </div>
-                        <div class="action-button">
-                            <span>Delete selected</span>
-
-                            <img
-                                src="/assets/icons/action-bar/trash-icon.png"
-                                class="action-icon"
-                            />
-                        </div>
-                        <div class="action-button">
-                            <span>Export selected</span>
-                        </div>
-                    </div>
-                </div>
-                <div id="cookies-list"></div>
-                <div id="loading-indicator" class="loading-indicator">
-                    Loading&hellip;
-                </div>
-            </div>
+            <div
+                class="cookie-tab-container"
+                id="cookies-tabbed-view-container"
+            ></div>
         </div>
         <script src="../js/helpers/string-util.js"></script>
         <script src="../js/helpers/cookie-util.js"></script>
@@ -64,7 +25,12 @@
         <script src="../js/cookies/cookies-manager.js"></script>
         <script src="../js/ui/ui-element.js"></script>
         <script src="../js/ui/cookie-row.js"></script>
+        <script src="../js/ui/cookie-tab.js"></script>
+        <script src="../js/ui/active-tab.js"></script>
+        <script src="../js/ui/jar-tab.js"></script>
+        <script src="../js/ui/shelf-tab.js"></script>
         <script src="../js/ui/view-tabs.js"></script>
+        <script src="../js/ui/cookies-tabbed-view.js"></script>
         <script src="../js/ui/domain-filter.js"></script>
         <script src="../js/popup.js"></script>
     </body>

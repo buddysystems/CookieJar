@@ -23,7 +23,7 @@ class DomainFilter extends UiElement {
         return this.domainFilterElement;
     }
 
-    getCurrentDomain() {
+    getSelectedDomain() {
         const val = this.domainFilterElement.value;
         return val === "" ? null : val;
     }

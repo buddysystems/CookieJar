@@ -27,11 +27,14 @@ html {
 }
 
 .main-layout {
-    display: flex;
-    flex-direction: column;
     min-width: 500px;
     width: 550px;
     min-height: 300px;
+}
+
+.cookie-tab-container {
+    display: flex;
+    flex-direction: column;
 }
 
 .view-tabs {
