@@ -40,19 +40,28 @@ class CookiesTabbedView extends UiElement {
         this.cookieTabbedViewElement.appendChild(jarViewElem);
         await this.jarTab.hide();
 
-        // Shelf tab: TODO
+        // Shelf tab:
+        this.shelfTab = new ShelfTab(this.cookiesManager);
+        const shelfTabElem = await this.shelfTab.getHtmlElement();
+        this.cookieTabbedViewElement.appendChild(shelfTabElem);
+        await this.shelfTab.hide();
 
         // Tab button functionality
         viewTabs.handleSelectActive = async () => {
             await this.jarTab.hide();
+            await this.shelfTab.hide();
             await this.activeTab.show();
         };
         viewTabs.handleSelectJar = async () => {
             await this.activeTab.hide();
+            await this.shelfTab.hide();
             await this.jarTab.show();
         };
 
-        viewTabs.handleSelectShelf = async () =>
-            console.log("TODO: show shelf");
+        viewTabs.handleSelectShelf = async () => {
+            await this.jarTab.hide();
+            await this.activeTab.hide();
+            await this.shelfTab.show();
+        };
     }
 }

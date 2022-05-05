@@ -8,7 +8,6 @@ class CookieTab extends UiElement {
     }
 
     async getHtmlElement() {
-        console.log("get html elem");
         if (!this.hasElementBeenCreated) {
             this.hasElementBeenCreated = true;
             await this.createBaseTabElement();
@@ -18,7 +17,6 @@ class CookieTab extends UiElement {
     }
 
     async createBaseTabElement() {
-        console.log("create base elem");
         this.cookieTabElement = document.createElement("div");
         this.cookieTabElement.classList.add("cookie-tab");
 
@@ -35,7 +33,6 @@ class CookieTab extends UiElement {
         this.domainFilter = new DomainFilter();
         await this.setDomainFilterValue(this.domainFilter);
         const domainFilterElem = await this.domainFilter.getHtmlElement();
-        console.log(this.domainFilter.getSelectedDomain());
         cookieFiltersContainer.appendChild(domainFilterElem);
 
         const cookiesContainer = document.createElement("div");
@@ -62,15 +59,12 @@ class CookieTab extends UiElement {
     }
 
     async loadCookieRows() {
-        console.log("load cookie rows");
-
         await this.clearCookieRows();
 
         this.showLoading();
 
         const searchTerm = this.searchBox.value;
         const domain = this.domainFilter.getSelectedDomain();
-        console.log(domain);
         const cookies = await this.getCookies(searchTerm, domain);
 
         for (const jarCookie of cookies) {
