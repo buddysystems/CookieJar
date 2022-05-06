@@ -1,8 +1,9 @@
 class CookieTab extends UiElement {
-    constructor(showing = false) {
+    constructor(showing = false, cookiesManager) {
         super();
         this.showing = false;
         this.isLoaded = false;
+        this.cookiesManager = cookiesManager
 
         this.hasElementBeenCreated = false;
     }
@@ -68,7 +69,7 @@ class CookieTab extends UiElement {
         const cookies = await this.getCookies(searchTerm, domain);
 
         for (const jarCookie of cookies) {
-            const cookieRow = new CookieRow(jarCookie);
+            const cookieRow = new CookieRow(jarCookie, this.cookiesManager);
             const elem = await cookieRow.getHtmlElement();
             this.cookieRowList.appendChild(elem);
         }

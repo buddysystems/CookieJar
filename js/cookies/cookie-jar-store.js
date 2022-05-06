@@ -6,7 +6,7 @@ class CookieJarStore {
     }
 
     async addCookie(cookie) {
-        const inJar = await this.getJarCookies();
+        const inJar = await this.getAll();
         inJar.push(cookie);
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
     }
@@ -15,24 +15,24 @@ class CookieJarStore {
      * @returns Promise<JarCookie>
      */
     async getCookie(cookieDetails) {
-        const inJar = await this.getJarCookies();
+        const inJar = await this.getAll();
         const cookie = inJar.find(
             (c) =>
-                c.name == cookieDetails.name &&
-                c.storeId == cookieDetails.storeId &&
-                c.url == cookieDetails.url
+            c.name == cookieDetails.name &&
+            c.storeId == cookieDetails.storeId &&
+            c.url == cookieDetails.url
         );
         return new JarCookie(cookie, true);
     }
 
     async removeCookie(cookieDetails) {
-        let inJar = await this.getJarCookies();
+        let inJar = await this.getAll();
         // Remove the cookie matching the cookie details
         inJar = inJar.filter(
             (c) =>
-                c.name != cookieDetails.name ||
-                c.storeId != cookieDetails.storeId ||
-                c.details.url != cookieDetails.url
+            c.name != cookieDetails.name ||
+            c.storeId != cookieDetails.storeId ||
+            c.details.url != cookieDetails.url
         );
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
     }
@@ -44,7 +44,7 @@ class CookieJarStore {
 
     async restoreAllCookies() {
         // Stores all of the cookies by looping through cookies in the storage (Jar) to restore each then (Unjar) remove them from the storage.
-        for (cookies in this.getJarCookies) {
+        for (cookies in this.getAll) {
             cookie.restore();
             this.removeCookie(cookie.cookieDetails);
         }

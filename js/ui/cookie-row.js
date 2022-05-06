@@ -1,9 +1,10 @@
 class CookieRow extends UiElement {
-    constructor(jarCookie) {
+    constructor(jarCookie, cookiesManager) {
         super();
         this.cookie = jarCookie;
         this.createHtmlElement();
         this.isOpen = false;
+        this.cookiesManager = cookiesManager
     }
 
     createHtmlElement() {
@@ -60,7 +61,7 @@ class CookieRow extends UiElement {
         // Not sure if 'action-icon' is redundant - leaving it for now assuming it has significance somewhere
         jarIconImg.classList.add("jar-btn")
         jarIconImg.src = "/assets/icons/action-bar/jar-icon.png";
-        jarIconImg.addEventListener("click", () => console.log('TODO add jar functionality'));
+        jarIconImg.addEventListener("click", () => this.cookiesManager.storeCookie(this.cookie));
 
         const trashIconImg = document.createElement("img");
         cookieActions.appendChild(trashIconImg);
