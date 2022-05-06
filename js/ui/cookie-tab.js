@@ -43,7 +43,48 @@ class CookieTab extends UiElement {
         const bulkRow = document.createElement("div");
         cookiesContainer.appendChild(bulkRow);
         bulkRow.classList.add("bulk-row");
-        bulkRow.innerHTML = "TODO: BULK ROW";
+
+        const bulkRowCheckbox = document.createElement("input");
+        bulkRow.appendChild(bulkRowCheckbox);
+        bulkRowCheckbox.type = "checkbox";
+        bulkRowCheckbox.classList.add("cookie-row-selector");
+
+        const cookieActionsContainer = document.createElement("div");
+        bulkRow.appendChild(cookieActionsContainer);
+        cookieActionsContainer.classList.add("bulk-actions");
+
+        const jarActionContainer = document.createElement("div");
+        bulkRow.appendChild(jarActionContainer);
+        jarActionContainer.classList.add("action-button");
+        jarActionContainer.innerHTML += `
+            <span>Jar selected</span>
+            <img
+                src="/assets/icons/action-bar/jar-icon.png"
+                class="action-icon"
+            />
+            `;
+
+        const deleteActionContainer = document.createElement("div");
+        bulkRow.appendChild(deleteActionContainer);
+        deleteActionContainer.classList.add("action-button");
+        deleteActionContainer.innerHTML += `
+            <span>Delete selected</span>
+            <img
+                src="/assets/icons/action-bar/trash-icon.png"
+                class="action-icon"
+            />
+            `;
+
+        const exportActionContainer = document.createElement("div");
+        bulkRow.appendChild(exportActionContainer);
+        exportActionContainer.classList.add("action-button");
+        exportActionContainer.innerHTML += `
+            <span>Export selected</span>
+            <!-- <img
+                src="/assets/icons/action-bar/trash-icon.png"
+                class="action-icon"
+            /> -->
+            `;
 
         // Cookies list
         const cookieRowList = document.createElement("div");
