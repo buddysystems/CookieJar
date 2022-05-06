@@ -12,11 +12,11 @@ class CookiesManager {
         return allCookies.concat(jarCookies);
     }
 
-    async getJarredCookies(details) {
+    async getJarredCookies(details = {}) {
         return this.cookieJarStore.getAll(details);
     }
 
-    async getChromeCookies(details) {
+    async getChromeCookies(details = {}) {
         return this.chromeCookieStore.getAll(details);
     }
 

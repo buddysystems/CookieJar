@@ -6,6 +6,21 @@ class ShelfTab extends UiElement {
         this.createHtmlElement();
     }
 
+    async handleExport(selectedExportDestination) {
+        let cookiesToExport = [];
+        if (selectedExportDestination === "active") {
+            cookiesToExport = await this.cookiesManager.getChromeCookies();
+        } else if (selectedExportDestination === "jar") {
+            cookiesToExport = await this.cookiesManager.getJarredCookies();
+        } else {
+            console.error(
+                "Invalid export destination selected. Should be one of 'active' or 'jar'."
+            );
+        }
+        const fileJson = cookiesToJson(cookiesToExport);
+        downloadJson(fileJson);
+    }
+
     createHtmlElement() {
         this.shelfTabElement = document.createElement("div");
         this.shelfTabElement.classList.add("shelf-tab");
@@ -70,7 +85,7 @@ class ShelfTab extends UiElement {
         const importButton = document.createElement("button");
         exportActionsContainer.appendChild(importButton);
         importButton.innerText = "Import";
-        importButton.addEventListener("click", () => console.log("export"));
+        importButton.addEventListener("click", () => console.log("import"));
 
         return importForm;
     }
@@ -121,8 +136,13 @@ class ShelfTab extends UiElement {
 
         const exportButton = document.createElement("button");
         exportActionsContainer.appendChild(exportButton);
+        exportButton.type = "button"; // Button type defaults ot 'submit' within forms, which will cause the extension to reload
         exportButton.innerText = "Export";
         exportButton.addEventListener("click", () => console.log("export"));
+
+        exportButton.addEventListener("click", async () =>
+            this.handleExport(sourceSelect.value)
+        );
 
         return exportForm;
     }
