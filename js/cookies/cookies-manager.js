@@ -4,7 +4,7 @@ class CookiesManager {
         this.cookieJarStore = cookieJarStore;
     }
 
-    async getAll(details) {
+    async getAll(details = {}) {
         const chromeCookies = await this.chromeCookieStore.getAll(details);
         const jarCookies = await this.cookieJarStore.getAll(details);
 
@@ -12,11 +12,11 @@ class CookiesManager {
         return allCookies.concat(jarCookies);
     }
 
-    async getJarredCookies(details) {
+    async getJarredCookies(details = {}) {
         return this.cookieJarStore.getAll(details);
     }
 
-    async getChromeCookies(details) {
+    async getChromeCookies(details = {}) {
         return this.chromeCookieStore.getAll(details);
     }
 
@@ -35,6 +35,33 @@ class CookiesManager {
 
         await this.chromeCookieStore.addCookie(cookie);
         await this.cookieJarStore.removeCookie(cookie.details);
+    }
+
+    /**
+     * For each cookie, either add it to the appropriate store if not already present, or update it in that store if already present.
+     */
+    async upsertCookies(cookies) {
+        for (const cookie of cookies) {
+            if (cookie.isStored) {
+                if (await this.cookieJarStore.cookieExists(cookie.details)) {
+                    await this.cookieJarStore.updateCookie(
+                        cookie.details,
+                        cookie
+                    );
+                } else {
+                    await this.cookieJarStore.addCookie(cookie);
+                }
+            } else {
+                if (await this.chromeCookieStore.cookieExists(cookie.details)) {
+                    await this.chromeCookieStore.updateCookie(
+                        cookie.details,
+                        cookie
+                    );
+                } else {
+                    await this.chromeCookieStore.addCookie(cookie);
+                }
+            }
+        }
     }
 
     /**

@@ -8,6 +8,7 @@ class DomainFilter extends UiElement {
         this.domainFilterElement = document.createElement("input");
         this.domainFilterElement.placeholder = "Filter by domain";
         this.domainFilterElement.type = "text";
+        this.domainFilterElement.title = "Filter by domain (e.g. google.com)";
     }
 
     async resetValue() {

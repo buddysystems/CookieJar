@@ -21,7 +21,6 @@ class CookieTab extends UiElement {
         this.cookieTabElement = document.createElement("div");
         this.cookieTabElement.classList.add("cookie-tab");
 
-        // TODO: cookie filters
         const cookieFiltersContainer = document.createElement("div");
         this.cookieTabElement.appendChild(cookieFiltersContainer);
         cookieFiltersContainer.classList.add("cookie-filters");
@@ -30,12 +29,25 @@ class CookieTab extends UiElement {
         cookieFiltersContainer.appendChild(this.searchBox);
         this.searchBox.type = "text";
         this.searchBox.placeholder = "Search for cookies";
+        this.searchBox.title = "Filter by name, value, or domain";
 
         this.domainFilter = new DomainFilter();
         await this.setDomainFilterValue(this.domainFilter);
         const domainFilterElem = await this.domainFilter.getHtmlElement();
         cookieFiltersContainer.appendChild(domainFilterElem);
 
+        const searchButton = document.createElement("button");
+        cookieFiltersContainer.appendChild(searchButton);
+        searchButton.innerText = "Search";
+        searchButton.type = "button";
+        searchButton.addEventListener("click", async () => {
+            await this.search(
+                this.searchBox.value,
+                this.domainFilter.getSelectedDomain()
+            );
+        });
+
+        // Cookie rows
         const cookiesContainer = document.createElement("div");
         this.cookieTabElement.appendChild(cookiesContainer);
         cookiesContainer.classList.add("cookie-list");
@@ -44,7 +56,52 @@ class CookieTab extends UiElement {
         const bulkRow = document.createElement("div");
         cookiesContainer.appendChild(bulkRow);
         bulkRow.classList.add("bulk-row");
-        bulkRow.innerHTML = "TODO: BULK ROW";
+
+        const bulkRowCheckbox = document.createElement("input");
+        bulkRow.appendChild(bulkRowCheckbox);
+        bulkRowCheckbox.type = "checkbox";
+        bulkRowCheckbox.classList.add("cookie-row-selector");
+        bulkRowCheckbox.title = "Select all for bulk actions";
+
+        const cookieActionsContainer = document.createElement("div");
+        bulkRow.appendChild(cookieActionsContainer);
+        cookieActionsContainer.classList.add("bulk-actions");
+
+        const jarActionContainer = document.createElement("div");
+        bulkRow.appendChild(jarActionContainer);
+        jarActionContainer.classList.add("action-button");
+        jarActionContainer.innerHTML += `
+            <span>Jar selected</span>
+            <img
+                src="/assets/icons/action-bar/jar-icon.png"
+                class="action-icon"
+            />
+            `;
+        jarActionContainer.title = "Move the selected cookies to the jar";
+
+        const deleteActionContainer = document.createElement("div");
+        bulkRow.appendChild(deleteActionContainer);
+        deleteActionContainer.classList.add("action-button");
+        deleteActionContainer.innerHTML += `
+            <span>Delete selected</span>
+            <img
+                src="/assets/icons/action-bar/trash-icon.png"
+                class="action-icon"
+            />
+            `;
+        deleteActionContainer.title = "Permanently delete the selected cookies";
+
+        const exportActionContainer = document.createElement("div");
+        bulkRow.appendChild(exportActionContainer);
+        exportActionContainer.classList.add("action-button");
+        exportActionContainer.innerHTML += `
+            <span>Export selected</span>
+            <!-- <img
+                src="/assets/icons/action-bar/trash-icon.png"
+                class="action-icon"
+            /> -->
+            `;
+        exportActionContainer.title = "Export the selected cookies";
 
         // Cookies list
         const cookieRowList = document.createElement("div");
@@ -59,14 +116,16 @@ class CookieTab extends UiElement {
         this.loadingIndicator = loadingIndicator;
     }
 
-    async loadCookieRows() {
+    async search(searchTerm, domainFilterTerm) {
+        await this.loadCookieRows(searchTerm, domainFilterTerm);
+    }
+
+    async loadCookieRows(searchTerm, domainFilterTerm) {
         await this.clearCookieRows();
 
         this.showLoading();
 
-        const searchTerm = this.searchBox.value;
-        const domain = this.domainFilter.getSelectedDomain();
-        const cookies = await this.getCookies(searchTerm, domain);
+        const cookies = await this.getCookies(searchTerm, domainFilterTerm);
 
         for (const jarCookie of cookies) {
             const cookieRow = new CookieRow(jarCookie, this.cookiesManager);
@@ -99,7 +158,9 @@ class CookieTab extends UiElement {
 
     async show() {
         if (!this.isLoaded) {
-            await this.loadCookieRows();
+            const searchTerm = this.searchBox.value;
+            const domain = this.domainFilter.getSelectedDomain();
+            await this.loadCookieRows(searchTerm, domain);
         }
         this.showing = true;
         this.cookieTabElement.style.display = "block";

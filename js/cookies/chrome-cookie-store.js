@@ -1,9 +1,19 @@
 class ChromeCookieStore {
+    async cookieExists(cookieDetails) {
+        const matchingCookies = await this.getAll(cookieDetails);
+        return matchingCookies.length > 0;
+    }
+
+    async updateCookie(cookieDetails, newCookie) {
+        await this.removeCookie(cookieDetails);
+        await this.addCookie(newCookie);
+    }
+
     async addCookie(cookie) {
         let domain = cookie.domain;
         const domainHasPrecedingDot = domain.charAt(0) == ".";
         if (domainHasPrecedingDot) {
-            domain = domain.slice(1, -1);
+            domain = domain.slice(1);
         }
         const cookieDetails = {
             domain: domain,
@@ -21,7 +31,11 @@ class ChromeCookieStore {
             cookieDetails.url = getCookieUrl(cookieDetails);
         }
 
-        await chrome.cookies.set(cookieDetails);
+        const result = await await chrome.cookies.set(cookieDetails);
+        if (result === null) {
+            console.error("Error occured while adding cookie.");
+            console.error(chrome.runtime.lastError);
+        }
     }
 
     /**

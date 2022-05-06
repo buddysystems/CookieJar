@@ -5,10 +5,27 @@ class CookieJarStore {
         ensureCookieJarStorageCreated();
     }
 
+    async cookieExists(cookieDetails) {
+        const inJar = await this.getAll();
+        const cookie = inJar.find(
+            (c) =>
+            c.details.name == cookieDetails.name &&
+            c.details.storeId == cookieDetails.storeId &&
+            c.details.url == cookieDetails.url
+        );
+        return cookie != null;
+    }
+
     async addCookie(cookie) {
+        // Bit innefficient innit?
         const inJar = await this.getAll();
         inJar.push(cookie);
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
+    }
+
+    async updateCookie(cookieDetails, newCookie) {
+        await this.removeCookie(cookieDetails);
+        await this.addCookie(newCookie);
     }
 
     /**
@@ -18,9 +35,9 @@ class CookieJarStore {
         const inJar = await this.getAll();
         const cookie = inJar.find(
             (c) =>
-            c.name == cookieDetails.name &&
-            c.storeId == cookieDetails.storeId &&
-            c.url == cookieDetails.url
+            c.details.name == cookieDetails.name &&
+            c.details.storeId == cookieDetails.storeId &&
+            c.details.url == cookieDetails.url
         );
         return new JarCookie(cookie, true);
     }
@@ -30,8 +47,8 @@ class CookieJarStore {
         // Remove the cookie matching the cookie details
         inJar = inJar.filter(
             (c) =>
-            c.name != cookieDetails.name ||
-            c.storeId != cookieDetails.storeId ||
+            c.details.name != cookieDetails.name ||
+            c.details.storeId != cookieDetails.storeId ||
             c.details.url != cookieDetails.url
         );
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
@@ -53,10 +70,17 @@ class CookieJarStore {
     /**
      * @returns Promise<JarCookie[]>
      */
-    async getAll(details) {
-        // TODO: filter by details
+    async getAll(details = {}) {
         const stored = await chrome.storage.local.get(COOKIE_JAR);
-        const cookies = stored.COOKIE_JAR;
+        let cookies = stored.COOKIE_JAR;
+
+        // Filter by domain
+        if (details.domain !== null && details.domain != "") {
+            const normalizedDomain = details.domain.trim().toUpperCase();
+            cookies = cookies.filter((cookie) =>
+                cookie.domain.toUpperCase().includes(normalizedDomain)
+            );
+        }
 
         const jarCookies = [];
         for (const c of cookies) {

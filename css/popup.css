@@ -73,6 +73,15 @@ html {
     margin-bottom: 0.75em;
 }
 
+.cookie-filters > * {
+    flex-grow: 0.5;
+    margin-right: var(--m3);
+}
+
+.cookie-filters > *:last-child {
+    margin-right: 0;
+}
+
 .search input {
     min-width: 20em;
 }
@@ -104,6 +113,7 @@ html {
     flex-direction: row-reverse;
     align-items: center;
     margin-right: var(--m3);
+    font-size: var(--font-size-small);
 }
 
 .bulk-row .action-button:hover {

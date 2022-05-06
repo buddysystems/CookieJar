@@ -15,14 +15,21 @@ class CookieRow extends UiElement {
         // Accordian
         const accordianHeader = document.createElement("div");
         cookieRow.appendChild(accordianHeader);
-
         accordianHeader.classList.add("accordian-header");
+        accordianHeader.title = this.cookie.value;
+        accordianHeader.addEventListener("click", () => this.toggleForm());
 
         const rowCheckbox = document.createElement("input");
         accordianHeader.appendChild(rowCheckbox);
         rowCheckbox.type = "checkbox";
         rowCheckbox.classList.add("cookie-row-selector");
-        // TODO: checkbox behavior
+        rowCheckbox.title = "Select for bulk action";
+        rowCheckbox.addEventListener("click", (e) => {
+            // TODO: checkbox behavior
+
+            // This stops the click event from toggling the edit form
+            e.stopPropagation();
+        });
 
         const caretImg = document.createElement("img");
         accordianHeader.appendChild(caretImg);
@@ -59,23 +66,28 @@ class CookieRow extends UiElement {
         cookieActions.appendChild(jarIconImg);
         jarIconImg.classList.add("action-icon");
         // Not sure if 'action-icon' is redundant - leaving it for now assuming it has significance somewhere
-        jarIconImg.classList.add("jar-btn")
+        jarIconImg.classList.add("jar-btn");
         jarIconImg.src = "/assets/icons/action-bar/jar-icon.png";
-        jarIconImg.addEventListener("click", () => this.cookiesManager.storeCookie(this.cookie));
+        jarIconImg.title = "Jar this cookie";
+        jarIconImg.addEventListener("click", () =>
+            console.log("TODO add jar functionality")
+        );
 
         const trashIconImg = document.createElement("img");
         cookieActions.appendChild(trashIconImg);
         trashIconImg.classList.add("action-icon");
         // Not sure if 'action-icon' is redundant - leaving it for now assuming it has significance somewhere
-        trashIconImg.classList.add("trash-btn")
+        trashIconImg.classList.add("trash-btn");
         trashIconImg.src = "/assets/icons/action-bar/trash-icon.png";
-        trashIconImg.addEventListener("click", () => console.log('TODO add trash functionality'));
+        trashIconImg.title = "Delete this cookie";
+        trashIconImg.addEventListener("click", () =>
+            console.log("TODO add trash functionality")
+        );
 
         // Cookie row content
         const cookieRowContent = new CookieRowContent(this.cookie);
         cookieRow.appendChild(cookieRowContent.getHtmlElement());
         this.cookieRowContent = cookieRowContent;
-        accordianHeader.addEventListener("click", () => this.toggleForm());
 
         this.cookieRowElement = cookieRow;
     }
