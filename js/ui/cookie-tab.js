@@ -20,7 +20,6 @@ class CookieTab extends UiElement {
         this.cookieTabElement = document.createElement("div");
         this.cookieTabElement.classList.add("cookie-tab");
 
-        // TODO: cookie filters
         const cookieFiltersContainer = document.createElement("div");
         this.cookieTabElement.appendChild(cookieFiltersContainer);
         cookieFiltersContainer.classList.add("cookie-filters");
@@ -35,6 +34,18 @@ class CookieTab extends UiElement {
         const domainFilterElem = await this.domainFilter.getHtmlElement();
         cookieFiltersContainer.appendChild(domainFilterElem);
 
+        const searchButton = document.createElement("button");
+        cookieFiltersContainer.appendChild(searchButton);
+        searchButton.innerText = "Search";
+        searchButton.type = "button";
+        searchButton.addEventListener("click", async () => {
+            await this.search(
+                this.searchBox.value,
+                this.domainFilter.getSelectedDomain()
+            );
+        });
+
+        // Cookie rows
         const cookiesContainer = document.createElement("div");
         this.cookieTabElement.appendChild(cookiesContainer);
         cookiesContainer.classList.add("cookie-list");
@@ -99,14 +110,17 @@ class CookieTab extends UiElement {
         this.loadingIndicator = loadingIndicator;
     }
 
-    async loadCookieRows() {
+    async search(searchTerm, domainFilterTerm) {
+        console.log(searchTerm);
+        await this.loadCookieRows(searchTerm, domainFilterTerm);
+    }
+
+    async loadCookieRows(searchTerm, domainFilterTerm) {
         await this.clearCookieRows();
 
         this.showLoading();
 
-        const searchTerm = this.searchBox.value;
-        const domain = this.domainFilter.getSelectedDomain();
-        const cookies = await this.getCookies(searchTerm, domain);
+        const cookies = await this.getCookies(searchTerm, domainFilterTerm);
 
         for (const jarCookie of cookies) {
             const cookieRow = new CookieRow(jarCookie);
@@ -139,7 +153,9 @@ class CookieTab extends UiElement {
 
     async show() {
         if (!this.isLoaded) {
-            await this.loadCookieRows();
+            const searchTerm = this.searchBox.value;
+            const domain = this.domainFilter.getSelectedDomain();
+            await this.loadCookieRows(searchTerm, domain);
         }
         this.showing = true;
         this.cookieTabElement.style.display = "block";

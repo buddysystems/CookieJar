@@ -5,10 +5,21 @@ class ActiveTab extends CookieTab {
     }
 
     async getCookies(searchTerm, domainFilter) {
-        // TODO: use search term
-        return await this.cookiesManager.getChromeCookies({
+        let cookies = await this.cookiesManager.getChromeCookies({
             domain: domainFilter,
         });
+        if (searchTerm !== null && searchTerm !== "") {
+            const searchTermNormalized = searchTerm.trim().toUpperCase();
+            cookies = cookies.filter(
+                (cookie) =>
+                    cookie.name.toUpperCase().includes(searchTermNormalized) ||
+                    cookie.value.toUpperCase().includes(searchTermNormalized) ||
+                    cookie.details.url
+                        .toUpperCase()
+                        .includes(searchTermNormalized)
+            );
+        }
+        return cookies;
     }
 
     async setDomainFilterValue(domainFilter) {
