@@ -10,14 +10,7 @@ class ActiveTab extends CookieTab {
         });
         if (searchTerm !== null && searchTerm !== "") {
             const searchTermNormalized = searchTerm.trim().toUpperCase();
-            cookies = cookies.filter(
-                (cookie) =>
-                    cookie.name.toUpperCase().includes(searchTermNormalized) ||
-                    cookie.value.toUpperCase().includes(searchTermNormalized) ||
-                    cookie.details.url
-                        .toUpperCase()
-                        .includes(searchTermNormalized)
-            );
+            cookies = filterCookieList(cookies, searchTermNormalized);
         }
         return cookies;
     }

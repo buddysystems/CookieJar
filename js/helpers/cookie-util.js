@@ -22,3 +22,12 @@ function ensureCookieJarStorageCreated(localStorageKey = "COOKIE_JAR") {
         }
     });
 }
+
+function filterCookieList(cookieList, filterTerm) {
+    return cookieList.filter(
+        (cookie) =>
+            cookie.name.toUpperCase().includes(filterTerm) ||
+            cookie.value.toUpperCase().includes(filterTerm) ||
+            cookie.details.url.toUpperCase().includes(filterTerm)
+    );
+}

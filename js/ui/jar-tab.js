@@ -5,10 +5,15 @@ class JarTab extends CookieTab {
     }
 
     async getCookies(searchTerm, domainFilter) {
-        // TODO: use search term
-        return await this.cookiesManager.getJarredCookies({
+        let cookies = await this.cookiesManager.getJarredCookies({
             domain: domainFilter,
         });
+
+        if (searchTerm !== null && searchTerm !== "") {
+            const searchTermNormalized = searchTerm.trim().toUpperCase();
+            cookies = filterCookieList(cookies, searchTermNormalized);
+        }
+        return cookies;
     }
 
     async setDomainFilterValue(domainFilter) {

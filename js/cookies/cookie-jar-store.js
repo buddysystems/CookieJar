@@ -71,9 +71,16 @@ class CookieJarStore {
      * @returns Promise<JarCookie[]>
      */
     async getAll(details = {}) {
-        // TODO: filter by details
         const stored = await chrome.storage.local.get(COOKIE_JAR);
-        const cookies = stored.COOKIE_JAR;
+        let cookies = stored.COOKIE_JAR;
+
+        // Filter by domain
+        if (details.domain !== null && details.domain != "") {
+            const normalizedDomain = details.domain.trim().toUpperCase();
+            cookies = cookies.filter((cookie) =>
+                cookie.domain.toUpperCase().includes(normalizedDomain)
+            );
+        }
 
         const jarCookies = [];
         for (const c of cookies) {

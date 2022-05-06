@@ -111,7 +111,6 @@ class CookieTab extends UiElement {
     }
 
     async search(searchTerm, domainFilterTerm) {
-        console.log(searchTerm);
         await this.loadCookieRows(searchTerm, domainFilterTerm);
     }
 
