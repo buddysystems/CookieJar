@@ -69,9 +69,12 @@ class CookieRow extends UiElement {
         jarIconImg.classList.add("jar-btn");
         jarIconImg.src = "/assets/icons/action-bar/jar-icon.png";
         jarIconImg.title = "Jar this cookie";
-        jarIconImg.addEventListener("click", () =>
-            console.log("TODO add jar functionality")
-        );
+        jarIconImg.addEventListener("click", () => {
+            console.log(this.cookie);
+            this.cookiesManager.storeCookie(this.cookie);
+            // TODO now add it to the jar tab list of cookies
+            // TODO delete element from active tab list of cookies
+        });
 
         const trashIconImg = document.createElement("img");
         cookieActions.appendChild(trashIconImg);

@@ -75,7 +75,8 @@ class CookieJarStore {
         let cookies = stored.COOKIE_JAR;
 
         // Filter by domain
-        if (details.domain !== null && details.domain != "") {
+        if (details.domain && details.domain != "") {
+            console.log(details.domain);
             const normalizedDomain = details.domain.trim().toUpperCase();
             cookies = cookies.filter((cookie) =>
                 cookie.domain.toUpperCase().includes(normalizedDomain)
