@@ -28,3 +28,8 @@ function cookieToJson(cookie) {
         isSelected: cookie.isSelected,
     };
 }
+
+function jsonToCookies(jsonList) {
+    // TODO: may need to do some error handling if not valid json
+    return JSON.parse(jsonList);
+}

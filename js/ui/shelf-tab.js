@@ -6,9 +6,24 @@ class ShelfTab extends UiElement {
         this.createHtmlElement();
     }
 
+    async handleImport(importSourceFiles) {
+        for (const file of importSourceFiles) {
+            if (file.type !== "application/json") {
+                console.error("Tried importing file which wasn't .json");
+                return;
+            }
+        }
+
+        const fileContents = await readFilesAsTextAsync(importSourceFiles);
+        const cookies = jsonToCookies(fileContents);
+        await this.cookiesManager.upsertCookies(cookies);
+    }
+
     async handleExport(selectedExportDestination) {
         let cookiesToExport = [];
-        if (selectedExportDestination === "active") {
+        if (selectedExportDestination === "all") {
+            cookiesToExport = await this.cookiesManager.getAll();
+        } else if (selectedExportDestination === "active") {
             cookiesToExport = await this.cookiesManager.getChromeCookies();
         } else if (selectedExportDestination === "jar") {
             cookiesToExport = await this.cookiesManager.getJarredCookies();
@@ -51,21 +66,6 @@ class ShelfTab extends UiElement {
         fileSelectorInput.type = "file";
         fileSelectorInput.accept = ".json";
 
-        const destinationContainer = document.createElement("div");
-        destinationContainer.classList.add("labeled-input");
-        importForm.appendChild(destinationContainer);
-
-        const importLabel = document.createElement("label");
-        destinationContainer.appendChild(importLabel);
-        importLabel.innerText = "Import destination";
-
-        const destinationSelect = document.createElement("select");
-        destinationContainer.appendChild(destinationSelect);
-        destinationSelect.innerHTML = `
-            <option value="active">Active cookies</option>
-            <option value="jar">Jarred cookies</option>
-        `;
-
         const passwordContainer = document.createElement("div");
         importForm.appendChild(passwordContainer);
         passwordContainer.classList.add("labeled-input");
@@ -85,7 +85,11 @@ class ShelfTab extends UiElement {
         const importButton = document.createElement("button");
         exportActionsContainer.appendChild(importButton);
         importButton.innerText = "Import";
-        importButton.addEventListener("click", () => console.log("import"));
+        importButton.type = "button"; // Defaults to 'submit' which refreshes the extension
+
+        importButton.addEventListener("click", async () =>
+            this.handleImport(fileSelectorInput.files)
+        );
 
         return importForm;
     }
@@ -107,16 +111,10 @@ class ShelfTab extends UiElement {
         const sourceSelect = document.createElement("select");
         exportSourceContainer.appendChild(sourceSelect);
         sourceSelect.innerHTML = `
+            <option value="all">All cookies</option>
             <option value="active">Active cookies</option>
             <option value="jar">Jarred cookies</option>
         `;
-
-        const checkboxLabelContainer = document.createElement("div");
-        checkboxLabelContainer.classList.add("labeled-input");
-        exportForm.appendChild(checkboxLabelContainer);
-
-        const encryptLabel = document.createElement("label");
-        checkboxLabelContainer.appendChild(encryptLabel);
 
         const passwordContainer = document.createElement("div");
         exportForm.appendChild(passwordContainer);
@@ -138,7 +136,6 @@ class ShelfTab extends UiElement {
         exportActionsContainer.appendChild(exportButton);
         exportButton.type = "button"; // Button type defaults ot 'submit' within forms, which will cause the extension to reload
         exportButton.innerText = "Export";
-        exportButton.addEventListener("click", () => console.log("export"));
 
         exportButton.addEventListener("click", async () =>
             this.handleExport(sourceSelect.value)
