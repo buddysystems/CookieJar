@@ -18,6 +18,7 @@ class ViewTabs extends UiElement {
         activeCookiesTab.classList.add("view-tab");
         activeCookiesTab.classList.add("active-tab");
         activeCookiesTab.innerText = "Active Cookies";
+        activeCookiesTab.title = "Enabled cookies active in the browser";
         activeCookiesTab.addEventListener("click", async () => {
             this.resetActiveTab();
             this.selectedTabName = "active";
@@ -30,6 +31,7 @@ class ViewTabs extends UiElement {
         viewTabsElement.appendChild(jarCookiesTab);
         jarCookiesTab.classList.add("view-tab");
         jarCookiesTab.innerText = "Jar Cookies";
+        jarCookiesTab.title = "Disabled cookies not active in the browser";
         jarCookiesTab.addEventListener("click", async () => {
             this.resetActiveTab();
             this.selectedTabName = "jar";
@@ -42,6 +44,7 @@ class ViewTabs extends UiElement {
         viewTabsElement.appendChild(shelfTab);
         shelfTab.classList.add("view-tab");
         shelfTab.innerText = "Shelf (Import/Export)";
+        shelfTab.title = "Export cookies to use elsewhere";
         shelfTab.addEventListener("click", async () => {
             this.resetActiveTab();
             this.selectedTabName = "shelf";

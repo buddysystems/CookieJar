@@ -28,6 +28,7 @@ class CookieTab extends UiElement {
         cookieFiltersContainer.appendChild(this.searchBox);
         this.searchBox.type = "text";
         this.searchBox.placeholder = "Search for cookies";
+        this.searchBox.title = "Filter by name, value, or domain";
 
         this.domainFilter = new DomainFilter();
         await this.setDomainFilterValue(this.domainFilter);
@@ -59,6 +60,7 @@ class CookieTab extends UiElement {
         bulkRow.appendChild(bulkRowCheckbox);
         bulkRowCheckbox.type = "checkbox";
         bulkRowCheckbox.classList.add("cookie-row-selector");
+        bulkRowCheckbox.title = "Select all for bulk actions";
 
         const cookieActionsContainer = document.createElement("div");
         bulkRow.appendChild(cookieActionsContainer);
@@ -74,6 +76,7 @@ class CookieTab extends UiElement {
                 class="action-icon"
             />
             `;
+        jarActionContainer.title = "Move the selected cookies to the jar";
 
         const deleteActionContainer = document.createElement("div");
         bulkRow.appendChild(deleteActionContainer);
@@ -85,6 +88,7 @@ class CookieTab extends UiElement {
                 class="action-icon"
             />
             `;
+        deleteActionContainer.title = "Permanently delete the selected cookies";
 
         const exportActionContainer = document.createElement("div");
         bulkRow.appendChild(exportActionContainer);
@@ -96,6 +100,7 @@ class CookieTab extends UiElement {
                 class="action-icon"
             /> -->
             `;
+        exportActionContainer.title = "Export the selected cookies";
 
         // Cookies list
         const cookieRowList = document.createElement("div");

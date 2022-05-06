@@ -113,6 +113,7 @@ html {
     flex-direction: row-reverse;
     align-items: center;
     margin-right: var(--m3);
+    font-size: var(--font-size-small);
 }
 
 .bulk-row .action-button:hover {
