@@ -36,19 +36,35 @@ class ShelfTab extends UiElement {
 
     async handleExport(selectedExportDestination) {
         let cookiesToExport = [];
-        if (selectedExportDestination === "all") {
-            cookiesToExport = await this.cookiesManager.getAll();
-        } else if (selectedExportDestination === "active") {
-            cookiesToExport = await this.cookiesManager.getChromeCookies();
-        } else if (selectedExportDestination === "jar") {
-            cookiesToExport = await this.cookiesManager.getJarredCookies();
-        } else {
-            console.error(
-                "Invalid export destination selected. Should be one of 'active' or 'jar'."
+        try {
+            if (selectedExportDestination === "all") {
+                cookiesToExport = await this.cookiesManager.getAll();
+            } else if (selectedExportDestination === "active") {
+                cookiesToExport = await this.cookiesManager.getChromeCookies();
+            } else if (selectedExportDestination === "jar") {
+                cookiesToExport = await this.cookiesManager.getJarredCookies();
+            } else {
+                this.showInvalidExportLabel("Invalid export source.");
+                console.error(
+                    "Invalid export destination selected. Should be one of 'active' or 'jar'."
+                );
+            }
+        } catch (e) {
+            console.error(e);
+            this.showInvalidExportLabel(
+                "An error occured when retrieving cookies to export."
             );
         }
-        const fileJson = cookiesToJson(cookiesToExport);
-        downloadJson(fileJson);
+        try {
+            const fileJson = cookiesToJson(cookiesToExport);
+            downloadJson(fileJson);
+            this.showSuccessExportLabel(
+                `Successfully exported ${selectedExportDestination.toLowerCase()} cookies.`
+            );
+        } catch (e) {
+            console.error(e);
+            this.showInvalidExportLabel("Could not parse cookies into JSON.");
+        }
     }
 
     createHtmlElement() {
@@ -136,6 +152,10 @@ class ShelfTab extends UiElement {
 
         exportForm.innerHTML += `<h2 class="form-heading">Export cookies</h2>`;
 
+        this.exportLabel = document.createElement("label");
+        exportForm.appendChild(this.exportLabel);
+        this.hideExportLabel();
+
         const exportSourceContainer = document.createElement("div");
         exportSourceContainer.classList.add("labeled-input");
         exportForm.appendChild(exportSourceContainer);
@@ -178,6 +198,23 @@ class ShelfTab extends UiElement {
         );
 
         return exportForm;
+    }
+
+    hideExportLabel() {
+        this.exportLabel.classList = [];
+        this.exportLabel.style.display = "none";
+    }
+
+    showInvalidExportLabel(message) {
+        this.exportLabel.classList.add("error-label");
+        this.exportLabel.innerText = message;
+        this.exportLabel.style.display = "block";
+    }
+
+    showSuccessExportLabel(message) {
+        this.exportLabel.classList.add("success-label");
+        this.exportLabel.innerText = message;
+        this.exportLabel.style.display = "block";
     }
 
     async getHtmlElement() {
