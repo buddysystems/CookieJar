@@ -1,14 +1,4 @@
 class ChromeCookieStore {
-    // async cookieExists(cookieDetails) {
-    //     const matchingCookies = await this.getAll(cookieDetails);
-    //     return matchingCookies.length > 0;
-    // }
-
-    // async updateCookie(cookieDetails, newCookie) {
-    //     await this.removeCookie(cookieDetails);
-    //     await this.setCookie(newCookie);
-    // }
-
     async setCookie(cookie) {
         let domain = cookie.domain;
         if (cookie.name.includes("__Host-")) {
