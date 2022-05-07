@@ -11,6 +11,12 @@ class ChromeCookieStore {
 
     async addCookie(cookie) {
         let domain = cookie.domain;
+        if (
+            cookie.name.includes("__Host-") ||
+            cookie.name.includes("__Secure-")
+        ) {
+            domain = "";
+        }
         const domainHasPrecedingDot = domain.charAt(0) == ".";
         if (domainHasPrecedingDot) {
             domain = domain.slice(1);
