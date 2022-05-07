@@ -1,9 +1,8 @@
 class CookieTab extends UiElement {
-    constructor(showing = false, cookiesManager) {
+    constructor(cookiesManager) {
         super();
-        this.showing = false;
         this.isLoaded = false;
-        this.cookiesManager = cookiesManager
+        this.cookiesManager = cookiesManager;
 
         this.hasElementBeenCreated = false;
     }
@@ -123,8 +122,6 @@ class CookieTab extends UiElement {
     async loadCookieRows(searchTerm, domainFilterTerm) {
         await this.clearCookieRows();
 
-        this.showLoading();
-
         const cookies = await this.getCookies(searchTerm, domainFilterTerm);
 
         for (const jarCookie of cookies) {
@@ -132,8 +129,6 @@ class CookieTab extends UiElement {
             const elem = await cookieRow.getHtmlElement();
             this.cookieRowList.appendChild(elem);
         }
-
-        this.hideLoading();
 
         this.isLoaded = true;
     }
@@ -148,27 +143,29 @@ class CookieTab extends UiElement {
         }
     }
 
+    async show() {
+        this.showLoading();
+
+        this.cookieTabElement.style.display = "block";
+        if (!this.isLoaded) {
+            const searchTerm = this.searchBox.value;
+            const domain = this.domainFilter.getSelectedDomain();
+            await this.loadCookieRows(searchTerm, domain);
+        }
+
+        this.hideLoading();
+    }
+
+    async hide() {
+        this.cookieTabElement.style.display = "none";
+    }
+
     showLoading() {
         this.loadingIndicator.style.display = "flex";
     }
 
     hideLoading() {
         this.loadingIndicator.style.display = "none";
-    }
-
-    async show() {
-        if (!this.isLoaded) {
-            const searchTerm = this.searchBox.value;
-            const domain = this.domainFilter.getSelectedDomain();
-            await this.loadCookieRows(searchTerm, domain);
-        }
-        this.showing = true;
-        this.cookieTabElement.style.display = "block";
-    }
-
-    async hide() {
-        this.showing = false;
-        this.cookieTabElement.style.display = "none";
     }
 
     async setDomainFilterValue(domainFilter) {

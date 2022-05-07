@@ -29,10 +29,10 @@ class CookiesTabbedView extends UiElement {
         viewTabContainer.appendChild(viewTabsElem);
 
         // Active view
-        this.activeTab = new ActiveTab(this.cookiesManager, true);
+        this.activeTab = new ActiveTab(this.cookiesManager);
         const activeViewElem = await this.activeTab.getHtmlElement();
         this.cookieTabbedViewElement.appendChild(activeViewElem);
-        await this.activeTab.show();
+        await this.activeTab.hide();
 
         // Jar view
         this.jarTab = new JarTab(this.cookiesManager);

@@ -4,7 +4,7 @@ class CookieRow extends UiElement {
         this.cookie = jarCookie;
         this.createHtmlElement();
         this.isOpen = false;
-        this.cookiesManager = cookiesManager
+        this.cookiesManager = cookiesManager;
     }
 
     createHtmlElement() {
@@ -64,8 +64,8 @@ class CookieRow extends UiElement {
 
         const jarIconImg = document.createElement("img");
         cookieActions.appendChild(jarIconImg);
+        // The action-icon class gives shared styling to icons, such as changing the cursor on hover (see css/cookie-row.css)
         jarIconImg.classList.add("action-icon");
-        // Not sure if 'action-icon' is redundant - leaving it for now assuming it has significance somewhere
         jarIconImg.classList.add("jar-btn");
         jarIconImg.src = "/assets/icons/action-bar/jar-icon.png";
         jarIconImg.title = "Jar this cookie";
@@ -79,7 +79,6 @@ class CookieRow extends UiElement {
         const trashIconImg = document.createElement("img");
         cookieActions.appendChild(trashIconImg);
         trashIconImg.classList.add("action-icon");
-        // Not sure if 'action-icon' is redundant - leaving it for now assuming it has significance somewhere
         trashIconImg.classList.add("trash-btn");
         trashIconImg.src = "/assets/icons/action-bar/trash-icon.png";
         trashIconImg.title = "Delete this cookie";

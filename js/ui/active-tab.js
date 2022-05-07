@@ -1,6 +1,6 @@
 class ActiveTab extends CookieTab {
-    constructor(cookiesManager, showing = false) {
-        super(showing, cookiesManager);
+    constructor(cookiesManager) {
+        super(cookiesManager);
     }
 
     async getCookies(searchTerm, domainFilter) {

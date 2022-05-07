@@ -13,6 +13,11 @@ function alphabeticalComparison(a, b) {
 }
 
 function getUrlDomain(url) {
-    const u = new URL(url);
-    return u.hostname.replace("www", "");
+    try {
+        const u = new URL(url);
+        return u.hostname.replace("www", "");
+    } catch (TypeError) {
+        // If we are visiting a non-webpage (such as chrome://extensions), we can't parse a URL
+        return "";
+    }
 }
