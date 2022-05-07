@@ -22,14 +22,36 @@ class ShelfTab extends UiElement {
         try {
             const fileContents = await readFilesAsTextAsync(importSourceFiles);
             cookies = jsonToCookies(fileContents);
-            await this.cookiesManager.upsertCookies(cookies);
-            this.showSuccessImportFileLabel(
-                "Successfully imported all cookies from file(s)."
-            );
         } catch (e) {
             console.warn(e);
             this.showInvalidImportFileLabel(
                 "One or more invalid JSON files. Ensure that JSON syntax is valid."
+            );
+        }
+
+        let ignoredCookies = 0;
+        for (const cookie of cookies) {
+            try {
+                await this.cookiesManager.upsertCookie(cookie);
+            } catch (e) {
+                ignoredCookies++;
+                if (e instanceof DOMException) {
+                    console.warn(e);
+                } else {
+                    this.showInvalidImportFileLabel(
+                        `Error when trying to import one or more cookies. ${ignoredCookies} ignored and not added.`
+                    );
+                }
+            }
+        }
+
+        if (ignoredCookies == 0) {
+            this.showSuccessImportFileLabel(
+                "Successfully imported all cookies from file(s)."
+            );
+        } else {
+            this.showSuccessImportFileLabel(
+                `Successfully imported cookies from file(s). ${ignoredCookies} duplicate cookies which couldn't be added were ignored.`
             );
         }
     }

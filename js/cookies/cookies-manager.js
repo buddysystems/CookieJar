@@ -33,32 +33,49 @@ class CookiesManager {
         if (!cookie.isStored) return;
         cookie.isStored = false;
 
-        await this.chromeCookieStore.addCookie(cookie);
+        await this.chromeCookieStore.setCookie(cookie);
         await this.cookieJarStore.removeCookie(cookie.details);
     }
 
     /**
-     * For each cookie, either add it to the appropriate store if not already present, or update it in that store if already present.
+     * Either add the cookie to the appropriate store if not already present, or update it in that store if already present.
      */
-    async upsertCookies(cookies) {
-        for (const cookie of cookies) {
-            if (cookie.isStored) {
-                if (await this.cookieJarStore.cookieExists(cookie.details)) {
-                    await this.cookieJarStore.updateCookie(
-                        cookie.details,
-                        cookie
-                    );
-                } else {
-                    await this.cookieJarStore.addCookie(cookie);
-                }
+    async upsertCookie(cookie) {
+        const filterDetails = {
+            name: cookie.details.name,
+            domain: cookie.domain,
+            storeId: cookie.details.storeId,
+        };
+        // Jarred cookie
+        if (cookie.isStored) {
+            // TODO
+            if (await this.cookieJarStore.cookieExists(filterDetails)) {
+                await this.cookieJarStore.updateCookie(filterDetails, cookie);
             } else {
-                if (await this.chromeCookieStore.cookieExists(cookie.details)) {
-                    await this.chromeCookieStore.updateCookie(
-                        cookie.details,
-                        cookie
+                await this.cookieJarStore.addCookie(cookie);
+            }
+        }
+        // Active cookie
+        else {
+            const matchingCookies = await this.chromeCookieStore.getAll(
+                filterDetails
+            );
+            const existingCookie = await this.chromeCookieStore.getCookie(
+                cookie.details
+            );
+            /* In fringe cases where the same cookie is set for multiple domains (which is a terrible but exceedingly rare practice by other websites),
+            we cannot set the cookie, so we will give the user an error about duplicate cookies.
+             */
+            const setMayFailDueToSubdomain = !existingCookie && matchingCookies;
+            try {
+                await this.chromeCookieStore.setCookie(cookie);
+            } catch (e) {
+                if (setMayFailDueToSubdomain) {
+                    throw new DOMException(
+                        `Duplicate cookie could not be set (cookie named \n\t'${cookie.name}'\nat domain \n\t'${cookie.domain}').`
                     );
                 } else {
-                    await this.chromeCookieStore.addCookie(cookie);
+                    throw e;
                 }
             }
         }
@@ -74,8 +91,7 @@ class CookiesManager {
             await this.cookieJarStore.addCookie(updatedCookie);
         } else {
             // Is in browser cookies
-            await this.chromeCookieStore.removeCookie(previousCookieDetails);
-            await this.chromeCookieStore.addCookie(updatedCookie);
+            await this.chromeCookieStore.setCookie(updatedCookie);
         }
     }
 
