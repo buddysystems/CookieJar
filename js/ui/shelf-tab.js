@@ -7,16 +7,31 @@ class ShelfTab extends UiElement {
     }
 
     async handleImport(importSourceFiles) {
+        this.hideImportFileLabel();
         for (const file of importSourceFiles) {
             if (file.type !== "application/json") {
-                console.error("Tried importing file which wasn't .json");
+                console.warn("Tried importing file which wasn't .json");
+                this.showInvalidImportFileLabel(
+                    `${file.name} has an invalid file type (must be .json file)`
+                );
                 return;
             }
         }
 
-        const fileContents = await readFilesAsTextAsync(importSourceFiles);
-        const cookies = jsonToCookies(fileContents);
-        await this.cookiesManager.upsertCookies(cookies);
+        let cookies = [];
+        try {
+            const fileContents = await readFilesAsTextAsync(importSourceFiles);
+            cookies = jsonToCookies(fileContents);
+            await this.cookiesManager.upsertCookies(cookies);
+            this.showSuccessImportFileLabel(
+                "Successfully imported all cookies from file(s)."
+            );
+        } catch (e) {
+            console.warn(e);
+            this.showInvalidImportFileLabel(
+                "One or more invalid JSON files. Ensure that JSON syntax is valid."
+            );
+        }
     }
 
     async handleExport(selectedExportDestination) {
@@ -52,6 +67,10 @@ class ShelfTab extends UiElement {
         importForm.classList.add("shelf-form");
 
         importForm.innerHTML += `<h2 class="form-heading">Import cookies</h2>`;
+
+        this.importFileLabel = document.createElement("label");
+        importForm.appendChild(this.importFileLabel);
+        this.hideImportFileLabel();
 
         const fileSelectorContainer = document.createElement("div");
         importForm.appendChild(fileSelectorContainer);
@@ -92,6 +111,23 @@ class ShelfTab extends UiElement {
         );
 
         return importForm;
+    }
+
+    hideImportFileLabel() {
+        this.importFileLabel.classList = [];
+        this.importFileLabel.style.display = "none";
+    }
+
+    showInvalidImportFileLabel(message) {
+        this.importFileLabel.classList.add("error-label");
+        this.importFileLabel.innerText = message;
+        this.importFileLabel.style.display = "block";
+    }
+
+    showSuccessImportFileLabel(message) {
+        this.importFileLabel.classList.add("success-label");
+        this.importFileLabel.innerText = message;
+        this.importFileLabel.style.display = "block";
     }
 
     createExportForm() {

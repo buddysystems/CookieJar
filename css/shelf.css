@@ -20,6 +20,14 @@
     margin-bottom: 3px;
 }
 
+.shelf-form .error-label {
+    color: var(--font-red);
+}
+
+.shelf-form .success-label {
+    color: var(--font-green);
+}
+
 .shelf-form .labeled-input {
     width: 100%;
     margin-top: var(--m1);
