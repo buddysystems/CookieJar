@@ -36,10 +36,10 @@ class CookieRow extends UiElement {
             e.stopPropagation();
         });
 
-        const caretImg = document.createElement("img");
-        accordianHeader.appendChild(caretImg);
-        caretImg.src = "/assets/caret-right.png";
-        caretImg.classList.add("caret");
+        this.caretImg = document.createElement("img");
+        accordianHeader.appendChild(this.caretImg);
+        this.caretImg.src = "/assets/caret-right.png";
+        this.caretImg.classList.add("caret");
 
         const accordianInfoContainer = document.createElement("div");
         accordianHeader.appendChild(accordianInfoContainer);
@@ -124,6 +124,11 @@ class CookieRow extends UiElement {
     toggleForm() {
         this.isOpen = !this.isOpen;
         this.cookieRowContent.toggleForm(this.isOpen);
+        if (this.isOpen) {
+            this.caretImg.src = "/assets/caret-down.png";
+        } else {
+            this.caretImg.src = "/assets/caret-right.png";
+        }
     }
 }
 

@@ -32,7 +32,7 @@ html {
 .main-layout {
     min-width: 500px;
     width: 550px;
-    min-height: 300px;
+    min-height: 450px;
 }
 
 .view-tabs {
@@ -97,7 +97,7 @@ html {
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 300px;
+    max-height: 450px;
 }
 
 .bulk-row {

@@ -93,7 +93,7 @@ class CookieTab extends UiElement {
         cookieActionsContainer.classList.add("bulk-actions");
 
         const jarActionContainer = document.createElement("div");
-        bulkRow.appendChild(jarActionContainer);
+        cookieActionsContainer.appendChild(jarActionContainer);
         jarActionContainer.classList.add("action-button");
         jarActionContainer.innerHTML += `
             <span>Jar selected</span>
@@ -105,7 +105,7 @@ class CookieTab extends UiElement {
         jarActionContainer.title = "Move the selected cookies to the jar";
 
         const deleteActionContainer = document.createElement("div");
-        bulkRow.appendChild(deleteActionContainer);
+        cookieActionsContainer.appendChild(deleteActionContainer);
         deleteActionContainer.classList.add("action-button");
         deleteActionContainer.innerHTML += `
             <span>Delete selected</span>
@@ -117,7 +117,7 @@ class CookieTab extends UiElement {
         deleteActionContainer.title = "Permanently delete the selected cookies";
 
         const exportActionContainer = document.createElement("div");
-        bulkRow.appendChild(exportActionContainer);
+        cookieActionsContainer.appendChild(exportActionContainer);
         exportActionContainer.classList.add("action-button");
         exportActionContainer.innerHTML += `
             <span>Export selected</span>
