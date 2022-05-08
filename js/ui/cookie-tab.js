@@ -136,6 +136,7 @@ class CookieTab extends UiElement {
         const cookieRowList = document.createElement("div");
         cookiesContainer.appendChild(cookieRowList);
         this.cookieRowList = cookieRowList;
+        this.cookieRowList.classList.add("cookie-row-items");
 
         // Loading indicator
         const loadingIndicator = document.createElement("div");
@@ -143,6 +144,7 @@ class CookieTab extends UiElement {
         loadingIndicator.classList.add("loading-indicator");
         loadingIndicator.innerHTML = "Loading&hellip;";
         this.loadingIndicator = loadingIndicator;
+        this.hideLoading();
     }
 
     async search(searchTerm, domainFilterTerm) {

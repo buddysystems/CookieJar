@@ -51,7 +51,7 @@ class CookieRow extends UiElement {
         const cookieName = document.createElement("span");
         mainCookieInfo.appendChild(cookieName);
         cookieName.classList.add("cookie-name");
-        cookieName.innerHTML = truncateString(this.cookie.name, 40);
+        cookieName.innerHTML = truncateString(this.cookie.name, 35);
 
         const cookieDomain = document.createElement("span");
         mainCookieInfo.appendChild(cookieDomain);
@@ -61,7 +61,7 @@ class CookieRow extends UiElement {
         const secondaryCookieInfo = document.createElement("div");
         accordianInfoContainer.appendChild(secondaryCookieInfo);
         secondaryCookieInfo.classList.add("secondary-cookie-info");
-        secondaryCookieInfo.innerHTML = truncateString(this.cookie.value, 50);
+        secondaryCookieInfo.innerHTML = truncateString(this.cookie.value, 45);
 
         const cookieActions = document.createElement("div");
         accordianHeader.appendChild(cookieActions);

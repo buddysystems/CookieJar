@@ -89,10 +89,15 @@ html {
 }
 
 .cookies-list {
+    margin-top: 0.5em;
+}
+
+.cookie-row-items {
     display: flex;
     flex-direction: column;
-    margin-top: 0.5em;
     overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 300px;
 }
 
 .bulk-row {
