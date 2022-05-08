@@ -77,7 +77,7 @@ class CookieRow extends UiElement {
         jarIconImg.addEventListener("click", () => {
             console.log(this.cookie);
             this.cookiesManager.storeCookie(this.cookie);
-            // TODO now add it to the jar tab list of cookies
+            this.deleteCookie();
             // TODO delete element from active tab list of cookies
         });
 
@@ -87,9 +87,10 @@ class CookieRow extends UiElement {
         trashIconImg.classList.add("trash-btn");
         trashIconImg.src = "/assets/icons/action-bar/trash-icon.png";
         trashIconImg.title = "Delete this cookie";
-        trashIconImg.addEventListener("click", () =>
-            console.log("TODO add trash functionality")
-        );
+        trashIconImg.addEventListener("click", () => {
+            this.cookiesManager.restoreCookie(this.cookie);
+            this.deleteCookie();
+        });
 
         // Cookie row content
         const cookieRowContent = new CookieRowContent(this.cookie);
@@ -129,6 +130,12 @@ class CookieRow extends UiElement {
         } else {
             this.caretImg.src = "/assets/caret-right.png";
         }
+    }
+
+    deleteCookie() {
+        console.log(this.cookieRowElement)
+        this.cookieRowElement.remove();
+        this.cookieInfoContainer.style.display = "none";
     }
 }
 
