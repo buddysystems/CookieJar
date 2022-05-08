@@ -1,10 +1,11 @@
 class CookieRow extends UiElement {
-    constructor(jarCookie, cookiesManager) {
+    constructor(jarCookie, cookiesManager, bulkCookieSelector) {
         super();
         this.cookie = jarCookie;
-        this.createHtmlElement();
         this.isOpen = false;
         this.cookiesManager = cookiesManager;
+        this.bulkCookieSelector = bulkCookieSelector;
+        this.createHtmlElement();
     }
 
     createHtmlElement() {
@@ -19,13 +20,17 @@ class CookieRow extends UiElement {
         accordianHeader.title = this.cookie.value;
         accordianHeader.addEventListener("click", () => this.toggleForm());
 
-        const rowCheckbox = document.createElement("input");
-        accordianHeader.appendChild(rowCheckbox);
-        rowCheckbox.type = "checkbox";
-        rowCheckbox.classList.add("cookie-row-selector");
-        rowCheckbox.title = "Select for bulk action";
-        rowCheckbox.addEventListener("click", (e) => {
-            // TODO: checkbox behavior
+        this.rowCheckbox = document.createElement("input");
+        accordianHeader.appendChild(this.rowCheckbox);
+        this.rowCheckbox.type = "checkbox";
+        this.rowCheckbox.classList.add("cookie-row-selector");
+        this.rowCheckbox.title = "Select for bulk action";
+        this.rowCheckbox.addEventListener("click", (e) => {
+            if (e.currentTarget.checked) {
+                this.bulkCookieSelector.selectCookie(this.cookie);
+            } else {
+                this.bulkCookieSelector.deselectCookie(this.cookie);
+            }
 
             // This stops the click event from toggling the edit form
             e.stopPropagation();
@@ -92,6 +97,24 @@ class CookieRow extends UiElement {
         this.cookieRowContent = cookieRowContent;
 
         this.cookieRowElement = cookieRow;
+    }
+
+    async checkRowCheckbox() {
+        return new Promise((resolve, reject) => {
+            if (!this.rowCheckbox.checked) {
+                this.rowCheckbox.checked = true;
+            }
+            resolve();
+        });
+    }
+
+    async uncheckRowCheckbox() {
+        return new Promise((resolve, reject) => {
+            if (this.rowCheckbox.checked) {
+                this.rowCheckbox.checked = false;
+            }
+            resolve();
+        });
     }
 
     async getHtmlElement() {

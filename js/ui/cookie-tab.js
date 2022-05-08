@@ -3,8 +3,9 @@ class CookieTab extends UiElement {
         super();
         this.isLoaded = false;
         this.cookiesManager = cookiesManager;
-
+        this.bulkCookieSelector = new BulkCookieSelector(cookiesManager);
         this.hasElementBeenCreated = false;
+        this.cookieRows = [];
     }
 
     async getHtmlElement() {
@@ -61,6 +62,22 @@ class CookieTab extends UiElement {
         bulkRowCheckbox.type = "checkbox";
         bulkRowCheckbox.classList.add("cookie-row-selector");
         bulkRowCheckbox.title = "Select all for bulk actions";
+        bulkRowCheckbox.addEventListener("click", async (e) => {
+            const allCookies = this.cookieRows.map(
+                (cookieRow) => cookieRow.cookie
+            );
+            if (e.currentTarget.checked) {
+                this.bulkCookieSelector.selectCookies(allCookies);
+                for (const cookieRow of this.cookieRows) {
+                    await cookieRow.checkRowCheckbox();
+                }
+            } else {
+                this.bulkCookieSelector.deselectAllCookies();
+                for (const cookieRow of this.cookieRows) {
+                    await cookieRow.uncheckRowCheckbox();
+                }
+            }
+        });
 
         const cookieActionsContainer = document.createElement("div");
         bulkRow.appendChild(cookieActionsContainer);
@@ -120,17 +137,25 @@ class CookieTab extends UiElement {
     }
 
     async loadCookieRows(searchTerm, domainFilterTerm) {
+        this.showLoading();
         await this.clearCookieRows();
 
         const cookies = await this.getCookies(searchTerm, domainFilterTerm);
 
         for (const jarCookie of cookies) {
-            const cookieRow = new CookieRow(jarCookie, this.cookiesManager);
+            const cookieRow = new CookieRow(
+                jarCookie,
+                this.cookiesManager,
+                this.bulkCookieSelector
+            );
+            this.cookieRows.push(cookieRow);
             const elem = await cookieRow.getHtmlElement();
             this.cookieRowList.appendChild(elem);
         }
 
         this.isLoaded = true;
+
+        this.hideLoading();
     }
 
     async getCookies(searchTerm, domainFilter) {
@@ -138,22 +163,19 @@ class CookieTab extends UiElement {
     }
 
     async clearCookieRows() {
+        this.cookieRows = [];
         while (this.cookieRowList.firstChild) {
             this.cookieRowList.removeChild(this.cookieRowList.lastChild);
         }
     }
 
     async show() {
-        this.showLoading();
-
         this.cookieTabElement.style.display = "block";
         if (!this.isLoaded) {
             const searchTerm = this.searchBox.value;
             const domain = this.domainFilter.getSelectedDomain();
             await this.loadCookieRows(searchTerm, domain);
         }
-
-        this.hideLoading();
     }
 
     async hide() {
