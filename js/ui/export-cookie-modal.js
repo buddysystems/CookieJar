@@ -35,7 +35,9 @@ class ExportCookieModal extends UiElement {
         exportButton.type = "button";
         exportButton.innerText = "Export";
 
-        exportButton.addEventListener("click", async () => this.handleExport());
+        exportButton.addEventListener("click", async () =>
+            this.handleExport(this.passwordInput.value)
+        );
     }
 
     // We violate the DRY principle a bit by copying from shelf-tab.js. That's how we know we are good developers :)
@@ -64,9 +66,9 @@ class ExportCookieModal extends UiElement {
         passwordContainer.appendChild(passwordLabel);
         passwordLabel.innerText = "Encryption password?";
 
-        const passwordInput = document.createElement("input");
-        passwordContainer.appendChild(passwordInput);
-        passwordInput.type = "password";
+        this.passwordInput = document.createElement("input");
+        passwordContainer.appendChild(this.passwordInput);
+        this.passwordInput.type = "password";
 
         return exportForm;
     }
@@ -88,11 +90,22 @@ class ExportCookieModal extends UiElement {
         this.exportLabel.style.display = "block";
     }
 
-    async handleExport() {
+    async handleExport(encryptionPassword) {
         const cookiesToExport = this.bulkCookieSelector.selectedCookies;
+        const cookiesJson = cookiesToJson(cookiesToExport);
         try {
-            const fileJson = cookiesToJson(cookiesToExport);
-            downloadJson(fileJson);
+            if (encryptionPassword) {
+                const encryptedFileText = encryptText(
+                    JSON.stringify(cookiesJson),
+                    encryptionPassword
+                );
+                downloadJson({
+                    data: encryptedFileText,
+                });
+            } else {
+                downloadJson(cookiesJson);
+            }
+
             await this.hideModal();
         } catch (e) {
             console.error(e);
