@@ -6,7 +6,7 @@ class ShelfTab extends UiElement {
         this.createHtmlElement();
     }
 
-    async handleImport(importSourceFiles) {
+    async handleImport(importSourceFiles, decryptionPassword) {
         this.hideImportFileLabel();
         for (const file of importSourceFiles) {
             if (file.type !== "application/json") {
@@ -20,13 +20,29 @@ class ShelfTab extends UiElement {
 
         let cookies = [];
         try {
-            const fileContents = await readFilesAsTextAsync(importSourceFiles);
+            let fileContents = await readFilesAsTextAsync(importSourceFiles);
+
+            if (decryptionPassword) {
+                const fileData = JSON.parse(fileContents);
+                if (!("data" in fileData)) {
+                    throw new Error(
+                        "Tried to decrypt invalid or unencrypted file."
+                    );
+                }
+
+                const decryptedBytes = CryptoJS.AES.decrypt(
+                    fileData.data,
+                    decryptionPassword
+                );
+                fileContents = decryptedBytes.toString(CryptoJS.enc.Utf8);
+            }
             cookies = jsonToCookies(fileContents);
         } catch (e) {
             console.warn(e);
             this.showInvalidImportFileLabel(
-                "One or more invalid JSON files. Ensure that JSON syntax is valid."
+                "Could not parse file. If file is encrypted, ensure the right password is used."
             );
+            return;
         }
 
         let ignoredCookies = 0;
@@ -56,7 +72,7 @@ class ShelfTab extends UiElement {
         }
     }
 
-    async handleExport(selectedExportDestination) {
+    async handleExport(selectedExportDestination, encryptionPassword) {
         let cookiesToExport = [];
         try {
             if (selectedExportDestination === "all") {
@@ -78,8 +94,20 @@ class ShelfTab extends UiElement {
             );
         }
         try {
-            const fileJson = cookiesToJson(cookiesToExport);
-            downloadJson(fileJson);
+            const cookiesJson = cookiesToJson(cookiesToExport);
+
+            if (encryptionPassword) {
+                const encryptedFileText = CryptoJS.AES.encrypt(
+                    JSON.stringify(cookiesJson),
+                    encryptionPassword
+                ).toString();
+                downloadJson({
+                    data: encryptedFileText,
+                });
+            } else {
+                downloadJson(cookiesJson);
+            }
+
             this.showSuccessExportLabel(
                 `Successfully exported ${selectedExportDestination.toLowerCase()} cookies.`
             );
@@ -145,7 +173,7 @@ class ShelfTab extends UiElement {
         importButton.type = "button"; // Defaults to 'submit' which refreshes the extension
 
         importButton.addEventListener("click", async () =>
-            this.handleImport(fileSelectorInput.files)
+            this.handleImport(fileSelectorInput.files, passwordInput.value)
         );
 
         return importForm;
@@ -216,7 +244,7 @@ class ShelfTab extends UiElement {
         exportButton.innerText = "Export";
 
         exportButton.addEventListener("click", async () =>
-            this.handleExport(sourceSelect.value)
+            this.handleExport(sourceSelect.value, passwordInput.value)
         );
 
         return exportForm;

@@ -49,8 +49,8 @@ class CookiesManager {
         // Jarred cookie
         if (cookie.isStored) {
             // TODO
-            if (await this.cookieJarStore.cookieExists(filterDetails)) {
-                await this.cookieJarStore.updateCookie(filterDetails, cookie);
+            if (await this.cookieJarStore.cookieExists(cookie.details)) {
+                await this.cookieJarStore.updateCookie(cookie.details, cookie);
             } else {
                 await this.cookieJarStore.addCookie(cookie);
             }

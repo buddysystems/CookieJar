@@ -30,6 +30,12 @@ function cookieToJson(cookie) {
 }
 
 function jsonToCookies(jsonList) {
-    // TODO: may need to do some error handling if not valid json
-    return JSON.parse(jsonList);
+    const list = JSON.parse(jsonList);
+    if (!Array.isArray(list)) throw new Error();
+    for (const o of list) {
+        if (!("name" in o)) throw new Error();
+        if (!("domain" in o)) throw new Error();
+        if (!("storeId" in o)) throw new Error();
+    }
+    return list;
 }
