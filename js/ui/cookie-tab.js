@@ -150,25 +150,33 @@ class CookieTab extends UiElement {
     }
 
     async loadCookieRows(searchTerm, domainFilterTerm) {
-        this.showLoading();
+        // this.showLoading();
         await this.clearCookieRows();
 
         const cookies = await this.getCookies(searchTerm, domainFilterTerm);
-
+        // this.hideLoading();
         for (const jarCookie of cookies) {
-            const cookieRow = new CookieRow(
-                jarCookie,
-                this.cookiesManager,
-                this.bulkCookieSelector
-            );
-            this.cookieRows.push(cookieRow);
-            const elem = await cookieRow.getHtmlElement();
-            this.cookieRowList.appendChild(elem);
+            await this.addCookieRow(jarCookie);
+            // Throttle the addition of cookie rows to avoid sucking up all ram and preventing the page from updating while loading
+            await new Promise((resolve) => setTimeout(resolve, 10));
         }
 
         this.isLoaded = true;
+    }
 
-        this.hideLoading();
+    async addCookieRow(cookie) {
+        const cookieRow = new CookieRow(
+            cookie,
+            this.cookiesManager,
+            this.bulkCookieSelector
+        );
+        this.cookieRows.push(cookieRow);
+        const elem = await cookieRow.getHtmlElement();
+        await new Promise((resolve, reject) => {
+            this.cookieRowList.appendChild(elem);
+            console.log("cookie row appended");
+            resolve();
+        });
     }
 
     async getCookies(searchTerm, domainFilter) {
@@ -184,11 +192,12 @@ class CookieTab extends UiElement {
 
     async show() {
         this.cookieTabElement.style.display = "block";
-        if (!this.isLoaded) {
-            const searchTerm = this.searchBox.value;
-            const domain = this.domainFilter.getSelectedDomain();
-            await this.loadCookieRows(searchTerm, domain);
-        }
+        // TODO: possibly reenable if we figure out a way to add/remove/update specific CookieRows so that the entire list is only loaded once
+        // if (!this.isLoaded) {
+        const searchTerm = this.searchBox.value;
+        const domain = this.domainFilter.getSelectedDomain();
+        await this.loadCookieRows(searchTerm, domain);
+        // }
     }
 
     async hide() {
@@ -196,7 +205,8 @@ class CookieTab extends UiElement {
     }
 
     showLoading() {
-        this.loadingIndicator.style.display = "flex";
+        console.log("showLoading");
+        // this.loadingIndicator.style.display = "flex";
     }
 
     hideLoading() {
