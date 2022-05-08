@@ -29,12 +29,7 @@ class ShelfTab extends UiElement {
                         "Tried to decrypt invalid or unencrypted file."
                     );
                 }
-
-                const decryptedBytes = CryptoJS.AES.decrypt(
-                    fileData.data,
-                    decryptionPassword
-                );
-                fileContents = decryptedBytes.toString(CryptoJS.enc.Utf8);
+                fileContents = decryptText(fileData.data, decryptionPassword);
             }
             cookies = jsonToCookies(fileContents);
         } catch (e) {
@@ -97,10 +92,10 @@ class ShelfTab extends UiElement {
             const cookiesJson = cookiesToJson(cookiesToExport);
 
             if (encryptionPassword) {
-                const encryptedFileText = CryptoJS.AES.encrypt(
+                const encryptedFileText = encryptText(
                     JSON.stringify(cookiesJson),
                     encryptionPassword
-                ).toString();
+                );
                 downloadJson({
                     data: encryptedFileText,
                 });
