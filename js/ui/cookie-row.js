@@ -77,7 +77,7 @@ class CookieRow extends UiElement {
         jarIconImg.addEventListener("click", () => {
             console.log(this.cookie);
             this.cookiesManager.storeCookie(this.cookie);
-            this.deleteCookie();
+            this.deleteCookieRow();
             // TODO delete element from active tab list of cookies
         });
 
@@ -89,7 +89,7 @@ class CookieRow extends UiElement {
         trashIconImg.title = "Delete this cookie";
         trashIconImg.addEventListener("click", () => {
             this.cookiesManager.restoreCookie(this.cookie);
-            this.deleteCookie();
+            this.deleteCookieRow();
         });
 
         // Cookie row content
@@ -132,7 +132,7 @@ class CookieRow extends UiElement {
         }
     }
 
-    deleteCookie() {
+    deleteCookieRow() {
         console.log(this.cookieRowElement)
         this.cookieRowElement.remove();
         this.cookieInfoContainer.style.display = "none";
