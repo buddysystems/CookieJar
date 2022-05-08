@@ -21,6 +21,15 @@ class CookieTab extends UiElement {
         this.cookieTabElement = document.createElement("div");
         this.cookieTabElement.classList.add("cookie-tab");
 
+        // Bulk row export modal
+        const exportCookieModal = new ExportCookieModal(
+            this.cookiesManager,
+            this.bulkCookieSelector
+        );
+        const exportCookieModalElemn = await exportCookieModal.getHtmlElement();
+        this.cookieTabElement.appendChild(exportCookieModalElemn);
+
+        // Filters (search, domain filter)
         const cookieFiltersContainer = document.createElement("div");
         this.cookieTabElement.appendChild(cookieFiltersContainer);
         cookieFiltersContainer.classList.add("cookie-filters");
@@ -118,6 +127,10 @@ class CookieTab extends UiElement {
             /> -->
             `;
         exportActionContainer.title = "Export the selected cookies";
+        exportActionContainer.addEventListener(
+            "click",
+            async () => await exportCookieModal.showModal()
+        );
 
         // Cookies list
         const cookieRowList = document.createElement("div");
