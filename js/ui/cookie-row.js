@@ -78,7 +78,18 @@ class CookieRow extends UiElement {
             console.log(this.cookie);
             this.cookiesManager.storeCookie(this.cookie);
             this.deleteCookieRow();
-            // TODO delete element from active tab list of cookies
+            console.log(this.cookie);
+        });
+
+        const unjarIconImg = document.createElement("img");
+        cookieActions.appendChild(unjarIconImg);
+        unjarIconImg.classList.add("action-icon");
+        unjarIconImg.classList.add("unjar-btn");
+        unjarIconImg.src = "/assets/icons/action-bar/unjar-png.png";
+        unjarIconImg.title = "Unjar this cookie";
+        unjarIconImg.addEventListener("click", () => {
+            this.cookiesManager.restoreCookie(this.cookie);
+            this.deleteCookieRow();
         });
 
         const trashIconImg = document.createElement("img");
@@ -88,7 +99,7 @@ class CookieRow extends UiElement {
         trashIconImg.src = "/assets/icons/action-bar/trash-icon.png";
         trashIconImg.title = "Delete this cookie";
         trashIconImg.addEventListener("click", () => {
-            this.cookiesManager.restoreCookie(this.cookie);
+            this.cookiesManager.deleteCookie(this.cookie);
             this.deleteCookieRow();
         });
 
@@ -135,7 +146,6 @@ class CookieRow extends UiElement {
     deleteCookieRow() {
         console.log(this.cookieRowElement)
         this.cookieRowElement.remove();
-        this.cookieInfoContainer.style.display = "none";
     }
 }
 
