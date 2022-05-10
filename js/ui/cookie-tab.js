@@ -49,7 +49,7 @@ class CookieTab extends UiElement {
         cookieFiltersContainer.appendChild(searchButton);
         searchButton.innerText = "Search";
         searchButton.type = "button";
-        searchButton.addEventListener("click", async () => {
+        searchButton.addEventListener("click", async() => {
             await this.search(
                 this.searchBox.value,
                 this.domainFilter.getSelectedDomain()
@@ -71,7 +71,7 @@ class CookieTab extends UiElement {
         bulkRowCheckbox.type = "checkbox";
         bulkRowCheckbox.classList.add("cookie-row-selector");
         bulkRowCheckbox.title = "Select all for bulk actions";
-        bulkRowCheckbox.addEventListener("click", async (e) => {
+        bulkRowCheckbox.addEventListener("click", async(e) => {
             const allCookies = this.cookieRows.map(
                 (cookieRow) => cookieRow.cookie
             );
@@ -129,7 +129,7 @@ class CookieTab extends UiElement {
         exportActionContainer.title = "Export the selected cookies";
         exportActionContainer.addEventListener(
             "click",
-            async () => await exportCookieModal.showModal()
+            async() => await exportCookieModal.showModal()
         );
 
         // Cookies list

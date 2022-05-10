@@ -18,4 +18,8 @@ class JarTab extends CookieTab {
     async setDomainFilterValue(domainFilter) {
         await domainFilter.resetValue();
     }
+
+    async showTab() {
+        // run show in cookie tab
+    }
 }

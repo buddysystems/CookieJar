@@ -1,10 +1,11 @@
 class CookieRow extends UiElement {
-    constructor(jarCookie, cookiesManager, bulkCookieSelector) {
+    constructor(jarCookie, cookiesManager, bulkCookieSelector, isStored) {
         super();
         this.cookie = jarCookie;
         this.isOpen = false;
         this.cookiesManager = cookiesManager;
         this.bulkCookieSelector = bulkCookieSelector;
+        this.isStored = isStored;
         this.createHtmlElement();
     }
 
@@ -67,30 +68,32 @@ class CookieRow extends UiElement {
         accordianHeader.appendChild(cookieActions);
         cookieActions.classList.add("cookie-actions");
 
-        const jarIconImg = document.createElement("img");
-        cookieActions.appendChild(jarIconImg);
-        // The action-icon class gives shared styling to icons, such as changing the cursor on hover (see css/cookie-row.css)
-        jarIconImg.classList.add("action-icon");
-        jarIconImg.classList.add("jar-btn");
-        jarIconImg.src = "/assets/icons/action-bar/jar-icon.png";
-        jarIconImg.title = "Jar this cookie";
-        jarIconImg.addEventListener("click", () => {
-            console.log(this.cookie);
-            this.cookiesManager.storeCookie(this.cookie);
-            this.deleteCookieRow();
-            console.log(this.cookie);
-        });
-
-        const unjarIconImg = document.createElement("img");
-        cookieActions.appendChild(unjarIconImg);
-        unjarIconImg.classList.add("action-icon");
-        unjarIconImg.classList.add("unjar-btn");
-        unjarIconImg.src = "/assets/icons/action-bar/unjar-png.png";
-        unjarIconImg.title = "Unjar this cookie";
-        unjarIconImg.addEventListener("click", () => {
-            this.cookiesManager.restoreCookie(this.cookie);
-            this.deleteCookieRow();
-        });
+        if (!this.cookie.isStored) {
+            const jarIconImg = document.createElement("img");
+            cookieActions.appendChild(jarIconImg);
+            // The action-icon class gives shared styling to icons, such as changing the cursor on hover (see css/cookie-row.css)
+            jarIconImg.classList.add("action-icon");
+            jarIconImg.classList.add("jar-btn");
+            jarIconImg.src = "/assets/icons/action-bar/jar-icon.png";
+            jarIconImg.title = "Jar this cookie";
+            jarIconImg.addEventListener("click", () => {
+                console.log(this.cookie);
+                this.cookiesManager.storeCookie(this.cookie);
+                this.deleteCookieRow();
+                console.log(this.cookie);
+            });
+        } else {
+            const unjarIconImg = document.createElement("img");
+            cookieActions.appendChild(unjarIconImg);
+            unjarIconImg.classList.add("action-icon");
+            unjarIconImg.classList.add("unjar-btn");
+            unjarIconImg.src = "/assets/icons/action-bar/unjar-png.png";
+            unjarIconImg.title = "Unjar this cookie";
+            unjarIconImg.addEventListener("click", () => {
+                this.cookiesManager.restoreCookie(this.cookie);
+                this.deleteCookieRow();
+            });
+        }
 
         const trashIconImg = document.createElement("img");
         cookieActions.appendChild(trashIconImg);

@@ -17,4 +17,8 @@ class ActiveTab extends CookieTab {
     async setDomainFilterValue(domainFilter) {
         await domainFilter.setAsCurrentDomain();
     }
+
+    async showTab() {
+        // run show in cookie tab
+    }
 }
