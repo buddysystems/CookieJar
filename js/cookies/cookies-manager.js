@@ -95,7 +95,13 @@ class CookiesManager {
         }
     }
 
-    async deleteCookie(cookieDetails) {
-        // TODO
+    async deleteCookie(cookie) {
+        if (cookie.isStored) {
+            // Is in cookie jar, remove from there
+            await this.cookieJarStore.removeCookie(cookie.details);
+        } else {
+            // Is in browser cookies, remove from active
+            await this.chromeCookieStore.removeCookie(cookie.details);
+        }
     }
 }
