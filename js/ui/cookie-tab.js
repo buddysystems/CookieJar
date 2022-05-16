@@ -1,11 +1,12 @@
 class CookieTab extends UiElement {
-    constructor(cookiesManager) {
+    constructor(cookiesManager, isJar) {
         super();
         this.isLoaded = false;
         this.cookiesManager = cookiesManager;
         this.bulkCookieSelector = new BulkCookieSelector(cookiesManager);
         this.hasElementBeenCreated = false;
         this.cookieRows = [];
+        this.isJar = isJar;
     }
 
     async getHtmlElement() {
@@ -92,17 +93,31 @@ class CookieTab extends UiElement {
         bulkRow.appendChild(cookieActionsContainer);
         cookieActionsContainer.classList.add("bulk-actions");
 
-        const jarActionContainer = document.createElement("div");
-        cookieActionsContainer.appendChild(jarActionContainer);
-        jarActionContainer.classList.add("action-button");
-        jarActionContainer.innerHTML += `
+        if (this.isJar) {
+            const unjarActionContainer = document.createElement("div");
+            cookieActionsContainer.appendChild(unjarActionContainer);
+            unjarActionContainer.classList.add("action-button");
+            unjarActionContainer.innerHTML += `
+            <span>unJar selected</span>
+            <img
+                src="/assets/icons/action-bar/unjar-png.png"
+                class="action-icon"
+            />
+            `;
+            unjarActionContainer.title = "Move the selected cookies to active";
+        } else {
+            const jarActionContainer = document.createElement("div");
+            cookieActionsContainer.appendChild(jarActionContainer);
+            jarActionContainer.classList.add("action-button");
+            jarActionContainer.innerHTML += `
             <span>Jar selected</span>
             <img
                 src="/assets/icons/action-bar/jar-icon.png"
                 class="action-icon"
             />
             `;
-        jarActionContainer.title = "Move the selected cookies to the jar";
+            jarActionContainer.title = "Move the selected cookies to the jar";
+        }
 
         const deleteActionContainer = document.createElement("div");
         cookieActionsContainer.appendChild(deleteActionContainer);
