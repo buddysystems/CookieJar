@@ -116,4 +116,11 @@ class CookiesManager {
             await this.chromeCookieStore.removeCookie(cookie.details);
         }
     }
+
+    async deleteCookies(cookies) {
+        for (const cookie of cookies) {
+            await this.deleteCookie(cookie);
+        }
+    }
+
 }

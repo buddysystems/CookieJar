@@ -145,7 +145,9 @@ class CookieTab extends UiElement {
         deleteActionContainer.title = "Permanently delete the selected cookies";
         deleteActionContainer.addEventListener(
             "click",
-            async() => console.log('test')
+            async() => {
+                this.cookiesManager.deleteCookies(this.bulkCookieSelector.selectedCookies)
+            }
         );
 
         const exportActionContainer = document.createElement("div");
