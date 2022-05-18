@@ -108,7 +108,8 @@ class CookieTab extends UiElement {
             unjarActionContainer.addEventListener(
                 "click",
                 async() => {
-                    this.cookiesManager.restoreCookies(this.bulkCookieSelector.selectedCookies)
+                    await this.cookiesManager.restoreCookies(this.bulkCookieSelector.selectedCookies),
+                        this.show()
                 }
             );
         } else {
@@ -126,7 +127,8 @@ class CookieTab extends UiElement {
             jarActionContainer.addEventListener(
                 "click",
                 async() => {
-                    this.cookiesManager.storeCookies(this.bulkCookieSelector.selectedCookies)
+                    await this.cookiesManager.storeCookies(this.bulkCookieSelector.selectedCookies),
+                        this.show()
                 }
 
             );
@@ -146,7 +148,8 @@ class CookieTab extends UiElement {
         deleteActionContainer.addEventListener(
             "click",
             async() => {
-                this.cookiesManager.deleteCookies(this.bulkCookieSelector.selectedCookies)
+                await this.cookiesManager.deleteCookies(this.bulkCookieSelector.selectedCookies),
+                    this.show()
             }
         );
 
