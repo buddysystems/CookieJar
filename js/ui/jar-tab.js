@@ -1,6 +1,6 @@
 class JarTab extends CookieTab {
     constructor(cookiesManager) {
-        super(cookiesManager);
+        super(cookiesManager, true);
     }
 
     async getCookies(searchTerm, domainFilter) {
