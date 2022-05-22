@@ -105,6 +105,13 @@ class CookieTab extends UiElement {
             />
             `;
             unjarActionContainer.title = "Move the selected cookies to active";
+            unjarActionContainer.addEventListener(
+                "click",
+                async() => {
+                    await this.cookiesManager.restoreCookies(this.bulkCookieSelector.selectedCookies),
+                        this.show()
+                }
+            );
         } else {
             const jarActionContainer = document.createElement("div");
             cookieActionsContainer.appendChild(jarActionContainer);
@@ -117,6 +124,14 @@ class CookieTab extends UiElement {
             />
             `;
             jarActionContainer.title = "Move the selected cookies to the jar";
+            jarActionContainer.addEventListener(
+                "click",
+                async() => {
+                    await this.cookiesManager.storeCookies(this.bulkCookieSelector.selectedCookies),
+                        this.show()
+                }
+
+            );
         }
 
         const deleteActionContainer = document.createElement("div");
@@ -130,6 +145,13 @@ class CookieTab extends UiElement {
             />
             `;
         deleteActionContainer.title = "Permanently delete the selected cookies";
+        deleteActionContainer.addEventListener(
+            "click",
+            async() => {
+                await this.cookiesManager.deleteCookies(this.bulkCookieSelector.selectedCookies),
+                    this.show()
+            }
+        );
 
         const exportActionContainer = document.createElement("div");
         cookieActionsContainer.appendChild(exportActionContainer);

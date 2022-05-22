@@ -28,6 +28,12 @@ class CookiesManager {
         await this.chromeCookieStore.removeCookie(cookie.details);
     }
 
+    async storeCookies(cookies) {
+        for (const cookie of cookies) {
+            await this.storeCookie(cookie);
+        }
+    }
+
     async restoreCookie(cookie) {
         // Don't restore if restore
         if (!cookie.isStored) return;
@@ -35,6 +41,12 @@ class CookiesManager {
 
         await this.chromeCookieStore.setCookie(cookie);
         await this.cookieJarStore.removeCookie(cookie.details);
+    }
+
+    async restoreCookies(cookies) {
+        for (const cookie of cookies) {
+            await this.restoreCookie(cookie);
+        }
     }
 
     /**
@@ -104,4 +116,11 @@ class CookiesManager {
             await this.chromeCookieStore.removeCookie(cookie.details);
         }
     }
+
+    async deleteCookies(cookies) {
+        for (const cookie of cookies) {
+            await this.deleteCookie(cookie);
+        }
+    }
+
 }
