@@ -1,0 +1,241 @@
+[
+    {
+      "name": "SNID",
+      "domain": ".google.com",
+      "storeId": "0",
+      "expirationDate": 1669169444.091988,
+      "hostOnly": false,
+      "httpOnly": true,
+      "path": "/verify",
+      "sameSite": "lax",
+      "secure": true,
+      "session": false,
+      "value": "APx-0P1IoMLMgru1xnM4haDuzkPnqgV7CoUIK8pwMQTKHr-QESGocu98_D-nRn7kFsgL-qNrtDy3Ozs__AHMyfEbXKBY",
+      "details": {
+        "name": "SNID",
+        "storeId": "0",
+        "url": "https://.google.com/verify"
+      },
+      "isStored": false,
+      "isSelected": false
+    },
+    {
+      "name": "1P_JAR",
+      "domain": ".google.com",
+      "storeId": "0",
+      "expirationDate": 1655950325.829038,
+      "hostOnly": false,
+      "httpOnly": false,
+      "path": "/",
+      "sameSite": "no_restriction",
+      "secure": true,
+      "session": false,
+      "value": "2022-05-24-02",
+      "details": {
+        "name": "1P_JAR",
+        "storeId": "0",
+        "url": "https://.google.com/"
+      },
+      "isStored": false,
+      "isSelected": false
+    },
+    {
+      "name": "AEC",
+      "domain": ".google.com",
+      "storeId": "0",
+      "expirationDate": 1668910239.302739,
+      "hostOnly": false,
+      "httpOnly": true,
+      "path": "/",
+      "sameSite": "lax",
+      "secure": true,
+      "session": false,
+      "value": "AakniGOJ3tvje544fYNqSnAL9mdXwZy9EcBejWVVwzo50rWjbPheHeKF0zs",
+      "details": {
+        "name": "AEC",
+        "storeId": "0",
+        "url": "https://.google.com/"
+      },
+      "isStored": false,
+      "isSelected": false
+    },
+    {
+      "name": "_sp_ses.5c9c",
+      "domain": "www.urbandictionary.com",
+      "storeId": "0",
+      "expirationDate": 1653360071,
+      "hostOnly": true,
+      "httpOnly": false,
+      "path": "/",
+      "sameSite": "unspecified",
+      "secure": false,
+      "session": false,
+      "value": "*",
+      "details": {
+        "name": "_sp_ses.5c9c",
+        "storeId": "0",
+        "url": "http://www.urbandictionary.com/"
+      },
+      "isStored": false,
+      "isSelected": false
+    },
+    {
+      "name": "_ga",
+      "domain": ".urbandictionary.com",
+      "storeId": "0",
+      "expirationDate": 1716430271,
+      "hostOnly": false,
+      "httpOnly": false,
+      "path": "/",
+      "sameSite": "unspecified",
+      "secure": false,
+      "session": false,
+      "value": "GA1.2.250003852.1653358258",
+      "details": {
+        "name": "_ga",
+        "storeId": "0",
+        "url": "http://.urbandictionary.com/"
+      },
+      "isStored": false,
+      "isSelected": false
+    },
+    {
+      "name": "_gid",
+      "domain": ".urbandictionary.com",
+      "storeId": "0",
+      "expirationDate": 1653444671,
+      "hostOnly": false,
+      "httpOnly": false,
+      "path": "/",
+      "sameSite": "unspecified",
+      "secure": false,
+      "session": false,
+      "value": "GA1.2.2137056590.1653358258",
+      "details": {
+        "name": "_gid",
+        "storeId": "0",
+        "url": "http://.urbandictionary.com/"
+      },
+      "isStored": false,
+      "isSelected": false
+    },
+    {
+      "name": "usprivacy",
+      "domain": "www.urbandictionary.com",
+      "storeId": "0",
+      "expirationDate": 1684894272,
+      "hostOnly": true,
+      "httpOnly": false,
+      "path": "/",
+      "sameSite": "lax",
+      "secure": false,
+      "session": false,
+      "value": "1---",
+      "details": {
+        "name": "usprivacy",
+        "storeId": "0",
+        "url": "http://www.urbandictionary.com/"
+      },
+      "isStored": false,
+      "isSelected": false
+    },
+    {
+      "name": "OneTrustWPCCPAGoogleOptOut",
+      "domain": "www.urbandictionary.com",
+      "storeId": "0",
+      "expirationDate": 1684894272,
+      "hostOnly": true,
+      "httpOnly": false,
+      "path": "/",
+      "sameSite": "lax",
+      "secure": false,
+      "session": false,
+      "value": "true",
+      "details": {
+        "name": "OneTrustWPCCPAGoogleOptOut",
+        "storeId": "0",
+        "url": "http://www.urbandictionary.com/"
+      },
+      "isStored": false,
+      "isSelected": false
+    },
+    {
+      "name": "mc",
+      "domain": ".quantserve.com",
+      "storeId": "0",
+      "expirationDate": 1687572658.464069,
+      "hostOnly": false,
+      "httpOnly": false,
+      "path": "/",
+      "sameSite": "no_restriction",
+      "secure": true,
+      "session": false,
+      "value": "628c3eb2-7bd36-b773f-63f75",
+      "details": {
+        "name": "mc",
+        "storeId": "0",
+        "url": "https://.quantserve.com/"
+      },
+      "isStored": false,
+      "isSelected": false
+    },
+    {
+      "name": "__qca",
+      "domain": ".urbandictionary.com",
+      "storeId": "0",
+      "expirationDate": 1687227058,
+      "hostOnly": false,
+      "httpOnly": false,
+      "path": "/",
+      "sameSite": "unspecified",
+      "secure": false,
+      "session": false,
+      "value": "P0-420913003-1653358258173",
+      "details": {
+        "name": "__qca",
+        "storeId": "0",
+        "url": "http://.urbandictionary.com/"
+      },
+      "isStored": false,
+      "isSelected": false
+    },
+    {
+      "name": "country_code",
+      "domain": "www.urbandictionary.com",
+      "storeId": "0",
+      "hostOnly": true,
+      "httpOnly": false,
+      "path": "/",
+      "sameSite": "unspecified",
+      "secure": false,
+      "session": true,
+      "value": "US",
+      "details": {
+        "name": "country_code",
+        "storeId": "0",
+        "url": "http://www.urbandictionary.com/"
+      },
+      "isStored": false,
+      "isSelected": false
+    },
+    {
+      "name": "_pbjs_userid_consent_data",
+      "domain": "www.urbandictionary.com",
+      "storeId": "0",
+      "expirationDate": 1655950271,
+      "hostOnly": true,
+      "httpOnly": false,
+      "path": "/",
+      "sameSite": "lax",
+      "secure": false,
+      "session": false,
+      "value": "3524755945110770",
+      "details": {
+        "name": "_pbjs_userid_consent_data",
+        "storeId": "0",
+        "url": "http://www.urbandictionary.com/"
+      },
+      "isStored": false,
+      "isSelected": false
+    }
+]
