@@ -107,7 +107,7 @@ class CookieRow extends UiElement {
         });
 
         // Cookie row content
-        const cookieRowContent = new CookieRowContent(this.cookie);
+        const cookieRowContent = new CookieRowContent(this.cookie, this.cookiesManager);
         cookieRow.appendChild(cookieRowContent.getHtmlElement());
         this.cookieRowContent = cookieRowContent;
 
@@ -153,9 +153,10 @@ class CookieRow extends UiElement {
 }
 
 class CookieRowContent extends UiElement {
-    constructor(jarCookie) {
+    constructor(jarCookie, cookiesManager) {
         super();
         this.cookie = jarCookie;
+        this.cookiesManager = cookiesManager;
         this.createHtmlElement();
     }
 
@@ -177,22 +178,23 @@ class CookieRowContent extends UiElement {
             <label>Name</label>
             <input
                 type="text"
-                name=""
-                id=""
+                id="name"
                 value="${this.cookie.name}"
             />
             <label>Value</label>
-            <textarea cols="50" rows="5"
+            <textarea id="value" cols="50" rows="5"
             >${this.cookie.value}</textarea>
             <label>Domain</label>
             <input
+                id="domain"
                 type="text"
                 value="${this.cookie.domain}"
             />
             <label>Path</label>
-            <input type="text" value="${this.cookie.path}" />
+            <input id="path" type="text" value="${this.cookie.path}" />
             <label>Expiration</label>
             <input
+                id="expiration"
                 type="datetime"
                 value="${this.cookie.expiration}"
             />
@@ -202,7 +204,7 @@ class CookieRowContent extends UiElement {
         cookieEditForm.appendChild(sameSiteSelect);
         sameSiteSelect.name = "same-site";
         sameSiteSelect.innerHTML = `
-             <select name="same-site">
+            <select id="sameSite">
                 <option value="No Restriction">
                     No Restriction
                 </option>
@@ -216,26 +218,26 @@ class CookieRowContent extends UiElement {
             <div class="cookie-bools">
                 <div>
                     <label>HostOnly</label>
-                    <input type="checkbox" ${
+                    <input type="checkbox" id="hostOnly" ${
                         this.cookie.hostOnly ? "checked" : ""
                     } />
                 </div>
                 <div>
                     <label>Session</label>
-                    <input type="checkbox" ${
+                    <input type="checkbox" id="session" ${
                         this.cookie.session ? "checked" : ""
                     }
                      />
                 </div>
                 <div>
                     <label>Secure</label>
-                    <input type="checkbox" ${
+                    <input type="checkbox" id="secure" ${
                         this.cookie.secure ? "checked" : ""
                     } />
                 </div>
                 <div>
                     <label>HttpOnly</label>
-                    <input type="checkbox" ${
+                    <input type="checkbox" id="httpOnly" ${
                         this.cookie.httpOnly ? "checked" : ""
                     } />
                 </div>
@@ -253,7 +255,10 @@ class CookieRowContent extends UiElement {
         const saveButton = document.createElement("button");
         formActionsContainer.appendChild(saveButton);
         saveButton.innerText = "Save";
-        saveButton.addEventListener("click", () => console.log("save"));
+        saveButton.addEventListener("click", () => { 
+            console.log("save");
+            this.cookiesManager.editCookie(this.cookie)
+         });
 
         this.cookieRowContent = cookieRowContent;
     }

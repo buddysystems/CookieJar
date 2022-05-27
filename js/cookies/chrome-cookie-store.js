@@ -24,7 +24,7 @@ class ChromeCookieStore {
             cookieDetails.url = getCookieUrl(cookieDetails);
         }
 
-        const result = await await chrome.cookies.set(cookieDetails);
+        const result = await chrome.cookies.set(cookieDetails);
         if (result === null) {
             console.error("Error occured while adding cookie.");
             console.error(chrome.runtime.lastError);
