@@ -253,12 +253,13 @@ class CookieRowContent extends UiElement {
         cancelButton.addEventListener("click", () => console.log("cancel"));
 
         const saveButton = document.createElement("button");
+        saveButton.type = 'button';
         formActionsContainer.appendChild(saveButton);
         saveButton.innerText = "Save";
-        saveButton.addEventListener("click", () => { 
+        saveButton.addEventListener("click", () => {
             console.log("save");
-            this.cookiesManager.editCookie(this.cookie)
-         });
+            this.cookiesManager.editCookie(this.cookie);
+        });
 
         this.cookieRowContent = cookieRowContent;
     }
