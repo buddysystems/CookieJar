@@ -17,8 +17,8 @@ class DomainFilter extends UiElement {
 
     async setAsCurrentDomain() {
         const currTab = await getCurrentTab();
-        const fullDomain = getUrlToplevelDomain(currTab.url);
-        this.domainFilterElement.value;
+        const topLevelDomain = getUrlTopLevelDomain(currTab.url);
+        this.domainFilterElement.value = topLevelDomain;
     }
 
     async getHtmlElement() {
