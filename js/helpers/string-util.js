@@ -21,3 +21,18 @@ function getUrlDomain(url) {
         return "";
     }
 }
+
+function getUrlToplevelDomain(url) {
+    try {
+        const domain = getUrlDomain(url);
+        for (let i = domain.length; i > 0; i--) {
+            if (domain.charAt(i) !== ".") {
+            }
+        }
+        const u = new URL(url);
+        return u.hostname.replace("www", "");
+    } catch (TypeError) {
+        // If we are visiting a non-webpage (such as chrome://extensions), we can't parse a URL
+        return "";
+    }
+}
