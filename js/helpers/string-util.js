@@ -17,7 +17,16 @@ function getUrlDomain(url) {
         const u = new URL(url);
         return u.hostname.replace("www", "");
     } catch (TypeError) {
+        console.warn("Couldn't get url of webpage");
         // If we are visiting a non-webpage (such as chrome://extensions), we can't parse a URL
         return "";
     }
+}
+
+function getUrlTopLevelDomain(url) {
+    const domain = getUrlDomain(url);
+    const domainParts = domain.split(".");
+    console.dir(domainParts);
+    if (domainParts.length <= 2) return domain;
+    return domainParts.slice(-2).join(".");
 }
