@@ -7,6 +7,11 @@ class CookieRow extends UiElement {
         this.bulkCookieSelector = bulkCookieSelector;
         this.isStored = isStored;
         this.createHtmlElement();
+        this.previousCookieDetails = {
+            name: jarCookie.name,
+            storeId: jarCookie.storeId,
+            url: jarCookie.url,
+        };
     }
 
     createHtmlElement() {
@@ -174,32 +179,58 @@ class CookieRowContent extends UiElement {
         cookieInfoContainer.appendChild(cookieEditForm);
         cookieEditForm.classList.add("cookie-edit-form");
 
-        cookieEditForm.innerHTML = `
-            <label>Name</label>
-            <input
-                type="text"
-                id="name"
-                value="${this.cookie.name}"
-            />
-            <label>Value</label>
-            <textarea id="value" cols="50" rows="5"
-            >${this.cookie.value}</textarea>
-            <label>Domain</label>
-            <input
-                id="domain"
-                type="text"
-                value="${this.cookie.domain}"
-            />
-            <label>Path</label>
-            <input id="path" type="text" value="${this.cookie.path}" />
-            <label>Expiration</label>
-            <input
-                id="expiration"
-                type="datetime"
-                value="${this.cookie.expiration}"
-            />
-            <label>SameSite</label>
-            `;
+        // Inside the edit form
+        const nameLabel = document.createElement("label");
+        nameLabel.innerText = "Name";
+        cookieEditForm.appendChild(nameLabel);
+
+        const nameInput = document.createElement("input");
+        nameInput.type = "text";
+        nameInput.value = "test value"
+        console.log(nameInput.value);
+        cookieEditForm.appendChild(nameInput);
+
+        const valueLabel = document.createElement("label");
+        valueLabel.innerText = "Value";
+        cookieEditForm.appendChild(valueLabel);
+
+        const valueInput = document.createElement("textarea");
+        valueInput.cols = "50";
+        valueInput.rows = "5";
+        valueInput.innerText = this.cookie.value;
+        cookieEditForm.appendChild(valueInput);
+
+        const domainLabel = document.createElement("label");
+        domainLabel.innerText = "Domain";
+        cookieEditForm.appendChild(domainLabel);
+
+        const domainInput = document.createElement("input");
+        domainInput.type = "text";
+        domainInput.value = this.cookie.domain;
+        cookieEditForm.appendChild(domainInput);
+
+        const pathLabel = document.createElement("label");
+        pathLabel.innerText = "Path";
+        cookieEditForm.appendChild(pathLabel);
+
+        const pathInput = document.createElement("input");
+        pathInput.type = "text";
+        pathInput.value = this.cookie.path;
+        cookieEditForm.appendChild(pathInput);
+
+        const expirationLabel = document.createElement("label");
+        expirationLabel.innerText = "Expiration";
+        cookieEditForm.appendChild(expirationLabel);
+
+        const expirationInput = document.createElement("input");
+        expirationInput.type = "text";
+        expirationInput.value = this.cookie.expiration;
+        cookieEditForm.appendChild(expirationInput);
+
+        const sameSiteLabel = document.createElement("label");
+        sameSiteLabel.innerText = "SameSite";
+        cookieEditForm.appendChild(sameSiteLabel);
+
         const sameSiteSelect = document.createElement("select");
         cookieEditForm.appendChild(sameSiteSelect);
         sameSiteSelect.name = "same-site";
@@ -212,6 +243,8 @@ class CookieRowContent extends UiElement {
                 <option value="Strict">Strict</option>
             </select>
             `;
+
+
         sameSiteSelect.value = this.cookie.sameSite;
 
         cookieEditForm.innerHTML += `
@@ -258,7 +291,7 @@ class CookieRowContent extends UiElement {
         saveButton.innerText = "Save";
         saveButton.addEventListener("click", () => {
             console.log("save");
-            this.cookiesManager.editCookie(this.cookie);
+            this.cookiesManager.upsertCookie(this.cookie);
         });
 
         this.cookieRowContent = cookieRowContent;
@@ -274,5 +307,9 @@ class CookieRowContent extends UiElement {
         } else {
             this.cookieInfoContainer.style.display = "none";
         }
+    }
+
+    readCookieRowContent() {
+        this.cookieRowContent
     }
 }
