@@ -52,12 +52,11 @@ class CookiesManager {
     /**
      * Either add the cookie to the appropriate store if not already present, or update it in that store if already present.
      */
-    async upsertCookie(cookie) {
-        const filterDetails = {
-            name: cookie.details.name,
-            domain: cookie.domain,
-            storeId: cookie.details.storeId,
-        };
+    async upsertCookie(cookie, previousCookieDetails) {
+        console.log(previousCookieDetails);
+        // REMINDER FOR ELIJAH: test import functionality
+        const filterDetails = previousCookieDetails;
+        console.log(filterDetails);
         // Jarred cookie
         if (cookie.isStored) {
             // TODO

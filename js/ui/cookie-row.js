@@ -6,12 +6,12 @@ class CookieRow extends UiElement {
         this.cookiesManager = cookiesManager;
         this.bulkCookieSelector = bulkCookieSelector;
         this.isStored = isStored;
-        this.createHtmlElement();
         this.previousCookieDetails = {
             name: jarCookie.name,
             storeId: jarCookie.storeId,
             url: jarCookie.url,
         };
+        this.createHtmlElement();
     }
 
     createHtmlElement() {
@@ -186,8 +186,7 @@ class CookieRowContent extends UiElement {
 
         const nameInput = document.createElement("input");
         nameInput.type = "text";
-        nameInput.value = "test value"
-        console.log(nameInput.value);
+        nameInput.value = this.cookie.name;
         cookieEditForm.appendChild(nameInput);
 
         const valueLabel = document.createElement("label");
@@ -234,47 +233,81 @@ class CookieRowContent extends UiElement {
         const sameSiteSelect = document.createElement("select");
         cookieEditForm.appendChild(sameSiteSelect);
         sameSiteSelect.name = "same-site";
-        sameSiteSelect.innerHTML = `
-            <select id="sameSite">
-                <option value="No Restriction">
-                    No Restriction
-                </option>
-                <option value="Lax">Lax</option>
-                <option value="Strict">Strict</option>
-            </select>
-            `;
 
+        const noRestrictionOption = document.createElement("option");
+        noRestrictionOption.value = "no_restriction";
+        noRestrictionOption.innerText = "No Restriction";
+        sameSiteSelect.appendChild(noRestrictionOption);
+
+        const laxOption = document.createElement("option");
+        laxOption.value = "lax";
+        laxOption.innerText = "Lax";
+        sameSiteSelect.appendChild(laxOption);
+
+        const strictOption = document.createElement("option");
+        strictOption.value = "strict";
+        strictOption.innerText = "Strict";
+        sameSiteSelect.appendChild(strictOption);
 
         sameSiteSelect.value = this.cookie.sameSite;
 
-        cookieEditForm.innerHTML += `
-            <div class="cookie-bools">
-                <div>
-                    <label>HostOnly</label>
-                    <input type="checkbox" id="hostOnly" ${
-                        this.cookie.hostOnly ? "checked" : ""
-                    } />
-                </div>
-                <div>
-                    <label>Session</label>
-                    <input type="checkbox" id="session" ${
-                        this.cookie.session ? "checked" : ""
-                    }
-                     />
-                </div>
-                <div>
-                    <label>Secure</label>
-                    <input type="checkbox" id="secure" ${
-                        this.cookie.secure ? "checked" : ""
-                    } />
-                </div>
-                <div>
-                    <label>HttpOnly</label>
-                    <input type="checkbox" id="httpOnly" ${
-                        this.cookie.httpOnly ? "checked" : ""
-                    } />
-                </div>
-            </div>`;
+        // cookie bools
+        const cookieBooleans = document.createElement("div");
+        cookieBooleans.classList.add("cookie-bools");
+        cookieEditForm.appendChild(cookieBooleans);
+
+
+        const hostOnlyDiv = document.createElement("div");
+        cookieBooleans.appendChild(hostOnlyDiv);
+
+        const hostOnlyLabel = document.createElement("label");
+        hostOnlyLabel.innerText = "HostOnly";
+        hostOnlyDiv.appendChild(hostOnlyLabel);
+
+        const hostOnlyInput = document.createElement("input");
+        hostOnlyInput.type = "checkbox";
+        hostOnlyInput.checked = this.cookie.hostOnly;
+        hostOnlyDiv.appendChild(hostOnlyInput);
+
+
+        const sessionDiv = document.createElement("div");
+        cookieBooleans.appendChild(sessionDiv);
+
+        const sessionLabel = document.createElement("label");
+        sessionLabel.innerText = "Session";
+        sessionDiv.appendChild(sessionLabel);
+
+        const sessionInput = document.createElement("input");
+        sessionInput.type = "checkbox";
+        sessionInput.checked = this.cookie.session;
+        sessionDiv.appendChild(sessionInput);
+
+
+        const secureDiv = document.createElement("div");
+        cookieBooleans.appendChild(secureDiv);
+
+        const secureLabel = document.createElement("label");
+        secureLabel.innerText = "Secure";
+        secureDiv.appendChild(secureLabel);
+
+        const secureInput = document.createElement("input");
+        secureInput.type = "checkbox";
+        secureInput.checked = this.cookie.secure;
+        secureDiv.appendChild(secureInput);
+
+
+        const httpOnlyDiv = document.createElement("div");
+        cookieBooleans.appendChild(httpOnlyDiv);
+
+        const httpOnlyLabel = document.createElement("label");
+        httpOnlyLabel.innerText = "HttpOnly";
+        httpOnlyDiv.appendChild(httpOnlyLabel);
+
+        const httpOnlyInput = document.createElement("input");
+        httpOnlyInput.type = "checkbox";
+        httpOnlyInput.checked = this.cookie.httpOnly;
+        httpOnlyDiv.appendChild(httpOnlyInput);
+
 
         const formActionsContainer = document.createElement("div");
         cookieEditForm.appendChild(formActionsContainer);
@@ -291,7 +324,13 @@ class CookieRowContent extends UiElement {
         saveButton.innerText = "Save";
         saveButton.addEventListener("click", () => {
             console.log("save");
-            this.cookiesManager.upsertCookie(this.cookie);
+            // get previous cookie details from this.cookie
+            const prevDetails = this.snapshotDetails();
+
+            this.packageNewEditedCookie(domainInput.value, nameInput.value, );
+            console.log(prevDetails);
+
+            // this.cookiesManager.upsertCookie(this.cookie, prevDetails);
         });
 
         this.cookieRowContent = cookieRowContent;
@@ -311,5 +350,33 @@ class CookieRowContent extends UiElement {
 
     readCookieRowContent() {
         this.cookieRowContent
+    }
+
+    packageNewEditedCookie(domainInput, nameInput) {
+        this.cookie.domain = domainInput;
+        this.cookie.name = nameInput;
+
+        // this.domain = cookie.domain;
+        // this.name = cookie.name;
+        // this.storeId = cookie.storeId;
+        // this.expirationDate = cookie.expirationDate;
+        // this.hostOnly = cookie.hostOnly;
+        // this.httpOnly = cookie.httpOnly;
+        // this.path = cookie.path;
+        // this.sameSite = cookie.sameSite;
+        // this.secure = cookie.secure;
+        // this.session = cookie.session;
+        // this.value = cookie.value;
+        // this.details = {
+        //     name: cookie.name,
+        //     storeId: cookie.storeId,
+        //     url: getCookieUrl(this),
+        // };
+        // this.isStored = isStored;
+        // this.isSelected = isSelected;
+    }
+
+    snapshotDetails() {
+        return this.cookie.details;
     }
 }
