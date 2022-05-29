@@ -182,3 +182,5 @@ class CookiesManager {
     }
 
 }
+
+export {CookiesManager};

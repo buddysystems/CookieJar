@@ -1,4 +1,4 @@
-import BulkCookieSelector from "bulk-cookie-selector.js";
+import {CookiesManager} from "../js/cookies/cookies-manager.js";
 
 const cookies = [
   {
@@ -83,11 +83,11 @@ const cookies = [
   },
 ]
 
-const selector = BulkCookieSelector
+const selector = CookiesManager
 
-describe("BulkCookieSelector", () => {
+describe("CookiesManager", () => {
 
-  test("Test ", () => {
+  it("Test ", () => {
     const testCookie = {
       name: "SNID",
       domain: ".google.com",
@@ -113,7 +113,7 @@ describe("BulkCookieSelector", () => {
     expect(testCookie.isSelected).toBeTruthy();
   });
 
-  test("it should filter by a search term (link)", () => {
+  it("it should filter by a search term (link)", () => {
     const cookies = {
   }
 })});

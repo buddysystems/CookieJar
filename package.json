@@ -1,7 +1,5 @@
 {
     "scripts": {
-        "test": "jest",
-        "type": "module"
-    },
-    "type": "module"
+        "test": "mocha"
+    }
 }
