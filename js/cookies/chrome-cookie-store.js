@@ -1,5 +1,6 @@
 class ChromeCookieStore {
     async setCookie(cookie) {
+        console.log('test');
         let domain = cookie.domain;
         if (cookie.name.includes("__Host-")) {
             domain = "";
@@ -23,8 +24,8 @@ class ChromeCookieStore {
         if (domainHasPrecedingDot) {
             cookieDetails.url = getCookieUrl(cookieDetails);
         }
-
-        const result = await await chrome.cookies.set(cookieDetails);
+        console.log(cookieDetails);
+        const result = await chrome.cookies.set(cookieDetails);
         if (result === null) {
             console.error("Error occured while adding cookie.");
             console.error(chrome.runtime.lastError);

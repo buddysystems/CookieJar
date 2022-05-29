@@ -52,12 +52,11 @@ class CookiesManager {
     /**
      * Either add the cookie to the appropriate store if not already present, or update it in that store if already present.
      */
-    async upsertCookie(cookie) {
-        const filterDetails = {
-            name: cookie.details.name,
-            domain: cookie.domain,
-            storeId: cookie.details.storeId,
-        };
+    async upsertCookie(cookie, previousCookieDetails) {
+        console.log(previousCookieDetails);
+        // REMINDER FOR ELIJAH: test import functionality
+        const filterDetails = previousCookieDetails;
+        console.log(filterDetails);
         // Jarred cookie
         if (cookie.isStored) {
             // TODO
@@ -93,16 +92,75 @@ class CookiesManager {
         }
     }
 
+    // async editCookie(currentCookie) {
+    //     let domain;
+    //     let path;
+    //     let expiration;
+    //     let sameSite;
+    //     let hostOnly;
+    //     let session;
+    //     let secure;
+    //     let httpOnly;
+
+    //     const name = document.getElementById("name").value;
+    //     const value = document.getElementById("value").value;
+    //     domain = document.getElementById("domain").value;
+    //     path = document.getElementById("path").value;
+    //     expiration = document.getElementById("expiration").value;
+    //     //sameSite = document.getElementById("sameSite").value;
+    //     sameSite = "no_restriction";
+    //     hostOnly = document.getElementById("hostOnly").checked;
+    //     session = document.getElementById("session").checked;
+    //     secure = document.getElementById("secure").checked;
+    //     httpOnly = document.getElementById("httpOnly").checked;
+
+    //     let editedCookie = currentCookie;
+    //     editedCookie.name = name;
+    //     editedCookie.value = value;
+    //     editedCookie.domain = domain;
+    //     editedCookie.path = path;
+    //     editedCookie.expiration = expiration;
+    //     editedCookie.sameSite = sameSite;
+    //     editedCookie.hostOnly = hostOnly;
+    //     editedCookie.session = session;
+    //     editedCookie.secure = secure;
+    //     editedCookie.httpOnly = httpOnly;
+
+    //     // await this.deleteCookie(currentCookie);
+    //     // await this.upsertCookie(editedCookie);
+
+    //     //await this.chromeCookieStore.setCookie(editedCookie)
+
+    //     await this.updateCookie(currentCookie.details, editedCookie);
+
+    //     // const cookieDetails = {
+    //     //     domain: domain,
+    //     //     httpOnly: httpOnly,
+    //     //     name: name,
+    //     //     path: path,
+    //     //     sameSite: sameSite,
+    //     //     secure: secure,
+    //     //     storeId: currentCookie.storeId,
+    //     //     url: currentCookie.details.url,
+    //     //     value: value,
+    //     // };
+    //     // await chrome.cookies.set(cookieDetails)
+
+    // }
+
     /**
      * @param {{name: str, storeId: number, url: str}} previousCookieDetails The details used to identify the cookie to be updated
      */
     async updateCookie(previousCookieDetails, updatedCookie) {
+        console.log(previousCookieDetails);
+        console.log(updatedCookie);
         if (updatedCookie.isStored) {
             // Is in cookie jar, need to update in local storage
             await this.cookieJarStore.removeCookie(previousCookieDetails);
             await this.cookieJarStore.addCookie(updatedCookie);
         } else {
             // Is in browser cookies
+            console.log(updatedCookie);
             await this.chromeCookieStore.setCookie(updatedCookie);
         }
     }
