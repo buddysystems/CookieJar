@@ -52,11 +52,12 @@ class CookiesManager {
     /**
      * Either add the cookie to the appropriate store if not already present, or update it in that store if already present.
      */
-    async upsertCookie(cookie, previousCookieDetails) {
-        console.log(previousCookieDetails);
-        // REMINDER FOR ELIJAH: test import functionality
-        const filterDetails = previousCookieDetails;
-        console.log(filterDetails);
+    async upsertCookie(cookie) {
+        const filterDetails = {
+            name: cookie.details.name,
+            domain: cookie.domain,
+            storeId: cookie.details.storeId,
+        };
         // Jarred cookie
         if (cookie.isStored) {
             // TODO
@@ -152,15 +153,13 @@ class CookiesManager {
      * @param {{name: str, storeId: number, url: str}} previousCookieDetails The details used to identify the cookie to be updated
      */
     async updateCookie(previousCookieDetails, updatedCookie) {
-        console.log(previousCookieDetails);
-        console.log(updatedCookie);
         if (updatedCookie.isStored) {
             // Is in cookie jar, need to update in local storage
             await this.cookieJarStore.removeCookie(previousCookieDetails);
             await this.cookieJarStore.addCookie(updatedCookie);
         } else {
             // Is in browser cookies
-            console.log(updatedCookie);
+            await this.chromeCookieStore.removeCookie(previousCookieDetails);
             await this.chromeCookieStore.setCookie(updatedCookie);
         }
     }
