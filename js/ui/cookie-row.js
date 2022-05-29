@@ -223,7 +223,7 @@ class CookieRowContent extends UiElement {
 
         const expirationInput = document.createElement("input");
         expirationInput.type = "text";
-        expirationInput.value = this.cookie.expiration;
+        expirationInput.value = this.cookie.expirationDate;
         cookieEditForm.appendChild(expirationInput);
 
         const sameSiteLabel = document.createElement("label");
@@ -327,13 +327,25 @@ class CookieRowContent extends UiElement {
             // get previous cookie details from this.cookie
             const prevDetails = this.snapshotDetails();
 
-            this.packageNewEditedCookie(domainInput.value, nameInput.value, );
-            console.log(prevDetails);
+            this.packageNewEditedCookie(domainInput.value, nameInput.value, this.cookie.storeId, expirationInput.value,
+                hostOnlyInput.value, httpOnlyInput.value, pathInput.value, sameSiteSelect.value, secureInput.checked,
+                sessionInput.checked, valueInput.value, this.cookie.details, this.cookie.isStored, this.cookie.isSelected);
 
-            // this.cookiesManager.upsertCookie(this.cookie, prevDetails);
+            console.log(prevDetails);
+            console.log(this.cookie);
+
+            this.cookiesManager.upsertCookie(this.cookie, prevDetails);
         });
 
         this.cookieRowContent = cookieRowContent;
+
+        // console.log('all cookies, looking for expiration');
+        // const allCookies = this.cookiesManager.getAll();
+        // console.log(allCookies);
+        // for (const cookie of allCookies) {
+        //     console.log(cookie.expiration);
+        // }
+        // console.log(this.cookiesManager.getAll());
     }
 
     getHtmlElement() {
@@ -352,28 +364,24 @@ class CookieRowContent extends UiElement {
         this.cookieRowContent
     }
 
-    packageNewEditedCookie(domainInput, nameInput) {
-        this.cookie.domain = domainInput;
-        this.cookie.name = nameInput;
+    packageNewEditedCookie(domainInput, nameInput, storeIdInput, expirationDateInput, hostOnlyInput, httpOnlyInput,
+        pathInput, sameSiteInput, secureInput, sessionInput, valueInput, detailsInput, isStoredInput, isSelectedInput) {
 
-        // this.domain = cookie.domain;
-        // this.name = cookie.name;
-        // this.storeId = cookie.storeId;
-        // this.expirationDate = cookie.expirationDate;
-        // this.hostOnly = cookie.hostOnly;
-        // this.httpOnly = cookie.httpOnly;
-        // this.path = cookie.path;
-        // this.sameSite = cookie.sameSite;
-        // this.secure = cookie.secure;
-        // this.session = cookie.session;
-        // this.value = cookie.value;
-        // this.details = {
-        //     name: cookie.name,
-        //     storeId: cookie.storeId,
-        //     url: getCookieUrl(this),
-        // };
-        // this.isStored = isStored;
-        // this.isSelected = isSelected;
+        this.cookie.domain = domainInput;
+        this.cookie.name = nameInput
+        this.cookie.storeId = storeIdInput;
+        this.cookie.expirationDateInput = expirationDateInput;
+        this.cookie.hostOnlyInput = hostOnlyInput;
+        this.cookie.httpOnlyInput = httpOnlyInput;
+        this.cookie.pathInput = pathInput;
+        this.cookie.sameSite = sameSiteInput;
+        this.cookie.secure = secureInput;
+        this.cookie.sessionInput = sessionInput;
+        this.cookie.value = valueInput;
+        this.cookie.details = detailsInput;
+        this.cookie.isStoredInput = isStoredInput;
+        this.cookie.isSelectedInput = isSelectedInput;
+
     }
 
     snapshotDetails() {
