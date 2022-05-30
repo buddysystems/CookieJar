@@ -1,4 +1,4 @@
-class ShelfTab extends UiElement {
+class PantryTab extends UiElement {
     constructor(cookiesManager, showing = false) {
         super();
         this.cookiesManager = cookiesManager;
@@ -113,19 +113,19 @@ class ShelfTab extends UiElement {
     }
 
     createHtmlElement() {
-        this.shelfTabElement = document.createElement("div");
-        this.shelfTabElement.classList.add("shelf-tab");
+        this.pantryTabElement = document.createElement("div");
+        this.pantryTabElement.classList.add("pantry-tab");
 
         const importForm = this.createImportForm();
-        this.shelfTabElement.appendChild(importForm);
+        this.pantryTabElement.appendChild(importForm);
 
         const exportForm = this.createExportForm();
-        this.shelfTabElement.appendChild(exportForm);
+        this.pantryTabElement.appendChild(exportForm);
     }
 
     createImportForm() {
         const importForm = document.createElement("form");
-        importForm.classList.add("shelf-form");
+        importForm.classList.add("pantry-form");
 
         importForm.innerHTML += `<h2 class="form-heading">Import cookies</h2>`;
 
@@ -193,7 +193,7 @@ class ShelfTab extends UiElement {
 
     createExportForm() {
         const exportForm = document.createElement("form");
-        exportForm.classList.add("shelf-form");
+        exportForm.classList.add("pantry-form");
 
         exportForm.innerHTML += `<h2 class="form-heading">Export cookies</h2>`;
 
@@ -263,14 +263,14 @@ class ShelfTab extends UiElement {
     }
 
     async getHtmlElement() {
-        return this.shelfTabElement;
+        return this.pantryTabElement;
     }
 
     async show() {
-        this.shelfTabElement.style.display = "flex";
+        this.pantryTabElement.style.display = "flex";
     }
 
     async hide() {
-        this.shelfTabElement.style.display = "none";
+        this.pantryTabElement.style.display = "none";
     }
 }

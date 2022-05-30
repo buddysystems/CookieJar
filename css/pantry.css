@@ -1,10 +1,10 @@
-.shelf-tab {
+.pantry-tab {
     display: flex;
     flex-direction: column;
     background-color: var(--offwhite);
 }
 
-.shelf-form {
+.pantry-form {
     margin: var(--m1);
     padding: var(--m2);
     display: flex;
@@ -13,22 +13,22 @@
     min-width: 100px;
 }
 
-.shelf-form label {
+.pantry-form label {
     font-size: var(--font-size-small);
     line-height: 12pt;
     margin-top: var(--m1);
     margin-bottom: 3px;
 }
 
-.shelf-form .error-label {
+.pantry-form .error-label {
     color: var(--font-red);
 }
 
-.shelf-form .success-label {
+.pantry-form .success-label {
     color: var(--font-green);
 }
 
-.shelf-form .labeled-input {
+.pantry-form .labeled-input {
     width: 100%;
     margin-top: var(--m1);
     display: grid;
@@ -44,11 +44,11 @@
     margin-bottom: var(--m2);
 }
 
-.shelf-form .form-actions {
+.pantry-form .form-actions {
     justify-content: start;
     margin-top: var(--m2);
 }
 
-.shelf-form .form-actions button {
+.pantry-form .form-actions button {
     margin-left: 0;
 }

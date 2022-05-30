@@ -4,7 +4,7 @@ class ViewTabs extends UiElement {
         this.createHtmlElement();
         this.handleSelectActive = async () => {};
         this.handleSelectJar = async () => {};
-        this.handleSelectShelf = async () => {};
+        this.handleSelectPantry = async () => {};
         this.selectedTabName = selectedTabName;
     }
 
@@ -39,17 +39,17 @@ class ViewTabs extends UiElement {
             await this.handleSelectJar();
         });
 
-        const shelfTab = document.createElement("span");
-        this.shelfTab = shelfTab;
-        viewTabsElement.appendChild(shelfTab);
-        shelfTab.classList.add("view-tab");
-        shelfTab.innerText = "Shelf (Import/Export)";
-        shelfTab.title = "Export cookies to use elsewhere";
-        shelfTab.addEventListener("click", async () => {
+        const pantryTab = document.createElement("span");
+        this.pantryTab = pantryTab;
+        viewTabsElement.appendChild(pantryTab);
+        pantryTab.classList.add("view-tab");
+        pantryTab.innerText = "Pantry (Import/Export)";
+        pantryTab.title = "Export cookies to use elsewhere";
+        pantryTab.addEventListener("click", async () => {
             this.resetActiveTab();
-            this.selectedTabName = "shelf";
-            shelfTab.classList.add("active-tab");
-            await this.handleSelectShelf();
+            this.selectedTabName = "pantry";
+            pantryTab.classList.add("active-tab");
+            await this.handleSelectPantry();
         });
 
         this.viewTabsElement = viewTabsElement;
@@ -58,7 +58,7 @@ class ViewTabs extends UiElement {
     resetActiveTab() {
         this.activeCookiesTab.classList.remove("active-tab");
         this.jarCookiesTab.classList.remove("active-tab");
-        this.shelfTab.classList.remove("active-tab");
+        this.pantryTab.classList.remove("active-tab");
     }
 
     async getHtmlElement() {

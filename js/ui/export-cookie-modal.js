@@ -40,7 +40,7 @@ class ExportCookieModal extends UiElement {
         );
     }
 
-    // We violate the DRY principle a bit by copying from shelf-tab.js. That's how we know we are good developers :)
+    // We violate the DRY principle a bit by copying from pantry-tab.js. That's how we know we are good developers :)
     createExportForm() {
         const exportForm = document.createElement("form");
 
