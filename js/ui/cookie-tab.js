@@ -191,6 +191,13 @@ class CookieTab extends UiElement {
         loadingIndicator.innerHTML = "Loading&hellip;";
         this.loadingIndicator = loadingIndicator;
         this.hideLoading();
+
+        // No results
+        this.noResultsLabel = document.createElement("div");
+        cookiesContainer.appendChild(this.noResultsLabel);
+        this.noResultsLabel.classList.add("no-results");
+        this.noResultsLabel.innerHTML = "No results";
+        this.hideNoResults();
     }
 
     async search(searchTerm, domainFilterTerm) {
@@ -200,12 +207,15 @@ class CookieTab extends UiElement {
     queuedCookiesToLoad = [];
 
     async loadCookieRows(searchTerm, domainFilterTerm) {
+        this.hideNoResults();
         this.showLoading();
         await this.clearCookieRows();
 
         const cookies = await this.getCookies(searchTerm, domainFilterTerm);
         this.queuedCookiesToLoad = cookies;
         this.hideLoading();
+
+        if (cookies.length == 0) this.showNoResults();
 
         for (const jarCookie of cookies) {
             if (this.queuedCookiesToLoad.includes(jarCookie)) {
@@ -268,12 +278,19 @@ class CookieTab extends UiElement {
     }
 
     showLoading() {
-        console.log("showLoading");
         this.loadingIndicator.style.display = "flex";
     }
 
     hideLoading() {
         this.loadingIndicator.style.display = "none";
+    }
+
+    showNoResults() {
+        this.noResultsLabel.style.display = "flex";
+    }
+
+    hideNoResults() {
+        this.noResultsLabel.style.display = "none";
     }
 
     async setDomainFilterValue(domainFilter) {

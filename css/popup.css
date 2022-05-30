@@ -32,7 +32,6 @@ html {
 .main-layout {
     min-width: 500px;
     width: 550px;
-    min-height: 450px;
 }
 
 .view-tabs {
@@ -136,11 +135,12 @@ html {
     margin: 0 0 var(--m1) 0;
 }
 
-.loading-indicator {
+.loading-indicator,
+.no-results {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24pt;
+    font-size: var(--font-size-large);
     color: var(--font-gray);
     min-height: 175px;
 }
