@@ -197,23 +197,26 @@ class CookieTab extends UiElement {
         await this.loadCookieRows(searchTerm, domainFilterTerm);
     }
 
+    queuedCookiesToLoad = [];
+
     async loadCookieRows(searchTerm, domainFilterTerm) {
-        await this.clearCookieRows();
         this.showLoading();
-        // Wait a second to ensure any cookies still queued to added can finish being added so they are removed
-        // (otherwise previously loaded cookies will dirty this search)
-        // TODO: fix this loading issue by making a more sophistocated queue system that supports cancelling queued cookies
-        await new Promise((resolve) => setTimeout(resolve, 1000));
         await this.clearCookieRows();
 
         const cookies = await this.getCookies(searchTerm, domainFilterTerm);
+        this.queuedCookiesToLoad = cookies;
         this.hideLoading();
 
         for (const jarCookie of cookies) {
-            this.addCookieRow(jarCookie);
+            if (this.queuedCookiesToLoad.includes(jarCookie)) {
+                this.addCookieRow(jarCookie);
+                this.queuedCookiesToLoad = this.queuedCookiesToLoad.filter(
+                    (c) => c !== jarCookie
+                );
 
-            // Throttle the addition of cookie rows to avoid sucking up all ram and preventing the page from updating while loading
-            await new Promise((resolve) => setTimeout(resolve, 10));
+                // Throttle the addition of cookie rows to avoid sucking up all ram and preventing the page from updating while loading
+                await new Promise((resolve) => setTimeout(resolve, 1));
+            }
         }
 
         this.isLoaded = true;
@@ -245,6 +248,7 @@ class CookieTab extends UiElement {
     }
 
     async clearCookieRows() {
+        this.queuedCookiesToLoad = [];
         this.cookieRows = [];
         while (this.cookieRowList.firstChild) {
             this.cookieRowList.removeChild(this.cookieRowList.lastChild);
