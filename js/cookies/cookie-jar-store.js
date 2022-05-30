@@ -9,9 +9,9 @@ class CookieJarStore {
         const inJar = await this.getAll();
         const cookie = inJar.find(
             (c) =>
-            c.details.name == cookieDetails.name &&
-            c.details.storeId == cookieDetails.storeId &&
-            c.details.url == cookieDetails.url
+                c.details.name == cookieDetails.name &&
+                c.details.storeId == cookieDetails.storeId &&
+                c.details.url == cookieDetails.url
         );
         return cookie != null;
     }
@@ -35,9 +35,9 @@ class CookieJarStore {
         const inJar = await this.getAll();
         const cookie = inJar.find(
             (c) =>
-            c.details.name == cookieDetails.name &&
-            c.details.storeId == cookieDetails.storeId &&
-            c.details.url == cookieDetails.url
+                c.details.name == cookieDetails.name &&
+                c.details.storeId == cookieDetails.storeId &&
+                c.details.url == cookieDetails.url
         );
         return new JarCookie(cookie, true);
     }
@@ -47,9 +47,9 @@ class CookieJarStore {
         // Remove the cookie matching the cookie details
         inJar = inJar.filter(
             (c) =>
-            c.details.name != cookieDetails.name ||
-            c.details.storeId != cookieDetails.storeId ||
-            c.details.url != cookieDetails.url
+                c.details.name != cookieDetails.name ||
+                c.details.storeId != cookieDetails.storeId ||
+                c.details.url != cookieDetails.url
         );
         await chrome.storage.local.set({ COOKIE_JAR: inJar });
     }
@@ -76,7 +76,6 @@ class CookieJarStore {
 
         // Filter by domain
         if (details.domain && details.domain != "") {
-            console.log(details.domain);
             const normalizedDomain = details.domain.trim().toUpperCase();
             cookies = cookies.filter((cookie) =>
                 cookie.domain.toUpperCase().includes(normalizedDomain)

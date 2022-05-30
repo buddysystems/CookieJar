@@ -90,10 +90,8 @@ class CookieRow extends UiElement {
             jarIconImg.src = "/assets/icons/action-bar/jar-icon.png";
             jarIconImg.title = "Jar this cookie";
             jarIconImg.addEventListener("click", () => {
-                console.log(this.cookie);
                 this.cookiesManager.storeCookie(this.cookie);
                 this.deleteCookieRow();
-                console.log(this.cookie);
             });
         } else {
             const unjarIconImg = document.createElement("img");

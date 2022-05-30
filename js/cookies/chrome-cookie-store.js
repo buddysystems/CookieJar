@@ -24,7 +24,6 @@ class ChromeCookieStore {
         if (domainHasPrecedingDot) {
             cookieDetails.url = getCookieUrl(cookieDetails);
         }
-        console.log(cookieDetails);
         const result = await chrome.cookies.set(cookieDetails);
         if (result === null) {
             console.error("Error occured while adding cookie.");

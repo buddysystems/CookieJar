@@ -26,7 +26,6 @@ function getUrlDomain(url) {
 function getUrlTopLevelDomain(url) {
     const domain = getUrlDomain(url);
     const domainParts = domain.split(".");
-    console.dir(domainParts);
     if (domainParts.length <= 2) return domain;
     return domainParts.slice(-2).join(".");
 }
