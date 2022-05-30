@@ -112,7 +112,11 @@ class CookieRow extends UiElement {
         });
 
         // Cookie row content
-        const cookieRowContent = new CookieRowContent(this.cookie, this.cookiesManager, this);
+        const cookieRowContent = new CookieRowContent(
+            this.cookie,
+            this.cookiesManager,
+            this
+        );
         cookieRow.appendChild(cookieRowContent.getHtmlElement());
         this.cookieRowContent = cookieRowContent;
 
@@ -152,7 +156,7 @@ class CookieRow extends UiElement {
     }
 
     deleteCookieRow() {
-        console.log(this.cookieRowElement)
+        console.log(this.cookieRowElement);
         this.cookieRowElement.remove();
     }
 }
@@ -207,6 +211,7 @@ class CookieRowContent extends UiElement {
         const domainInput = document.createElement("input");
         domainInput.type = "text";
         domainInput.value = this.cookie.domain;
+        domainInput.disabled = this.cookie.hostOnly;
         cookieEditForm.appendChild(domainInput);
 
         const pathLabel = document.createElement("label");
@@ -224,7 +229,10 @@ class CookieRowContent extends UiElement {
 
         const expirationInput = document.createElement("input");
         expirationInput.type = "text";
-        expirationInput.value = this.cookie.expirationDate;
+        expirationInput.value = this.cookie.expirationDate
+            ? new Date(this.cookie.expirationDate * 1000).toUTCString()
+            : "";
+        expirationInput.disabled = this.cookie.session;
         cookieEditForm.appendChild(expirationInput);
 
         const sameSiteLabel = document.createElement("label");
@@ -257,7 +265,6 @@ class CookieRowContent extends UiElement {
         cookieBooleans.classList.add("cookie-bools");
         cookieEditForm.appendChild(cookieBooleans);
 
-
         const hostOnlyDiv = document.createElement("div");
         cookieBooleans.appendChild(hostOnlyDiv);
 
@@ -270,6 +277,10 @@ class CookieRowContent extends UiElement {
         hostOnlyInput.checked = this.cookie.hostOnly;
         hostOnlyDiv.appendChild(hostOnlyInput);
 
+        // In order to set hostOnly to true, we need to pass in a null domain. Therefore, we need to disable the domain input
+        hostOnlyInput.addEventListener("change", (e) => {
+            domainInput.disabled = e.currentTarget.checked;
+        });
 
         const sessionDiv = document.createElement("div");
         cookieBooleans.appendChild(sessionDiv);
@@ -282,7 +293,10 @@ class CookieRowContent extends UiElement {
         sessionInput.type = "checkbox";
         sessionInput.checked = this.cookie.session;
         sessionDiv.appendChild(sessionInput);
-
+        // In order to set session to true, we need to pass in a null expiration date
+        sessionInput.addEventListener("change", (e) => {
+            expirationInput.disabled = e.currentTarget.checked;
+        });
 
         const secureDiv = document.createElement("div");
         cookieBooleans.appendChild(secureDiv);
@@ -296,7 +310,6 @@ class CookieRowContent extends UiElement {
         secureInput.checked = this.cookie.secure;
         secureDiv.appendChild(secureInput);
 
-
         const httpOnlyDiv = document.createElement("div");
         cookieBooleans.appendChild(httpOnlyDiv);
 
@@ -309,7 +322,6 @@ class CookieRowContent extends UiElement {
         httpOnlyInput.checked = this.cookie.httpOnly;
         httpOnlyDiv.appendChild(httpOnlyInput);
 
-
         const formActionsContainer = document.createElement("div");
         cookieEditForm.appendChild(formActionsContainer);
         formActionsContainer.classList.add("form-actions");
@@ -319,11 +331,9 @@ class CookieRowContent extends UiElement {
         formActionsContainer.appendChild(cancelButton);
         cancelButton.innerText = "Cancel";
         cancelButton.addEventListener("click", () => {
-            console.log("cancel");
-            this.packageRowContent();
+            // TODO: reset form values to original cookie values
             this.cookieRowElement.toggleForm();
         });
-
 
         const saveButton = document.createElement("button");
         saveButton.type = "button";
@@ -333,18 +343,51 @@ class CookieRowContent extends UiElement {
             // get previous cookie details from this.cookie
             const prevDetails = this.snapshotDetails();
 
-            this.packageCookie(domainInput.value, nameInput.value, this.cookie.storeId, expirationInput.value,
-                hostOnlyInput.value, httpOnlyInput.value, pathInput.value, sameSiteSelect.value, secureInput.checked,
-                sessionInput.checked, valueInput.value, this.cookie.details, this.cookie.isStored, this.cookie.isSelected);
+            let expirationValue = null;
+            if (expirationInput?.value != "undefined") {
+                try {
+                    const parsedNumber = parseInt(expirationInput.value);
+                    if (!isNaN(parsedNumber)) {
+                        expirationValue = parsedNumber;
+                    } else {
+                        let parsedDate = new Date(expirationInput.value);
 
-            console.log(prevDetails);
-            console.log(this.cookie);
+                        if (isNaN(parsedDate))
+                            throw new DOMException("Could not parse date");
 
-            this.cookiesManager.updateCookie(prevDetails, this.cookie);
+                        expirationValue = Math.floor(
+                            parsedDate.getTime() / 1000
+                        );
+                    }
+                } catch (e) {
+                    console.warn(e);
+                    console.warn("Could not parse expiration date input.");
+                }
+            }
+            const updatedCookie = new JarCookie(
+                {
+                    domain: domainInput.value,
+                    name: nameInput.value,
+                    storeId: this.cookie.storeId, // TODO: verify we don't need edit functionality for this
+                    expirationDate: expirationValue,
+                    hostOnly: hostOnlyInput.checked,
+                    httpOnly: httpOnlyInput.checked,
+                    path: pathInput.value,
+                    sameSite: sameSiteSelect.value,
+                    secure: secureInput.checked,
+                    session: sessionInput.checked,
+                    value: valueInput.value,
+                },
+                this.cookie.isStored,
+                this.cookie.isSelected
+            );
+            if (hostOnlyInput.checked) updatedCookie.domain = null;
+            if (sessionInput.checked) updatedCookie.expirationDate = null;
+
+            this.cookiesManager.updateCookie(prevDetails, updatedCookie);
         });
 
         this.cookieRowContent = cookieRowContent;
-
     }
 
     getHtmlElement() {
@@ -357,35 +400,6 @@ class CookieRowContent extends UiElement {
         } else {
             this.cookieInfoContainer.style.display = "none";
         }
-    }
-
-    readCookieRowContent() {
-        this.cookieRowContent
-    }
-
-    packageCookie(domainInput, nameInput, storeIdInput, expirationDateInput, hostOnlyInput, httpOnlyInput,
-        pathInput, sameSiteInput, secureInput, sessionInput, valueInput, detailsInput, isStoredInput, isSelectedInput) {
-
-        this.cookie.domain = domainInput;
-        this.cookie.name = nameInput
-        this.cookie.storeId = storeIdInput;
-        this.cookie.expirationDateInput = expirationDateInput;
-        this.cookie.hostOnlyInput = hostOnlyInput;
-        this.cookie.httpOnlyInput = httpOnlyInput;
-        this.cookie.pathInput = pathInput;
-        this.cookie.sameSite = sameSiteInput;
-        this.cookie.secure = secureInput;
-        this.cookie.sessionInput = sessionInput;
-        this.cookie.value = valueInput;
-        this.cookie.details = detailsInput;
-        this.cookie.isStoredInput = isStoredInput;
-        this.cookie.isSelectedInput = isSelectedInput;
-
-    }
-
-    packageRowContent() {
-        const rowContent = this.getHtmlElement();
-        console.log(rowContent);
     }
 
     snapshotDetails() {
