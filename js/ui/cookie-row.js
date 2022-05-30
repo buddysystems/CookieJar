@@ -258,6 +258,11 @@ class CookieRowContent extends UiElement {
         strictOption.innerText = "Strict";
         sameSiteSelect.appendChild(strictOption);
 
+        const unspecifiedOption = document.createElement("option");
+        unspecifiedOption.value = "unspecified";
+        unspecifiedOption.innerText = "Unspecified";
+        sameSiteSelect.appendChild(unspecifiedOption);
+
         sameSiteSelect.value = this.cookie.sameSite;
 
         // cookie bools
