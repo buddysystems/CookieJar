@@ -64,13 +64,15 @@ class CookiesTabbedView extends UiElement {
             await this.pantryTab.show();
         };
 
+        // Help links
         const linksContainer = document.createElement("div");
         linksContainer.classList.add("links-container");
         this.cookieTabbedViewElement.appendChild(linksContainer);
 
         const helpLink = document.createElement("a");
         helpLink.classList.add("help-link");
-        helpLink.href = "https://github.com/buddysystems/CookieJar/issues/new";
+        helpLink.href =
+            "https://docs.google.com/forms/d/e/1FAIpQLScxwZt7E-LH6BLLs8gVJPkmPQPSBLTts7haAtFkXYGCTtn9cg/viewform?usp=sf_link";
         helpLink.target = "_blank";
         helpLink.innerText = "Report a bug";
         linksContainer.appendChild(helpLink);
