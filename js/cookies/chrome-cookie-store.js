@@ -1,16 +1,16 @@
 class ChromeCookieStore {
     async setCookie(cookie) {
-        console.log('test');
         let domain = cookie.domain;
         if (cookie.name.includes("__Host-")) {
             domain = "";
         }
-        const domainHasPrecedingDot = domain.charAt(0) == ".";
+        const domainHasPrecedingDot = domain?.charAt(0) == ".";
         if (domainHasPrecedingDot) {
             domain = domain.slice(1);
         }
         const cookieDetails = {
             domain: domain,
+            expirationDate: cookie.expirationDate,
             httpOnly: cookie.httpOnly,
             name: cookie.name,
             path: cookie.path,
