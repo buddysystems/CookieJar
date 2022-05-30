@@ -31,31 +31,44 @@ class CookieTab extends UiElement {
         this.cookieTabElement.appendChild(exportCookieModalElemn);
 
         // Filters (search, domain filter)
-        const cookieFiltersContainer = document.createElement("div");
+        const cookieFiltersContainer = document.createElement("form");
         this.cookieTabElement.appendChild(cookieFiltersContainer);
         cookieFiltersContainer.classList.add("cookie-filters");
 
+        const searchContainer = document.createElement("div");
+        searchContainer.classList.add("labeled-input");
+        cookieFiltersContainer.appendChild(searchContainer);
+        const searchLabel = document.createElement("label");
+        searchContainer.appendChild(searchLabel);
+        searchLabel.innerText = "Search term";
+
         this.searchBox = document.createElement("input");
-        cookieFiltersContainer.appendChild(this.searchBox);
-        this.searchBox.type = "text";
-        this.searchBox.placeholder = "Search for cookies";
+        searchContainer.appendChild(this.searchBox);
+        this.searchBox.type = "search";
+        this.searchBox.placeholder = 'e.g. "user"';
         this.searchBox.title = "Filter by name, value, or domain";
+
+        const domainContainer = document.createElement("div");
+        domainContainer.classList.add("labeled-input");
+        cookieFiltersContainer.appendChild(domainContainer);
+
+        const domainLabel = document.createElement("label");
+        domainContainer.appendChild(domainLabel);
+        domainLabel.innerText = "Domain filter";
 
         this.domainFilter = new DomainFilter();
         await this.setDomainFilterValue(this.domainFilter);
         const domainFilterElem = await this.domainFilter.getHtmlElement();
-        cookieFiltersContainer.appendChild(domainFilterElem);
+        domainContainer.appendChild(domainFilterElem);
 
-        const searchButton = document.createElement("button");
-        cookieFiltersContainer.appendChild(searchButton);
-        searchButton.innerText = "Search";
-        searchButton.type = "button";
-        searchButton.addEventListener("click", async () => {
+        const search = async (_) =>
             await this.search(
                 this.searchBox.value,
                 this.domainFilter.getSelectedDomain()
             );
-        });
+        // Update on enter or when clear button is pressed (clear btn is native to search input)
+        this.searchBox.addEventListener("search", search);
+        domainFilterElem.addEventListener("search", search);
 
         // Cookie rows
         const cookiesContainer = document.createElement("div");
@@ -105,13 +118,12 @@ class CookieTab extends UiElement {
             />
             `;
             unjarActionContainer.title = "Move the selected cookies to active";
-            unjarActionContainer.addEventListener(
-                "click",
-                async() => {
-                    await this.cookiesManager.restoreCookies(this.bulkCookieSelector.selectedCookies),
-                        this.show()
-                }
-            );
+            unjarActionContainer.addEventListener("click", async () => {
+                await this.cookiesManager.restoreCookies(
+                    this.bulkCookieSelector.selectedCookies
+                ),
+                    this.show();
+            });
         } else {
             const jarActionContainer = document.createElement("div");
             cookieActionsContainer.appendChild(jarActionContainer);
@@ -124,14 +136,12 @@ class CookieTab extends UiElement {
             />
             `;
             jarActionContainer.title = "Move the selected cookies to the jar";
-            jarActionContainer.addEventListener(
-                "click",
-                async() => {
-                    await this.cookiesManager.storeCookies(this.bulkCookieSelector.selectedCookies),
-                        this.show()
-                }
-
-            );
+            jarActionContainer.addEventListener("click", async () => {
+                await this.cookiesManager.storeCookies(
+                    this.bulkCookieSelector.selectedCookies
+                ),
+                    this.show();
+            });
         }
 
         const deleteActionContainer = document.createElement("div");
@@ -145,13 +155,12 @@ class CookieTab extends UiElement {
             />
             `;
         deleteActionContainer.title = "Permanently delete the selected cookies";
-        deleteActionContainer.addEventListener(
-            "click",
-            async() => {
-                await this.cookiesManager.deleteCookies(this.bulkCookieSelector.selectedCookies),
-                    this.show()
-            }
-        );
+        deleteActionContainer.addEventListener("click", async () => {
+            await this.cookiesManager.deleteCookies(
+                this.bulkCookieSelector.selectedCookies
+            ),
+                this.show();
+        });
 
         const exportActionContainer = document.createElement("div");
         cookieActionsContainer.appendChild(exportActionContainer);

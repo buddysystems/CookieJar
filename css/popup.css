@@ -69,23 +69,21 @@ html {
 
 .cookie-filters {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: var(--outer-padding);
-    margin-bottom: 0.75em;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    background-color: var(--offwhite);
+    padding: 0 var(--outer-padding);
+    margin: var(--m2) 0;
 }
 
-.cookie-filters > * {
-    flex-grow: 0.5;
-    margin-right: var(--m3);
-}
-
-.cookie-filters > *:last-child {
-    margin-right: 0;
-}
-
-.search input {
-    min-width: 20em;
+.cookie-filters .labeled-input {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    font-size: var(--font-size-small);
+    line-height: 12pt;
+    margin-top: var(--m1);
+    margin-bottom: 3px;
 }
 
 .cookies-list {
@@ -97,7 +95,7 @@ html {
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 450px;
+    max-height: 420px;
 }
 
 .bulk-row {
