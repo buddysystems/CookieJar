@@ -144,3 +144,14 @@ html {
     color: var(--font-gray);
     min-height: 175px;
 }
+
+.links-container {
+    display: flex;
+    justify-content: end;
+    padding: var(--m1);
+}
+
+.help-link {
+    font-size: var(--font-size-small);
+    color: var(--font-gray);
+}
