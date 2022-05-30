@@ -1,11 +1,10 @@
 function getCookieUrl(cookie) {
-    return (
-        "http" +
-        (cookie.secure ? "s" : "") +
-        "://" +
-        cookie.domain +
-        cookie.path
-    );
+    let domain = cookie.domain;
+    if (domain?.charAt(0) === ".") {
+        domain = domain.slice(1);
+    }
+
+    return "http" + (cookie.secure ? "s" : "") + "://" + domain + cookie.path;
 }
 
 /**
