@@ -121,8 +121,8 @@ class CookieTab extends UiElement {
             unjarActionContainer.addEventListener("click", async () => {
                 await this.cookiesManager.restoreCookies(
                     this.bulkCookieSelector.selectedCookies
-                ),
-                    this.show();
+                );
+                this.show();
             });
         } else {
             const jarActionContainer = document.createElement("div");
@@ -139,8 +139,8 @@ class CookieTab extends UiElement {
             jarActionContainer.addEventListener("click", async () => {
                 await this.cookiesManager.storeCookies(
                     this.bulkCookieSelector.selectedCookies
-                ),
-                    this.show();
+                );
+                this.show();
             });
         }
 
@@ -158,8 +158,8 @@ class CookieTab extends UiElement {
         deleteActionContainer.addEventListener("click", async () => {
             await this.cookiesManager.deleteCookies(
                 this.bulkCookieSelector.selectedCookies
-            ),
-                this.show();
+            );
+            this.show();
         });
 
         const exportActionContainer = document.createElement("div");
@@ -223,13 +223,19 @@ class CookieTab extends UiElement {
         const cookieRow = new CookieRow(
             cookie,
             this.cookiesManager,
-            this.bulkCookieSelector
+            this.bulkCookieSelector,
+            // This refreshes the entire tab when a single cookie is updated, which is not idea
+            // TODO: refresh a single cookie row element instead of the entire tab
+            async () => {
+                const searchTerm = this.searchBox.value;
+                const domain = this.domainFilter.getSelectedDomain();
+                await this.loadCookieRows(searchTerm, domain);
+            }
         );
         this.cookieRows.push(cookieRow);
-        const elem = await cookieRow.getHtmlElement();
+        let elem = await cookieRow.getHtmlElement();
         await new Promise((resolve, reject) => {
             this.cookieRowList.appendChild(elem);
-            console.log("cookie row appended");
             resolve();
         });
     }

@@ -1,17 +1,25 @@
 class CookieRow extends UiElement {
-    constructor(jarCookie, cookiesManager, bulkCookieSelector, isStored) {
+    /**
+     * @param {*} refreshCookieRow Callback to be invoked once the cookie row UI needs to be updated
+     */
+    constructor(
+        jarCookie,
+        cookiesManager,
+        bulkCookieSelector,
+        refreshCookieRow
+    ) {
         super();
         this.cookie = jarCookie;
         this.isOpen = false;
         this.cookiesManager = cookiesManager;
         this.bulkCookieSelector = bulkCookieSelector;
-        this.isStored = isStored;
         this.previousCookieDetails = {
             name: jarCookie.name,
             storeId: jarCookie.storeId,
             url: jarCookie.url,
         };
         this.createHtmlElement();
+        this.refreshCookieRow = refreshCookieRow;
     }
 
     createHtmlElement() {
@@ -156,7 +164,6 @@ class CookieRow extends UiElement {
     }
 
     deleteCookieRow() {
-        console.log(this.cookieRowElement);
         this.cookieRowElement.remove();
     }
 }
@@ -344,7 +351,7 @@ class CookieRowContent extends UiElement {
         saveButton.type = "button";
         formActionsContainer.appendChild(saveButton);
         saveButton.innerText = "Save";
-        saveButton.addEventListener("click", () => {
+        saveButton.addEventListener("click", async () => {
             // get previous cookie details from this.cookie
             const prevDetails = this.snapshotDetails();
 
@@ -389,7 +396,8 @@ class CookieRowContent extends UiElement {
             if (hostOnlyInput.checked) updatedCookie.domain = null;
             if (sessionInput.checked) updatedCookie.expirationDate = null;
 
-            this.cookiesManager.updateCookie(prevDetails, updatedCookie);
+            await this.cookiesManager.updateCookie(prevDetails, updatedCookie);
+            await this.cookieRowElement.refreshCookieRow();
         });
 
         this.cookieRowContent = cookieRowContent;
