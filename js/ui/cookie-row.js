@@ -16,6 +16,8 @@ class CookieRow extends UiElement {
 
     createHtmlElement() {
         // Cookie row
+        console.log(this.cookie.sameSite);
+
         const cookieRow = document.createElement("div");
         cookieRow.classList.add("cookie-row");
 
@@ -249,6 +251,11 @@ class CookieRowContent extends UiElement {
         strictOption.value = "strict";
         strictOption.innerText = "Strict";
         sameSiteSelect.appendChild(strictOption);
+
+        const unspecifiedOption = document.createElement("option");
+        unspecifiedOption.value = "unspecified";
+        unspecifiedOption.innerText = "Unspecified";
+        sameSiteSelect.appendChild(unspecifiedOption);
 
         sameSiteSelect.value = this.cookie.sameSite;
 
