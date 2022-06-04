@@ -6,13 +6,10 @@
     "permissions": ["storage", "cookies", "downloads"],
     "host_permissions": ["<all_urls>"],
     "action": {
-        "default_popup": "index.html"
+        "default_popup": "popup.html"
     },
     "icons": {
-        "48": "icons/cookie-48.png",
-        "128": "icons/cookie-128.png"
-    },
-    "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline' https://kit.fontawesome.com/;"
+        "48": "icon48.png",
+        "128": "icon128.png"
     }
 }
