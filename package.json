@@ -1,7 +1,7 @@
 {
     "scripts": {
         "test": "mocha",
-        "start": "webpack --watch --config webpack.js",
+        "start": "webpack --watch",
         "build": "webpack"
     },
     "devDependencies": {

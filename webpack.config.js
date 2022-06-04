@@ -11,16 +11,19 @@ module.exports = {
         index: "./src/popup.js",
     },
     module: {
-        rules: [{ test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/ }], // do not forget to change/install your own TS loader
         rules: [
             {
                 test: /\.css$/i,
                 use: ["style-loader", "css-loader"],
             },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: "asset/resource",
+            },
         ],
     },
     resolve: {
-        extensions: [".tsx", ".ts", ".js"],
+        extensions: [".js"],
     },
     plugins: [
         new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
