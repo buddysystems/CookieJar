@@ -1,8 +1,8 @@
-import { UiElement } from "./ui-element";
-import { BulkCookieSelector } from "../cookies/bulk-cookie-selector";
-import { ExportCookieModal } from "./export-cookie-modal";
-import { DomainFilter } from "./domain-filter";
-import { CookieRow } from "./cookie-row";
+import { UiElement } from "./ui-element.js";
+import { BulkCookieSelector } from "../cookies/bulk-cookie-selector.js";
+import { ExportCookieModal } from "./export-cookie-modal.js";
+import { DomainFilter } from "./domain-filter.js";
+import { CookieRow } from "./cookie-row.js";
 
 import rightCaret from "../../assets/img/caret-right.png";
 import downCaret from "../../assets/img/caret-down.png";

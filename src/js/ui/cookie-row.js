@@ -1,5 +1,5 @@
-import { truncateString } from "../helpers/string-util";
-import { UiElement } from "./ui-element";
+import { truncateString } from "../helpers/string-util.js";
+import { UiElement } from "./ui-element.js";
 import rightCaret from "../../assets/img/caret-right.png";
 import downCaret from "../../assets/img/caret-down.png";
 import jarIcon from "../../assets/img/jar-icon.png";

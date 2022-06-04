@@ -1,6 +1,6 @@
-import { UiElement } from "./ui-element";
-import { getCurrentTab } from "../helpers/chrome-tabs-util";
-import { getUrlTopLevelDomain } from "../helpers/string-util";
+import { UiElement } from "./ui-element.js";
+import { getCurrentTab } from "../helpers/chrome-tabs-util.js";
+import { getUrlTopLevelDomain } from "../helpers/string-util.js";
 
 export class DomainFilter extends UiElement {
     constructor() {

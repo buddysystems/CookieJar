@@ -1,10 +1,10 @@
-import { UiElement } from "./ui-element";
+import { UiElement } from "./ui-element.js";
 import {
     readFilesAsTextAsync,
     readFileAsTextAsync,
-} from "../helpers/file-reader-util";
-import { jsonToCookies } from "../helpers/cookie-json-util";
-import { decryptText } from "../helpers/encryption";
+} from "../helpers/file-reader-util.js";
+import { jsonToCookies } from "../helpers/cookie-json-util.js";
+import { decryptText } from "../helpers/encryption.js";
 
 export class PantryTab extends UiElement {
     constructor(cookiesManager, showing = false) {

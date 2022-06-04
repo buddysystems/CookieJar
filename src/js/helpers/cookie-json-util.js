@@ -1,4 +1,4 @@
-import { getCookieUrl } from "./cookie-util";
+import { getCookieUrl } from "./cookie-util.js";
 
 export function cookiesToJson(cookies) {
     const cookiesList = [];

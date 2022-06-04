@@ -1,7 +1,7 @@
-import { cookiesToJson } from "../helpers/cookie-json-util";
-import { UiElement } from "./ui-element";
-import { encryptText } from "../helpers/encryption";
-import { downloadJson } from "../helpers/download-util";
+import { cookiesToJson } from "../helpers/cookie-json-util.js";
+import { UiElement } from "./ui-element.js";
+import { encryptText } from "../helpers/encryption.js";
+import { downloadJson } from "../helpers/download-util.js";
 
 export class ExportCookieModal extends UiElement {
     constructor(cookiesManager, bulkCookieSelector) {

@@ -1,4 +1,4 @@
-import { getCookieUrl } from "../helpers/cookie-util";
+import { getCookieUrl } from "../helpers/cookie-util.js";
 /**
  *  A JarCookie represents the apps representation of a traditional browser cookie.
  * In addition the normal fields you would find on Chrome's Cookie object, you can find

@@ -1,5 +1,5 @@
-import { ensureCookieJarStorageCreated } from "../helpers/cookie-util";
-import { JarCookie } from "./jar-cookie";
+import { ensureCookieJarStorageCreated } from "../helpers/cookie-util.js";
+import { JarCookie } from "./jar-cookie.js";
 
 const COOKIE_JAR = "COOKIE_JAR";
 

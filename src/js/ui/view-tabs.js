@@ -1,4 +1,4 @@
-import { UiElement } from "./ui-element";
+import { UiElement } from "./ui-element.js";
 
 export class ViewTabs extends UiElement {
     constructor(selectedTabName) {

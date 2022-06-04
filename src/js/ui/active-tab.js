@@ -1,6 +1,5 @@
-import { CookieTab } from "./cookie-tab";
-import { filterCookieList } from "../helpers/cookie-util";
-import { DomainFilter } from "./domain-filter";
+import { CookieTab } from "./cookie-tab.js";
+import { filterCookieList } from "../helpers/cookie-util.js";
 
 export class ActiveTab extends CookieTab {
     constructor(cookiesManager) {

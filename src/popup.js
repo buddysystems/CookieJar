@@ -5,10 +5,10 @@ import "./css/pantry.css";
 import "./css/modal.css";
 import "./css/popup.css";
 
-import { ChromeCookieStore } from "./js/cookies/chrome-cookie-store";
-import { CookieJarStore } from "./js/cookies/cookie-jar-store";
-import { CookiesManager } from "./js/cookies/cookies-manager";
-import { CookiesTabbedView } from "./js/ui/cookies-tabbed-view";
+import { ChromeCookieStore } from "./js/cookies/chrome-cookie-store.js";
+import { CookieJarStore } from "./js/cookies/cookie-jar-store.js";
+import { CookiesManager } from "./js/cookies/cookies-manager.js";
+import { CookiesTabbedView } from "./js/ui/cookies-tabbed-view.js";
 
 const cookiesTabbedViewContainer = document.getElementById(
     "cookies-tabbed-view-container"

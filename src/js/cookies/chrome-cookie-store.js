@@ -1,5 +1,5 @@
-import { JarCookie } from "./jar-cookie";
-import { getCookieUrl } from "../helpers/cookie-util";
+import { JarCookie } from "./jar-cookie.js";
+import { getCookieUrl } from "../helpers/cookie-util.js";
 
 export class ChromeCookieStore {
     async setCookie(cookie) {

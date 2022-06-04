@@ -1,4 +1,4 @@
-import { CookieTab } from "./cookie-tab";
+import { CookieTab } from "./cookie-tab.js";
 
 export class JarTab extends CookieTab {
     constructor(cookiesManager) {

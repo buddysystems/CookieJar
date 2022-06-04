@@ -1,4 +1,4 @@
-import { CryptoJS } from "./crypto-lib";
+import { CryptoJS } from "./crypto-lib.js";
 
 export function encryptText(text, password) {
     return CryptoJS.AES.encrypt(text, password).toString();

@@ -1,8 +1,8 @@
-import { UiElement } from "./ui-element";
-import { ViewTabs } from "./view-tabs";
-import { ActiveTab } from "./active-tab";
-import { JarTab } from "./jar-tab";
-import { PantryTab } from "./pantry-tab";
+import { UiElement } from "./ui-element.js";
+import { ViewTabs } from "./view-tabs.js";
+import { ActiveTab } from "./active-tab.js";
+import { JarTab } from "./jar-tab.js";
+import { PantryTab } from "./pantry-tab.js";
 
 export class CookiesTabbedView extends UiElement {
     constructor(cookiesManager) {
