@@ -44,15 +44,7 @@ Inside the newly created project directory, you must install necessary dependenc
 npm install
 ```
 
-Once that is complete, you may build the project with `npm run build`. This will build the project to the `dist/` directory.
-
-To load the extension in a chromium-based browser, [load the unpacked extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked) through the extension page. Make sure to load the `dist/` directory, not the project (`CookieJar`) directory.
-
-## Developing the project
-
-If you want to develop the project locally and automatically update the build every time you save a change, run `npm run start`. This will essentially build to the `dist/` directory every time a save to the source code is saved. Type `Ctrl+C` to stop the auto-build process.
-
-You can also run `npm run build` manually instead when you want to apply changes.
+To load the extension in a chromium-based browser, [load the unpacked extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked) through the extension page.
 
 ## Testing the project
 
