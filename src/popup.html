@@ -4,6 +4,12 @@
         <title>CookieJar</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- The order of css imports is important; reset should always go first, as other stylesheets must override it -->
+        <link rel="stylesheet" href="./css/reset.css" />
+        <link rel="stylesheet" href="./css/cookie-row.css" />
+        <link rel="stylesheet" href="./css/pantry.css" />
+        <link rel="stylesheet" href="./css/modal.css" />
+        <link rel="stylesheet" href="./css/popup.css" />
     </head>
 
     <body>
@@ -13,5 +19,7 @@
                 id="cookies-tabbed-view-container"
             ></div>
         </div>
+
+        <script type="module" src="popup.js"></script>
     </body>
 </html>

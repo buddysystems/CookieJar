@@ -6,10 +6,10 @@
     "permissions": ["storage", "cookies", "downloads"],
     "host_permissions": ["<all_urls>"],
     "action": {
-        "default_popup": "popup.html"
+        "default_popup": "src/popup.html"
     },
     "icons": {
-        "48": "icon48.png",
-        "128": "icon128.png"
+        "48": "src/assets/icons/icon48.png",
+        "128": "src/assets/icons/icon128.png"
     }
 }

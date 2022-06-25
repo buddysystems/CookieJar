@@ -1,11 +1,5 @@
 import { truncateString } from "../helpers/string-util.js";
 import { UiElement } from "./ui-element.js";
-import rightCaret from "../../assets/img/caret-right.png";
-import downCaret from "../../assets/img/caret-down.png";
-import jarIcon from "../../assets/img/jar-icon.png";
-import unjarIcon from "../../assets/img/unjar-png.png";
-import trashIcon from "../../assets/img/trash-icon.png";
-
 export class CookieRow extends UiElement {
     /**
      * @param {*} refreshCookieRow Callback to be invoked once the cookie row UI needs to be updated
@@ -60,7 +54,7 @@ export class CookieRow extends UiElement {
 
         this.caretImg = document.createElement("img");
         accordianHeader.appendChild(this.caretImg);
-        this.caretImg.src = rightCaret;
+        this.caretImg.src = "assets/img/caret-right.png";
         this.caretImg.classList.add("caret");
 
         const accordianInfoContainer = document.createElement("div");
@@ -95,7 +89,7 @@ export class CookieRow extends UiElement {
             // The action-icon class gives shared styling to icons, such as changing the cursor on hover (see css/cookie-row.css)
             jarIconImg.classList.add("action-icon");
             jarIconImg.classList.add("jar-btn");
-            jarIconImg.src = jarIcon;
+            jarIconImg.src = "assets/img/jar-icon.png";
             jarIconImg.title = "Jar this cookie";
             jarIconImg.addEventListener("click", () => {
                 this.cookiesManager.storeCookie(this.cookie);
@@ -106,7 +100,7 @@ export class CookieRow extends UiElement {
             cookieActions.appendChild(unjarIconImg);
             unjarIconImg.classList.add("action-icon");
             unjarIconImg.classList.add("unjar-btn");
-            unjarIconImg.src = unjarIcon;
+            unjarIconImg.src = "assets/img/unjar-png.png";
             unjarIconImg.title = "Unjar this cookie";
             unjarIconImg.addEventListener("click", () => {
                 this.cookiesManager.restoreCookie(this.cookie);
@@ -118,7 +112,7 @@ export class CookieRow extends UiElement {
         cookieActions.appendChild(trashIconImg);
         trashIconImg.classList.add("action-icon");
         trashIconImg.classList.add("trash-btn");
-        trashIconImg.src = trashIcon;
+        trashIconImg.src = "assets/img/trash-icon.png";
         trashIconImg.title = "Delete this cookie";
         trashIconImg.addEventListener("click", () => {
             this.cookiesManager.deleteCookie(this.cookie);
@@ -163,9 +157,9 @@ export class CookieRow extends UiElement {
         this.isOpen = !this.isOpen;
         this.cookieRowContent.toggleForm(this.isOpen);
         if (this.isOpen) {
-            this.caretImg.src = downCaret;
+            this.caretImg.src = "assets/img/caret-down.png";
         } else {
-            this.caretImg.src = rightCaret;
+            this.caretImg.src = "assets/img/caret-right.png";
         }
     }
 

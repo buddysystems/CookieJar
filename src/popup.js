@@ -1,10 +1,3 @@
-// The order of css imports is important; reset should always go first, as other stylesheets must override it
-import "./css/reset.css";
-import "./css/cookie-row.css";
-import "./css/pantry.css";
-import "./css/modal.css";
-import "./css/popup.css";
-
 import { ChromeCookieStore } from "./js/cookies/chrome-cookie-store.js";
 import { CookieJarStore } from "./js/cookies/cookie-jar-store.js";
 import { CookiesManager } from "./js/cookies/cookies-manager.js";

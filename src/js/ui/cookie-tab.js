@@ -4,12 +4,6 @@ import { ExportCookieModal } from "./export-cookie-modal.js";
 import { DomainFilter } from "./domain-filter.js";
 import { CookieRow } from "./cookie-row.js";
 
-import rightCaret from "../../assets/img/caret-right.png";
-import downCaret from "../../assets/img/caret-down.png";
-import jarIcon from "../../assets/img/jar-icon.png";
-import unjarIcon from "../../assets/img/unjar-png.png";
-import trashIcon from "../../assets/img/trash-icon.png";
-
 export class CookieTab extends UiElement {
     constructor(cookiesManager, isJar) {
         super();
@@ -125,7 +119,7 @@ export class CookieTab extends UiElement {
             unjarActionContainer.innerHTML += `
             <span>unJar selected</span>
             <img
-                src=${unjarIcon}
+                src="assets/img/unjar-png.png"
                 class="action-icon"
             />
             `;
@@ -143,7 +137,7 @@ export class CookieTab extends UiElement {
             jarActionContainer.innerHTML += `
             <span>Jar selected</span>
             <img
-                src=${jarIcon}
+                src="assets/img/jar-icon.png"
                 class="action-icon"
             />
             `;
@@ -162,7 +156,7 @@ export class CookieTab extends UiElement {
         deleteActionContainer.innerHTML += `
             <span>Delete selected</span>
             <img
-                src=${trashIcon}
+                src="assets/img/trash-icon.png"
                 class="action-icon"
             />
             `;
@@ -180,7 +174,7 @@ export class CookieTab extends UiElement {
         exportActionContainer.innerHTML += `
             <span>Export selected</span>
             <!-- <img
-                src=${trashIcon}
+                src="assets/img/trash-icon.png"
                 class="action-icon"
             /> -->
             `;
