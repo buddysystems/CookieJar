@@ -1,0 +1,44 @@
+.accordian-header.rule {
+    padding: var(--m1);
+    background-color: var(--beige);
+    border: 1px solid var(--border-gray);
+    display: grid;
+    grid-template-columns: 20px 1fr 16fr 4fr;
+}
+
+.rule-actions .action-button {
+    margin-left: var(--m1);
+    margin-right: 0;
+}
+
+.cookie-row:hover .accordian-header.rule {
+    grid-template-columns: 20px 1fr 16fr 4fr;
+}
+
+.cookie-row .rule-date {
+    display: flex;
+}
+
+.cookie-row .rule-actions {
+    display: none;
+}
+
+.cookie-row:hover .rule-date {
+    display: none;
+}
+
+.cookie-row:hover .rule-actions {
+    display: flex;
+}
+
+.rule-actions,
+.rule-date {
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.rule-date {
+    font-size: var(--font-size-small);
+    color: var(--font-gray);
+    padding-right: var(--m1);
+}

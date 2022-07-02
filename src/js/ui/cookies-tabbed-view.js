@@ -2,11 +2,13 @@ import { UiElement } from "./ui-element.js";
 import { ViewTabs } from "./view-tabs.js";
 import { CookieTab } from "./cookie-tab.js";
 import { PantryTab } from "./pantry-tab.js";
+import { RulesTab } from "./rules-tab.js";
 
 export class CookiesTabbedView extends UiElement {
-    constructor(cookiesManager) {
+    constructor(cookiesManager, rulesManager) {
         super();
         this.cookiesManager = cookiesManager;
+        this.rulesManager = rulesManager;
 
         this.hasElementBeenCreated = false;
     }
@@ -39,6 +41,12 @@ export class CookiesTabbedView extends UiElement {
         this.cookieTabbedViewElement.appendChild(activeViewElem);
         await this.cookiesTab.hide();
 
+        // Rules view
+        this.rulesTab = new RulesTab(this.rulesManager);
+        const rulesViewElem = await this.rulesTab.getHtmlElement();
+        this.cookieTabbedViewElement.appendChild(rulesViewElem);
+        await this.rulesTab.hide();
+
         // Pantry tab:
         this.pantryTab = new PantryTab(this.cookiesManager);
         const pantryTabElem = await this.pantryTab.getHtmlElement();
@@ -48,11 +56,19 @@ export class CookiesTabbedView extends UiElement {
         // Tab button functionality
         viewTabs.handleSelectCookies = async () => {
             await this.pantryTab.hide();
+            await this.rulesTab.hide();
             await this.cookiesTab.show();
+        };
+
+        viewTabs.handleSelectRules = async () => {
+            await this.cookiesTab.hide();
+            await this.pantryTab.hide();
+            await this.rulesTab.show();
         };
 
         viewTabs.handleSelectPantry = async () => {
             await this.cookiesTab.hide();
+            await this.rulesTab.hide();
             await this.pantryTab.show();
         };
 

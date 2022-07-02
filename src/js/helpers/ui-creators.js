@@ -1,4 +1,5 @@
 import { JarCookie } from "../cookies/jar-cookie.js";
+import { Rule, Ruleset } from "../rules/rule.js";
 
 export function createCookieForm(cookie, handleCancel, handleSave) {
     const cookieEditForm = document.createElement("form");
@@ -203,6 +204,68 @@ export function createCookieForm(cookie, handleCancel, handleSave) {
 
         await handleSave(updatedCookie);
     });
+
+    return cookieEditForm;
+}
+
+/**
+ * @param {Rule} rule
+ * @param {*} handleCancel
+ * @param {*} handleSave
+ * @returns
+ */
+export function createRuleForm(rule, handleCancel, handleSave) {
+    const cookieEditForm = document.createElement("form");
+    cookieEditForm.classList.add("cookie-form");
+
+    // Inside the edit form
+    const nameLabel = document.createElement("label");
+    nameLabel.innerText = "Name";
+    cookieEditForm.appendChild(nameLabel);
+
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.value = rule.name;
+    cookieEditForm.appendChild(nameInput);
+
+    const valueLabel = document.createElement("label");
+    valueLabel.innerText = "Expression";
+    cookieEditForm.appendChild(valueLabel);
+
+    const valueInput = document.createElement("textarea");
+    valueInput.cols = "50";
+    valueInput.rows = "5";
+    valueInput.innerText = rule.filterExpression;
+    cookieEditForm.appendChild(valueInput);
+
+    const rulesetLabel = document.createElement("label");
+    cookieEditForm.appendChild(rulesetLabel);
+    rulesetLabel.innerText = "Ruleset";
+
+    const sourceSelect = document.createElement("select");
+    cookieEditForm.appendChild(sourceSelect);
+    sourceSelect.innerHTML = `
+            <option value="${Ruleset.Whitelist}">${Ruleset.Whitelist}</option>
+            <option value="${Ruleset.Graylist}">${Ruleset.Graylist}</option>
+            <option value="${Ruleset.Blacklist}">${Ruleset.Blacklist}</option>
+        `;
+
+    const formActionsContainer = document.createElement("div");
+    cookieEditForm.appendChild(formActionsContainer);
+    formActionsContainer.classList.add("form-actions");
+    formActionsContainer.style.marginTop = "var(--m2)";
+
+    const cancelButton = document.createElement("button");
+    cancelButton.type = "button";
+    formActionsContainer.appendChild(cancelButton);
+    cancelButton.innerText = "Cancel";
+    cancelButton.addEventListener("click", handleCancel);
+
+    const saveButton = document.createElement("button");
+    saveButton.type = "button";
+    formActionsContainer.appendChild(saveButton);
+    saveButton.innerText = "Save";
+    saveButton.addEventListener("click", () => handleSave(null));
 
     return cookieEditForm;
 }

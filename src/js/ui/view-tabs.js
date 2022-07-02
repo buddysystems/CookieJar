@@ -5,6 +5,7 @@ export class ViewTabs extends UiElement {
         super();
         this.createHtmlElement();
         this.handleSelectCookies = async () => {};
+        this.handleSelectRules = async () => {};
         this.handleSelectPantry = async () => {};
         this.selectedTabName = selectedTabName;
     }
@@ -27,6 +28,20 @@ export class ViewTabs extends UiElement {
             await this.handleSelectCookies();
         });
 
+        const rulesTab = document.createElement("span");
+        this.rulesTab = rulesTab;
+        viewTabsElement.appendChild(rulesTab);
+        rulesTab.classList.add("view-tab");
+        rulesTab.innerText = "Rules";
+        rulesTab.title =
+            "Manage automatic whitelist, graylist, and blacklist behavior for cookies.";
+        rulesTab.addEventListener("click", async () => {
+            this.resetActiveTab();
+            this.selectedTabName = "pantry";
+            rulesTab.classList.add("active-tab");
+            await this.handleSelectRules();
+        });
+
         const pantryTab = document.createElement("span");
         this.pantryTab = pantryTab;
         viewTabsElement.appendChild(pantryTab);
@@ -45,6 +60,7 @@ export class ViewTabs extends UiElement {
 
     resetActiveTab() {
         this.cookiesTab.classList.remove("active-tab");
+        this.rulesTab.classList.remove("active-tab");
         this.pantryTab.classList.remove("active-tab");
     }
 
