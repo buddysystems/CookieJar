@@ -1,5 +1,8 @@
 import { truncateString } from "../helpers/string-util.js";
 import { UiElement } from "./ui-element.js";
+import { JarCookie } from "../cookies/jar-cookie.js";
+import { createCookieForm } from "../helpers/ui-creators.js";
+
 export class CookieRow extends UiElement {
     /**
      * @param {*} refreshCookieRow Callback to be invoked once the cookie row UI needs to be updated
@@ -210,221 +213,28 @@ export class CookieRowContent extends UiElement {
         cookieInfoContainer.style.display = "none";
         this.cookieInfoContainer = cookieInfoContainer;
 
-        const cookieEditForm = document.createElement("form");
+        const cookieEditForm = createCookieForm(
+            this.cookie,
+            this.handleCancelEditCookie,
+            this.handleSaveCookieEdit
+        );
         cookieInfoContainer.appendChild(cookieEditForm);
-        cookieEditForm.classList.add("cookie-edit-form");
-
-        // Inside the edit form
-        const nameLabel = document.createElement("label");
-        nameLabel.innerText = "Name";
-        cookieEditForm.appendChild(nameLabel);
-
-        const nameInput = document.createElement("input");
-        nameInput.type = "text";
-        nameInput.value = this.cookie.name;
-        cookieEditForm.appendChild(nameInput);
-
-        const valueLabel = document.createElement("label");
-        valueLabel.innerText = "Value";
-        cookieEditForm.appendChild(valueLabel);
-
-        const valueInput = document.createElement("textarea");
-        valueInput.cols = "50";
-        valueInput.rows = "5";
-        valueInput.innerText = this.cookie.value;
-        cookieEditForm.appendChild(valueInput);
-
-        const domainLabel = document.createElement("label");
-        domainLabel.innerText = "Domain";
-        cookieEditForm.appendChild(domainLabel);
-
-        const domainInput = document.createElement("input");
-        domainInput.type = "text";
-        domainInput.value = this.cookie.domain;
-        domainInput.disabled = this.cookie.hostOnly;
-        cookieEditForm.appendChild(domainInput);
-
-        const pathLabel = document.createElement("label");
-        pathLabel.innerText = "Path";
-        cookieEditForm.appendChild(pathLabel);
-
-        const pathInput = document.createElement("input");
-        pathInput.type = "text";
-        pathInput.value = this.cookie.path;
-        cookieEditForm.appendChild(pathInput);
-
-        const expirationLabel = document.createElement("label");
-        expirationLabel.innerText = "Expiration";
-        cookieEditForm.appendChild(expirationLabel);
-
-        const expirationInput = document.createElement("input");
-        expirationInput.type = "text";
-        expirationInput.value = this.cookie.expirationDate
-            ? new Date(this.cookie.expirationDate * 1000).toUTCString()
-            : "";
-        expirationInput.disabled = this.cookie.session;
-        cookieEditForm.appendChild(expirationInput);
-
-        const sameSiteLabel = document.createElement("label");
-        sameSiteLabel.innerText = "SameSite";
-        cookieEditForm.appendChild(sameSiteLabel);
-
-        const sameSiteSelect = document.createElement("select");
-        cookieEditForm.appendChild(sameSiteSelect);
-        sameSiteSelect.name = "same-site";
-
-        const noRestrictionOption = document.createElement("option");
-        noRestrictionOption.value = "no_restriction";
-        noRestrictionOption.innerText = "No Restriction";
-        sameSiteSelect.appendChild(noRestrictionOption);
-
-        const laxOption = document.createElement("option");
-        laxOption.value = "lax";
-        laxOption.innerText = "Lax";
-        sameSiteSelect.appendChild(laxOption);
-
-        const strictOption = document.createElement("option");
-        strictOption.value = "strict";
-        strictOption.innerText = "Strict";
-        sameSiteSelect.appendChild(strictOption);
-
-        const unspecifiedOption = document.createElement("option");
-        unspecifiedOption.value = "unspecified";
-        unspecifiedOption.innerText = "Unspecified";
-        sameSiteSelect.appendChild(unspecifiedOption);
-
-        sameSiteSelect.value = this.cookie.sameSite;
-
-        // cookie bools
-        const cookieBooleans = document.createElement("div");
-        cookieBooleans.classList.add("cookie-bools");
-        cookieEditForm.appendChild(cookieBooleans);
-
-        const hostOnlyDiv = document.createElement("div");
-        cookieBooleans.appendChild(hostOnlyDiv);
-
-        const hostOnlyLabel = document.createElement("label");
-        hostOnlyLabel.innerText = "HostOnly";
-        hostOnlyDiv.appendChild(hostOnlyLabel);
-
-        const hostOnlyInput = document.createElement("input");
-        hostOnlyInput.type = "checkbox";
-        hostOnlyInput.checked = this.cookie.hostOnly;
-        hostOnlyDiv.appendChild(hostOnlyInput);
-
-        // In order to set hostOnly to true, we need to pass in a null domain. Therefore, we need to disable the domain input
-        hostOnlyInput.addEventListener("change", (e) => {
-            domainInput.disabled = e.currentTarget.checked;
-        });
-
-        const sessionDiv = document.createElement("div");
-        cookieBooleans.appendChild(sessionDiv);
-
-        const sessionLabel = document.createElement("label");
-        sessionLabel.innerText = "Session";
-        sessionDiv.appendChild(sessionLabel);
-
-        const sessionInput = document.createElement("input");
-        sessionInput.type = "checkbox";
-        sessionInput.checked = this.cookie.session;
-        sessionDiv.appendChild(sessionInput);
-        // In order to set session to true, we need to pass in a null expiration date
-        sessionInput.addEventListener("change", (e) => {
-            expirationInput.disabled = e.currentTarget.checked;
-        });
-
-        const secureDiv = document.createElement("div");
-        cookieBooleans.appendChild(secureDiv);
-
-        const secureLabel = document.createElement("label");
-        secureLabel.innerText = "Secure";
-        secureDiv.appendChild(secureLabel);
-
-        const secureInput = document.createElement("input");
-        secureInput.type = "checkbox";
-        secureInput.checked = this.cookie.secure;
-        secureDiv.appendChild(secureInput);
-
-        const httpOnlyDiv = document.createElement("div");
-        cookieBooleans.appendChild(httpOnlyDiv);
-
-        const httpOnlyLabel = document.createElement("label");
-        httpOnlyLabel.innerText = "HttpOnly";
-        httpOnlyDiv.appendChild(httpOnlyLabel);
-
-        const httpOnlyInput = document.createElement("input");
-        httpOnlyInput.type = "checkbox";
-        httpOnlyInput.checked = this.cookie.httpOnly;
-        httpOnlyDiv.appendChild(httpOnlyInput);
-
-        const formActionsContainer = document.createElement("div");
-        cookieEditForm.appendChild(formActionsContainer);
-        formActionsContainer.classList.add("form-actions");
-
-        const cancelButton = document.createElement("button");
-        cancelButton.type = "button";
-        formActionsContainer.appendChild(cancelButton);
-        cancelButton.innerText = "Cancel";
-        cancelButton.addEventListener("click", () => {
-            // TODO: reset form values to original cookie values
-            this.cookieRowElement.toggleForm();
-        });
-
-        const saveButton = document.createElement("button");
-        saveButton.type = "button";
-        formActionsContainer.appendChild(saveButton);
-        saveButton.innerText = "Save";
-        saveButton.addEventListener("click", async () => {
-            // get previous cookie details from this.cookie
-            const prevDetails = this.snapshotDetails();
-
-            let expirationValue = null;
-            if (expirationInput?.value != "undefined") {
-                try {
-                    const parsedNumber = parseInt(expirationInput.value);
-                    if (!isNaN(parsedNumber)) {
-                        expirationValue = parsedNumber;
-                    } else {
-                        let parsedDate = new Date(expirationInput.value);
-
-                        if (isNaN(parsedDate))
-                            throw new DOMException("Could not parse date");
-
-                        expirationValue = Math.floor(
-                            parsedDate.getTime() / 1000
-                        );
-                    }
-                } catch (e) {
-                    console.warn(e);
-                    console.warn("Could not parse expiration date input.");
-                }
-            }
-            const updatedCookie = new JarCookie(
-                {
-                    domain: domainInput.value,
-                    name: nameInput.value,
-                    storeId: this.cookie.storeId, // TODO: verify we don't need edit functionality for this
-                    expirationDate: expirationValue,
-                    hostOnly: hostOnlyInput.checked,
-                    httpOnly: httpOnlyInput.checked,
-                    path: pathInput.value,
-                    sameSite: sameSiteSelect.value,
-                    secure: secureInput.checked,
-                    session: sessionInput.checked,
-                    value: valueInput.value,
-                },
-                this.cookie.isStored,
-                this.cookie.isSelected
-            );
-            if (hostOnlyInput.checked) updatedCookie.domain = null;
-            if (sessionInput.checked) updatedCookie.expirationDate = null;
-
-            await this.cookiesManager.updateCookie(prevDetails, updatedCookie);
-            await this.cookieRowElement.refreshCookieRow();
-        });
 
         this.cookieRowContent = cookieRowContent;
     }
+
+    handleCancelEditCookie = async () => {
+        // TODO: reset form values to original cookie values
+        this.cookieRowElement.toggleForm();
+    };
+
+    handleSaveCookieEdit = async (updatedCookie) => {
+        // get previous cookie details from this.cookie
+        const prevDetails = this.snapshotDetails();
+
+        await this.cookiesManager.updateCookie(prevDetails, updatedCookie);
+        await this.cookieRowElement.refreshCookieRow();
+    };
 
     getHtmlElement() {
         return this.cookieRowContent;

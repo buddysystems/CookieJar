@@ -3,6 +3,7 @@ import { BulkCookieSelector } from "../cookies/bulk-cookie-selector.js";
 import { ExportCookieModal } from "./export-cookie-modal.js";
 import { DomainFilter } from "./domain-filter.js";
 import { CookieRow } from "./cookie-row.js";
+import { CookieFormModal } from "./cookie-form-modal.js";
 
 export class CookieTab extends UiElement {
     cookieSource = "all";
@@ -39,6 +40,11 @@ export class CookieTab extends UiElement {
         );
         const exportCookieModalElemn = await exportCookieModal.getHtmlElement();
         this.cookieTabElement.appendChild(exportCookieModalElemn);
+
+        // New cookie modal
+        const newCookieModal = new CookieFormModal(this.cookiesManager);
+        const cookieModalElem = await newCookieModal.getHtmlElement();
+        this.cookieTabElement.appendChild(cookieModalElem);
 
         // Filters (search, domain filter)
         const cookieFiltersContainer = document.createElement("form");
@@ -236,6 +242,10 @@ export class CookieTab extends UiElement {
         newCookieButton.appendChild(newCookieIcon);
 
         newCookieButton.innerHTML += "New";
+        newCookieButton.addEventListener(
+            "click",
+            async () => await newCookieModal.showModal()
+        );
 
         // Cookies list
         const cookieRowList = document.createElement("div");

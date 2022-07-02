@@ -9,20 +9,20 @@ export class JarCookie {
      * @param {*} cookie The chrome cookie object (returned from chrome.cookies API)
      */
     constructor(cookie, isStored = false, isSelected = false) {
-        this.domain = cookie.domain;
-        this.name = cookie.name;
-        this.storeId = cookie.storeId;
-        this.expirationDate = cookie.expirationDate;
-        this.hostOnly = cookie.hostOnly;
-        this.httpOnly = cookie.httpOnly;
-        this.path = cookie.path;
-        this.sameSite = cookie.sameSite;
-        this.secure = cookie.secure;
-        this.session = cookie.session;
-        this.value = cookie.value;
+        this.domain = cookie?.domain ?? "";
+        this.name = cookie?.name ?? "";
+        this.storeId = cookie?.storeId ?? 0; // TODO: get curr store id? or is it even needed to add new?
+        this.expirationDate = cookie?.expirationDate ?? "";
+        this.hostOnly = cookie?.hostOnly ?? "";
+        this.httpOnly = cookie?.httpOnly ?? "";
+        this.path = cookie?.path ?? "";
+        this.sameSite = cookie?.sameSite ?? "";
+        this.secure = cookie?.secure ?? "";
+        this.session = cookie?.session ?? "";
+        this.value = cookie?.value ?? "";
         this.details = {
-            name: cookie.name,
-            storeId: cookie.storeId,
+            name: cookie?.name,
+            storeId: cookie?.storeId,
             url: getCookieUrl(this),
         };
         this.isStored = isStored;

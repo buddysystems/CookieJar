@@ -11,17 +11,33 @@
 }
 
 .modal-content {
-    background-color: var(--offwhite);
+    background-color: var(--beige-dark);
     margin: 25% auto;
-    padding: var(--m4);
     border: 1px solid var(--border-gray);
     width: 90%; /* Could be more or less, depending on screen size */
+}
+
+.modal-content.fullscreen {
+    width: 100%;
+    margin: 0;
+}
+
+.modal-content .main-content {
+    margin: var(--m2) 0;
+    padding-top: var(--m2);
+    background-color: var(--beige);
+}
+
+.modal-content .title {
+    margin: var(--m2);
+    font-weight: bold;
 }
 
 .modal-content form {
     display: flex;
     flex-direction: column;
-    max-width: 400px;
+    background-color: var(--offwhite);
+    padding: var(--m1) var(--m2);
 }
 
 .modal-content form label {
@@ -57,7 +73,7 @@
 
 .modal-content .form-actions {
     /* justify-content: start; */
-    margin-top: var(--m2);
+    margin: var(--m2);
 }
 
 /* .modal-content .form-actions button {

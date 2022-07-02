@@ -82,21 +82,21 @@
     margin-right: 0;
 }
 
-.cookie-edit-form {
+.cookie-form {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     width: 100%;
 }
 
-.cookie-edit-form label {
+.cookie-form label {
     font-size: var(--font-size-small);
     line-height: 12pt;
     margin-top: var(--m2);
     margin-bottom: 3px;
 }
 
-.cookie-edit-form .cookie-bools {
+.cookie-form .cookie-bools {
     margin: var(--m2) 0;
     display: flex;
     flex-direction: row;
