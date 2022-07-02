@@ -84,40 +84,63 @@ export class CookieRow extends UiElement {
         cookieActions.classList.add("cookie-actions");
 
         if (!this.cookie.isStored) {
-            const jarIconImg = document.createElement("img");
-            cookieActions.appendChild(jarIconImg);
-            // The action-icon class gives shared styling to icons, such as changing the cursor on hover (see css/cookie-row.css)
-            jarIconImg.classList.add("action-icon");
-            jarIconImg.classList.add("jar-btn");
-            jarIconImg.src = "assets/img/jar-icon.png";
-            jarIconImg.title = "Jar this cookie";
-            jarIconImg.addEventListener("click", () => {
+            const jarIconContainer = document.createElement("div");
+            cookieActions.appendChild(jarIconContainer);
+            jarIconContainer.classList.add("action-button");
+            jarIconContainer.innerHTML += `
+                    <img
+                        src="assets/img/jar-icon.png"
+                        class="action-icon"
+                        title="Jar this cookie"
+                    />
+                    `;
+            jarIconContainer.addEventListener("click", () => {
                 this.cookiesManager.storeCookie(this.cookie);
                 this.deleteCookieRow();
             });
         } else {
-            const unjarIconImg = document.createElement("img");
-            cookieActions.appendChild(unjarIconImg);
-            unjarIconImg.classList.add("action-icon");
-            unjarIconImg.classList.add("unjar-btn");
-            unjarIconImg.src = "assets/img/unjar-png.png";
-            unjarIconImg.title = "Unjar this cookie";
-            unjarIconImg.addEventListener("click", () => {
+            const unjarIconContainer = document.createElement("div");
+            cookieActions.appendChild(unjarIconContainer);
+
+            unjarIconContainer.classList.add("action-button");
+            unjarIconContainer.innerHTML += `
+                    <img
+                        src="assets/img/unjar-png.png"
+                        class="action-icon"
+                        title="Un-jar this cookie"
+                    />
+                    `;
+            unjarIconContainer.addEventListener("click", () => {
                 this.cookiesManager.restoreCookie(this.cookie);
                 this.deleteCookieRow();
             });
         }
 
-        const trashIconImg = document.createElement("img");
-        cookieActions.appendChild(trashIconImg);
-        trashIconImg.classList.add("action-icon");
-        trashIconImg.classList.add("trash-btn");
-        trashIconImg.src = "assets/img/trash-icon.png";
-        trashIconImg.title = "Delete this cookie";
-        trashIconImg.addEventListener("click", () => {
+        const trashIconContainer = document.createElement("div");
+        cookieActions.appendChild(trashIconContainer);
+        trashIconContainer.classList.add("action-button");
+        trashIconContainer.innerHTML += `
+                    <img
+                        src="assets/img/trash-icon.png"
+                        class="action-icon"
+                        title="Delete this cookie"
+                    />
+                    `;
+        trashIconContainer.addEventListener("click", () => {
             this.cookiesManager.deleteCookie(this.cookie);
             this.deleteCookieRow();
         });
+
+        const exportIconContainer = document.createElement("div");
+        cookieActions.appendChild(exportIconContainer);
+        exportIconContainer.classList.add("action-button");
+        exportIconContainer.innerHTML += `
+                    <img
+                        src="assets/img/export-icon.svg"
+                        class="action-icon"
+                        title="Export this cookie"
+                    />
+                    `;
 
         // Cookie row content
         const cookieRowContent = new CookieRowContent(

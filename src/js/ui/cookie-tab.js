@@ -5,14 +5,18 @@ import { DomainFilter } from "./domain-filter.js";
 import { CookieRow } from "./cookie-row.js";
 
 export class CookieTab extends UiElement {
-    constructor(cookiesManager, isJar) {
+    cookieSource = "all";
+    hasAnyCookiesSelected = false;
+
+    constructor(cookiesManager) {
         super();
         this.isLoaded = false;
         this.cookiesManager = cookiesManager;
-        this.bulkCookieSelector = new BulkCookieSelector(cookiesManager);
+        this.bulkCookieSelector = new BulkCookieSelector(cookiesManager, () =>
+            this.updateBulkActionVisibility()
+        );
         this.hasElementBeenCreated = false;
         this.cookieRows = [];
-        this.isJar = isJar;
     }
 
     async getHtmlElement() {
@@ -67,6 +71,28 @@ export class CookieTab extends UiElement {
         const domainFilterElem = await this.domainFilter.getHtmlElement();
         domainContainer.appendChild(domainFilterElem);
 
+        // Cookie source
+        const cookieSourceContainer = document.createElement("div");
+        cookieSourceContainer.classList.add("labeled-input");
+        cookieFiltersContainer.appendChild(cookieSourceContainer);
+
+        const sourceLabel = document.createElement("label");
+        cookieSourceContainer.appendChild(sourceLabel);
+        sourceLabel.innerText = "Cookie source";
+
+        const sourceSelect = document.createElement("select");
+        cookieSourceContainer.appendChild(sourceSelect);
+        sourceSelect.innerHTML = `
+            <option value="all">All cookies</option>
+            <option value="active">Active cookies</option>
+            <option value="jar">Jarred cookies</option>
+        `;
+        sourceSelect.style.marginRight = "270px";
+        sourceSelect.addEventListener("change", () => {
+            this.cookieSource = sourceSelect.value;
+            this.updateBulkActionVisibility();
+        });
+
         const search = async (_) =>
             await this.search(
                 this.searchBox.value,
@@ -109,55 +135,59 @@ export class CookieTab extends UiElement {
         });
 
         const cookieActionsContainer = document.createElement("div");
+        this.cookieActionsContainer = cookieActionsContainer;
         bulkRow.appendChild(cookieActionsContainer);
         cookieActionsContainer.classList.add("bulk-actions");
+        cookieActionsContainer.style.display = "none";
 
-        if (this.isJar) {
-            const unjarActionContainer = document.createElement("div");
-            cookieActionsContainer.appendChild(unjarActionContainer);
-            unjarActionContainer.classList.add("action-button");
-            unjarActionContainer.innerHTML += `
-            <span>unJar selected</span>
+        const unjarActionContainer = document.createElement("div");
+        this.unjarActionContainer = unjarActionContainer;
+        this.unjarActionContainer.style.display = "none";
+        cookieActionsContainer.appendChild(unjarActionContainer);
+        unjarActionContainer.classList.add("action-button");
+        unjarActionContainer.innerHTML += `
             <img
                 src="assets/img/unjar-png.png"
                 class="action-icon"
+                title="Unjar selected"
             />
             `;
-            unjarActionContainer.title = "Move the selected cookies to active";
-            unjarActionContainer.addEventListener("click", async () => {
-                await this.cookiesManager.restoreCookies(
-                    this.bulkCookieSelector.selectedCookies
-                );
-                this.show();
-            });
-        } else {
-            const jarActionContainer = document.createElement("div");
-            cookieActionsContainer.appendChild(jarActionContainer);
-            jarActionContainer.classList.add("action-button");
-            jarActionContainer.innerHTML += `
-            <span>Jar selected</span>
-            <img
-                src="assets/img/jar-icon.png"
-                class="action-icon"
-            />
-            `;
-            jarActionContainer.title = "Move the selected cookies to the jar";
-            jarActionContainer.addEventListener("click", async () => {
-                await this.cookiesManager.storeCookies(
-                    this.bulkCookieSelector.selectedCookies
-                );
-                this.show();
-            });
-        }
+        unjarActionContainer.title = "Move the selected cookies to active";
+        unjarActionContainer.addEventListener("click", async () => {
+            await this.cookiesManager.restoreCookies(
+                this.bulkCookieSelector.selectedCookies
+            );
+            this.show();
+        });
+
+        const jarActionContainer = document.createElement("div");
+        this.jarActionContainer = jarActionContainer;
+        this.jarActionContainer.style.display = "none";
+        cookieActionsContainer.appendChild(jarActionContainer);
+        jarActionContainer.classList.add("action-button");
+        jarActionContainer.innerHTML += `
+        <img
+            src="assets/img/jar-icon.png"
+            class="action-icon"
+            title="Jar selected"
+        />
+        `;
+        jarActionContainer.title = "Move the selected cookies to the jar";
+        jarActionContainer.addEventListener("click", async () => {
+            await this.cookiesManager.storeCookies(
+                this.bulkCookieSelector.selectedCookies
+            );
+            this.show();
+        });
 
         const deleteActionContainer = document.createElement("div");
         cookieActionsContainer.appendChild(deleteActionContainer);
         deleteActionContainer.classList.add("action-button");
         deleteActionContainer.innerHTML += `
-            <span>Delete selected</span>
             <img
                 src="assets/img/trash-icon.png"
                 class="action-icon"
+                title="Delete selected"
             />
             `;
         deleteActionContainer.title = "Permanently delete the selected cookies";
@@ -172,17 +202,40 @@ export class CookieTab extends UiElement {
         cookieActionsContainer.appendChild(exportActionContainer);
         exportActionContainer.classList.add("action-button");
         exportActionContainer.innerHTML += `
-            <span>Export selected</span>
-            <!-- <img
-                src="assets/img/trash-icon.png"
+            <img
+                src="assets/img/export-icon.svg"
                 class="action-icon"
-            /> -->
+                title="Export selected"
+            />
             `;
         exportActionContainer.title = "Export the selected cookies";
         exportActionContainer.addEventListener(
             "click",
             async () => await exportCookieModal.showModal()
         );
+
+        const rulesActionContainer = document.createElement("div");
+        cookieActionsContainer.appendChild(rulesActionContainer);
+        rulesActionContainer.classList.add("action-button");
+        rulesActionContainer.innerHTML += `
+            <img
+                src="assets/img/rules-icon.svg"
+                class="action-icon"
+                title="Create rule for selected"
+            />
+            `;
+
+        // New cookie btn
+        const newCookieButton = document.createElement("button");
+        bulkRow.appendChild(newCookieButton);
+        newCookieButton.classList.add("new-button");
+        newCookieButton.title = "Create a new cookie";
+
+        const newCookieIcon = document.createElement("img");
+        newCookieIcon.src = "assets/img/simple-cookie-icon-white.svg";
+        newCookieButton.appendChild(newCookieIcon);
+
+        newCookieButton.innerHTML += "New";
 
         // Cookies list
         const cookieRowList = document.createElement("div");
@@ -204,6 +257,21 @@ export class CookieTab extends UiElement {
         this.noResultsLabel.classList.add("no-results");
         this.noResultsLabel.innerHTML = "No results";
         this.hideNoResults();
+    }
+
+    updateBulkActionVisibility() {
+        this.cookieActionsContainer.style.display =
+            this.bulkCookieSelector.selectedCookies.length > 0
+                ? "flex"
+                : "none";
+
+        if (this.cookieSource === "active") {
+            this.jarActionContainer.style.display = "flex";
+            this.unjarActionContainer.style.display = "none";
+        } else if (this.cookieSource === "jar") {
+            this.jarActionContainer.style.display = "none";
+            this.unjarActionContainer.style.display = "flex";
+        }
     }
 
     async search(searchTerm, domainFilterTerm) {
@@ -260,7 +328,14 @@ export class CookieTab extends UiElement {
     }
 
     async getCookies(searchTerm, domainFilter) {
-        console.error("getCookies not implemented by CookieTab subclass.");
+        let cookies = await this.cookiesManager.getChromeCookies({
+            domain: domainFilter,
+        });
+        if (searchTerm !== null && searchTerm !== "") {
+            const searchTermNormalized = searchTerm.trim().toUpperCase();
+            cookies = filterCookieList(cookies, searchTermNormalized);
+        }
+        return cookies;
     }
 
     async clearCookieRows() {
@@ -300,6 +375,6 @@ export class CookieTab extends UiElement {
     }
 
     async setDomainFilterValue(domainFilter) {
-        // No functionality in base class
+        await domainFilter.setAsCurrentDomain();
     }
 }

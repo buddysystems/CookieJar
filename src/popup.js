@@ -19,5 +19,5 @@ window.onload = async function () {
     const cookiesTabbedViewElem = await cookiesTabbedView.getHtmlElement();
     cookiesTabbedViewContainer.appendChild(cookiesTabbedViewElem);
 
-    await cookiesTabbedView.activeTab.show();
+    await cookiesTabbedView.cookiesTab.show();
 };

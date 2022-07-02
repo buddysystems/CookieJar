@@ -94,39 +94,47 @@ html {
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 420px;
+    max-height: 380px;
 }
 
 .bulk-row {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: var(--m1);
-    padding: var(--m1);
+    padding: 0 var(--m1);
+    min-height: 42px;
 }
 
 .bulk-actions {
     display: flex;
     flex-grow: 1;
-    justify-content: end;
+    justify-content: start;
     font-size: var(--font-size-small);
+    margin-left: var(--m2);
 }
 
-.bulk-row .action-button {
+.action-button {
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
-    margin-right: var(--m3);
+    justify-content: center;
+    margin-right: var(--m2);
     font-size: var(--font-size-small);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
 }
 
-.bulk-row .action-button:hover {
+.action-button:hover {
     cursor: pointer;
     text-decoration: underline;
+    background-color: rgba(0, 0, 0, 0.11);
 }
 
-.bulk-row .action-icon {
-    width: 24px;
+.action-icon {
+    width: 22px;
     object-fit: cover;
 }
 
@@ -154,4 +162,38 @@ html {
 .help-link {
     font-size: var(--font-size-small);
     color: var(--font-gray);
+}
+
+.new-button-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.new-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--m1);
+    min-width: 100px;
+    border-radius: 3px;
+    border: rgba(27, 31, 36, 0.15);
+    background-color: #2da44e;
+    cursor: pointer;
+
+    color: white;
+}
+
+.new-button:hover {
+    background-color: #2c974b;
+}
+
+.new-button img {
+    object-fit: cover;
+    width: 15px;
+    margin-right: 3px;
+}
+
+.cookie-row-selector {
+    width: 15px;
+    height: 15px;
 }

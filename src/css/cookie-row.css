@@ -13,7 +13,11 @@
     background-color: var(--beige);
     border: 1px solid var(--border-gray);
     display: grid;
-    grid-template-columns: 1fr 1fr 20fr 5fr;
+    grid-template-columns: 20px 1fr 20fr;
+}
+
+.cookie-row:hover .accordian-header {
+    grid-template-columns: 20px 1fr 15fr 5fr;
 }
 
 .accordian-header > * {
@@ -62,23 +66,20 @@
 }
 
 .cookie-actions {
-    display: flex;
+    display: none;
     flex-direction: row;
     flex-grow: 1;
     justify-content: end;
-    align-items: flex-start;
-    margin-right: var(--m2);
+    align-items: center;
 }
 
-.cookie-actions .action-icon {
-    width: 32px;
-    object-fit: cover;
-    margin-left: -5px;
-    margin-bottom: var(--m2);
+.cookie-row:hover .cookie-actions {
+    display: flex;
 }
 
-.cookie-actions .action-icon:hover {
-    cursor: pointer;
+.cookie-actions .action-button {
+    margin-left: var(--m1);
+    margin-right: 0;
 }
 
 .cookie-edit-form {

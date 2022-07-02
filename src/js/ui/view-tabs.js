@@ -4,8 +4,7 @@ export class ViewTabs extends UiElement {
     constructor(selectedTabName) {
         super();
         this.createHtmlElement();
-        this.handleSelectActive = async () => {};
-        this.handleSelectJar = async () => {};
+        this.handleSelectCookies = async () => {};
         this.handleSelectPantry = async () => {};
         this.selectedTabName = selectedTabName;
     }
@@ -14,31 +13,18 @@ export class ViewTabs extends UiElement {
         const viewTabsElement = document.createElement("div");
         viewTabsElement.classList.add("view-tabs");
 
-        const activeCookiesTab = document.createElement("span");
-        this.activeCookiesTab = activeCookiesTab;
-        viewTabsElement.appendChild(activeCookiesTab);
-        activeCookiesTab.classList.add("view-tab");
-        activeCookiesTab.classList.add("active-tab");
-        activeCookiesTab.innerText = "Active Cookies";
-        activeCookiesTab.title = "Enabled cookies active in the browser";
-        activeCookiesTab.addEventListener("click", async () => {
+        const cookiesTab = document.createElement("span");
+        this.cookiesTab = cookiesTab;
+        viewTabsElement.appendChild(cookiesTab);
+        cookiesTab.classList.add("view-tab");
+        cookiesTab.classList.add("active-tab");
+        cookiesTab.innerText = "Cookies";
+        cookiesTab.title = "View cookies which are active or jarred.";
+        cookiesTab.addEventListener("click", async () => {
             this.resetActiveTab();
-            this.selectedTabName = "active";
-            activeCookiesTab.classList.add("active-tab");
-            await this.handleSelectActive();
-        });
-
-        const jarCookiesTab = document.createElement("span");
-        this.jarCookiesTab = jarCookiesTab;
-        viewTabsElement.appendChild(jarCookiesTab);
-        jarCookiesTab.classList.add("view-tab");
-        jarCookiesTab.innerText = "Jar Cookies";
-        jarCookiesTab.title = "Disabled cookies not active in the browser";
-        jarCookiesTab.addEventListener("click", async () => {
-            this.resetActiveTab();
-            this.selectedTabName = "jar";
-            jarCookiesTab.classList.add("active-tab");
-            await this.handleSelectJar();
+            this.selectedTabName = "cookies";
+            cookiesTab.classList.add("active-tab");
+            await this.handleSelectCookies();
         });
 
         const pantryTab = document.createElement("span");
@@ -58,8 +44,7 @@ export class ViewTabs extends UiElement {
     }
 
     resetActiveTab() {
-        this.activeCookiesTab.classList.remove("active-tab");
-        this.jarCookiesTab.classList.remove("active-tab");
+        this.cookiesTab.classList.remove("active-tab");
         this.pantryTab.classList.remove("active-tab");
     }
 

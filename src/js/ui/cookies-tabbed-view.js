@@ -1,7 +1,6 @@
 import { UiElement } from "./ui-element.js";
 import { ViewTabs } from "./view-tabs.js";
-import { ActiveTab } from "./active-tab.js";
-import { JarTab } from "./jar-tab.js";
+import { CookieTab } from "./cookie-tab.js";
 import { PantryTab } from "./pantry-tab.js";
 
 export class CookiesTabbedView extends UiElement {
@@ -30,21 +29,15 @@ export class CookiesTabbedView extends UiElement {
         const viewTabContainer = document.createElement("div");
         this.cookieTabbedViewElement.appendChild(viewTabContainer);
 
-        const viewTabs = new ViewTabs("active");
+        const viewTabs = new ViewTabs("cookies");
         const viewTabsElem = await viewTabs.getHtmlElement();
         viewTabContainer.appendChild(viewTabsElem);
 
-        // Active view
-        this.activeTab = new ActiveTab(this.cookiesManager);
-        const activeViewElem = await this.activeTab.getHtmlElement();
+        // Cookies view
+        this.cookiesTab = new CookieTab(this.cookiesManager, false);
+        const activeViewElem = await this.cookiesTab.getHtmlElement();
         this.cookieTabbedViewElement.appendChild(activeViewElem);
-        await this.activeTab.hide();
-
-        // Jar view
-        this.jarTab = new JarTab(this.cookiesManager);
-        const jarViewElem = await this.jarTab.getHtmlElement();
-        this.cookieTabbedViewElement.appendChild(jarViewElem);
-        await this.jarTab.hide();
+        await this.cookiesTab.hide();
 
         // Pantry tab:
         this.pantryTab = new PantryTab(this.cookiesManager);
@@ -53,20 +46,13 @@ export class CookiesTabbedView extends UiElement {
         await this.pantryTab.hide();
 
         // Tab button functionality
-        viewTabs.handleSelectActive = async () => {
-            await this.jarTab.hide();
+        viewTabs.handleSelectCookies = async () => {
             await this.pantryTab.hide();
-            await this.activeTab.show();
-        };
-        viewTabs.handleSelectJar = async () => {
-            await this.activeTab.hide();
-            await this.pantryTab.hide();
-            await this.jarTab.show();
+            await this.cookiesTab.show();
         };
 
         viewTabs.handleSelectPantry = async () => {
-            await this.jarTab.hide();
-            await this.activeTab.hide();
+            await this.cookiesTab.hide();
             await this.pantryTab.show();
         };
 
