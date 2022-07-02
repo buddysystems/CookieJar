@@ -1,12 +1,9 @@
 import { UiElement } from "./ui-element.js";
-import { BulkCookieSelector } from "../cookies/bulk-cookie-selector.js";
-import { ExportCookieModal } from "./export-cookie-modal.js";
-import { DomainFilter } from "./domain-filter.js";
-import { CookieRow } from "./cookie-row.js";
 import { CookieFormModal } from "./cookie-form-modal.js";
 import { RulesManager } from "../rules/rules-manager.js";
 import { Ruleset } from "../rules/rule.js";
 import { RuleRow } from "./rule-row.js";
+import { RuleFormModal } from "./rule-form-modal.js";
 
 export class RulesTab extends UiElement {
     cookieSource = "all";
@@ -37,20 +34,10 @@ export class RulesTab extends UiElement {
         this.cookieTabElement = document.createElement("div");
         // this.cookieTabElement.classList.add("cookie-tab");
 
-        // Bulk row export modal
-        // TODO: export rule modal
-        const exportCookieModal = new ExportCookieModal(
-            this.cookiesManager,
-            this.bulkCookieSelector
-        );
-        const exportCookieModalElemn = await exportCookieModal.getHtmlElement();
-        this.cookieTabElement.appendChild(exportCookieModalElemn);
-
         // New rule modal
-        // TODO: new rule modal
-        const newCookieModal = new CookieFormModal(this.cookiesManager);
-        const cookieModalElem = await newCookieModal.getHtmlElement();
-        this.cookieTabElement.appendChild(cookieModalElem);
+        const newRuleModal = new RuleFormModal(this.rulesManager);
+        const rulesModalElem = await newRuleModal.getHtmlElement();
+        this.cookieTabElement.appendChild(rulesModalElem);
 
         // Filters (search, domain filter)
         const cookieFiltersContainer = document.createElement("form");
@@ -157,7 +144,7 @@ export class RulesTab extends UiElement {
         newRuleButton.innerHTML += "New";
         newRuleButton.addEventListener(
             "click",
-            async () => await newCookieModal.showModal()
+            async () => await newRuleModal.showModal()
         );
 
         // Cookies list
