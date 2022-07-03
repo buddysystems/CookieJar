@@ -41,7 +41,7 @@ export class RuleRow extends UiElement {
 
         this.caretImg = document.createElement("img");
         accordianHeader.appendChild(this.caretImg);
-        this.caretImg.src = "assets/img/caret-right.png";
+        this.caretImg.src = "src/assets/img/caret-right.png";
         this.caretImg.classList.add("caret");
 
         const accordianInfoContainer = document.createElement("div");
@@ -85,7 +85,7 @@ export class RuleRow extends UiElement {
         trashIconContainer.classList.add("action-button");
         trashIconContainer.innerHTML += `
                     <img
-                        src="assets/img/trash-icon.png"
+                        src="src/assets/img/trash-icon.png"
                         class="action-icon"
                         title="Delete this rule"
                     />
@@ -96,7 +96,7 @@ export class RuleRow extends UiElement {
         exportIconContainer.classList.add("action-button");
         exportIconContainer.innerHTML += `
                     <img
-                        src="assets/img/rules-icon.svg"
+                        src="src/assets/img/rules-icon.svg"
                         class="action-icon"
                         title="See affected cookies"
                     />
@@ -136,9 +136,9 @@ export class RuleRow extends UiElement {
         this.isOpen = !this.isOpen;
         this.ruleRowContent.toggleForm(this.isOpen);
         if (this.isOpen) {
-            this.caretImg.src = "assets/img/caret-down.png";
+            this.caretImg.src = "src/assets/img/caret-down.png";
         } else {
-            this.caretImg.src = "assets/img/caret-right.png";
+            this.caretImg.src = "src/assets/img/caret-right.png";
         }
     }
 

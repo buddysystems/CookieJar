@@ -1,8 +1,8 @@
-import { ChromeCookieStore } from "./js/cookies/chrome-cookie-store.js";
-import { CookieJarStore } from "./js/cookies/cookie-jar-store.js";
-import { CookiesManager } from "./js/cookies/cookies-manager.js";
-import { RulesManager } from "./js/rules/rules-manager.js";
-import { CookiesTabbedView } from "./js/ui/cookies-tabbed-view.js";
+import { ChromeCookieStore } from "./cookies/chrome-cookie-store.js";
+import { CookieJarStore } from "./cookies/cookie-jar-store.js";
+import { CookiesManager } from "./cookies/cookies-manager.js";
+import { RulesManager } from "./rules/rules-manager.js";
+import { CookiesTabbedView } from "./ui/cookies-tabbed-view.js";
 
 const cookiesTabbedViewContainer = document.getElementById(
     "cookies-tabbed-view-container"

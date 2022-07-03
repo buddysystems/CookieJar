@@ -13,7 +13,7 @@ export class SettingsLink extends UiElement {
 
         const icon = document.createElement("img");
         container.appendChild(icon);
-        icon.src = "assets/img/settings-icon.svg";
+        icon.src = "src/assets/img/settings-icon.svg";
         icon.classList.add("action-icon");
 
         this.link = container;

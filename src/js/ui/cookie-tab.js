@@ -153,7 +153,7 @@ export class CookieTab extends UiElement {
         unjarActionContainer.classList.add("action-button");
         unjarActionContainer.innerHTML += `
             <img
-                src="assets/img/unjar-png.png"
+                src="src/assets/img/unjar-png.png"
                 class="action-icon"
                 title="Unjar selected"
             />
@@ -173,7 +173,7 @@ export class CookieTab extends UiElement {
         jarActionContainer.classList.add("action-button");
         jarActionContainer.innerHTML += `
         <img
-            src="assets/img/jar-icon.png"
+            src="src/assets/img/jar-icon.png"
             class="action-icon"
             title="Jar selected"
         />
@@ -191,7 +191,7 @@ export class CookieTab extends UiElement {
         deleteActionContainer.classList.add("action-button");
         deleteActionContainer.innerHTML += `
             <img
-                src="assets/img/trash-icon.png"
+                src="src/assets/img/trash-icon.png"
                 class="action-icon"
                 title="Delete selected"
             />
@@ -209,7 +209,7 @@ export class CookieTab extends UiElement {
         exportActionContainer.classList.add("action-button");
         exportActionContainer.innerHTML += `
             <img
-                src="assets/img/export-icon.svg"
+                src="src/assets/img/export-icon.svg"
                 class="action-icon"
                 title="Export selected"
             />
@@ -225,7 +225,7 @@ export class CookieTab extends UiElement {
         rulesActionContainer.classList.add("action-button");
         rulesActionContainer.innerHTML += `
             <img
-                src="assets/img/rules-icon.svg"
+                src="src/assets/img/rules-icon.svg"
                 class="action-icon"
                 title="Create rule for selected"
             />
@@ -238,7 +238,7 @@ export class CookieTab extends UiElement {
         newCookieButton.title = "Create a new cookie";
 
         const newCookieIcon = document.createElement("img");
-        newCookieIcon.src = "assets/img/simple-cookie-icon-white.svg";
+        newCookieIcon.src = "src/assets/img/simple-cookie-icon-white.svg";
         newCookieButton.appendChild(newCookieIcon);
 
         newCookieButton.innerHTML += "New";

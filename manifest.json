@@ -6,9 +6,9 @@
     "permissions": ["storage", "cookies", "downloads"],
     "host_permissions": ["<all_urls>"],
     "action": {
-        "default_popup": "src/popup.html"
+        "default_popup": "popup.html"
     },
-    "options_page": "src/options-page.html",
+    "options_page": "options-page.html",
     "icons": {
         "48": "src/assets/icons/icon48.png",
         "128": "src/assets/icons/icon128.png"

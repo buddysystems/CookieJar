@@ -118,7 +118,7 @@ export class RulesTab extends UiElement {
         deleteActionContainer.classList.add("action-button");
         deleteActionContainer.innerHTML += `
             <img
-                src="assets/img/trash-icon.png"
+                src="src/assets/img/trash-icon.png"
                 class="action-icon"
                 title="Delete selected"
             />
@@ -138,7 +138,7 @@ export class RulesTab extends UiElement {
         newRuleButton.title = "Create a new rule";
 
         const newCookieIcon = document.createElement("img");
-        newCookieIcon.src = "assets/img/rules-icon-white.svg";
+        newCookieIcon.src = "src/assets/img/rules-icon-white.svg";
         newRuleButton.appendChild(newCookieIcon);
 
         newRuleButton.innerHTML += "New";

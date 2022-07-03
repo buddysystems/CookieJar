@@ -57,7 +57,7 @@ export class CookieRow extends UiElement {
 
         this.caretImg = document.createElement("img");
         accordianHeader.appendChild(this.caretImg);
-        this.caretImg.src = "assets/img/caret-right.png";
+        this.caretImg.src = "src/assets/img/caret-right.png";
         this.caretImg.classList.add("caret");
 
         const accordianInfoContainer = document.createElement("div");
@@ -92,7 +92,7 @@ export class CookieRow extends UiElement {
             jarIconContainer.classList.add("action-button");
             jarIconContainer.innerHTML += `
                     <img
-                        src="assets/img/jar-icon.png"
+                        src="src/assets/img/jar-icon.png"
                         class="action-icon"
                         title="Jar this cookie"
                     />
@@ -108,7 +108,7 @@ export class CookieRow extends UiElement {
             unjarIconContainer.classList.add("action-button");
             unjarIconContainer.innerHTML += `
                     <img
-                        src="assets/img/unjar-png.png"
+                        src="src/assets/img/unjar-png.png"
                         class="action-icon"
                         title="Un-jar this cookie"
                     />
@@ -124,7 +124,7 @@ export class CookieRow extends UiElement {
         trashIconContainer.classList.add("action-button");
         trashIconContainer.innerHTML += `
                     <img
-                        src="assets/img/trash-icon.png"
+                        src="src/assets/img/trash-icon.png"
                         class="action-icon"
                         title="Delete this cookie"
                     />
@@ -139,7 +139,7 @@ export class CookieRow extends UiElement {
         exportIconContainer.classList.add("action-button");
         exportIconContainer.innerHTML += `
                     <img
-                        src="assets/img/export-icon.svg"
+                        src="src/assets/img/export-icon.svg"
                         class="action-icon"
                         title="Export this cookie"
                     />
@@ -183,9 +183,9 @@ export class CookieRow extends UiElement {
         this.isOpen = !this.isOpen;
         this.cookieRowContent.toggleForm(this.isOpen);
         if (this.isOpen) {
-            this.caretImg.src = "assets/img/caret-down.png";
+            this.caretImg.src = "src/assets/img/caret-down.png";
         } else {
-            this.caretImg.src = "assets/img/caret-right.png";
+            this.caretImg.src = "src/assets/img/caret-right.png";
         }
     }
 
