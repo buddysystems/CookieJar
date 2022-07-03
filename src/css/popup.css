@@ -1,12 +1,16 @@
 :root {
     --beige: rgb(228, 213, 193);
+    --beige-selected: rgba(255, 255, 255, 0.782);
     --beige-light: rgb(240, 231, 219);
     --beige-dark: rgb(204, 184, 157);
+    --blue: #007bff;
     --offwhite: rgb(243, 239, 235);
     --font-black: rgb(26, 32, 44);
     --font-gray: rgba(0, 0, 0, 0.48);
     --font-red: rgb(220, 53, 69);
     --font-green: rgb(40, 167, 69);
+    --green: #2da44e;
+    --font-brown-transparent: rgba(77, 33, 14, 0.485);
     --border-gray: rgba(0, 0, 0, 0.215);
     --border-gray-light: rgba(0, 0, 0, 0.11);
     --fonts-body: Verdana, Geneva, sans-serif;
@@ -177,9 +181,8 @@ html {
     min-width: 100px;
     border-radius: 3px;
     border: rgba(27, 31, 36, 0.15);
-    background-color: #2da44e;
+    background-color: var(--green);
     cursor: pointer;
-
     color: white;
 }
 

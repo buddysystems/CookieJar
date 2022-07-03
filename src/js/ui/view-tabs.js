@@ -1,3 +1,4 @@
+import { SettingsLink } from "./settings-link.js";
 import { UiElement } from "./ui-element.js";
 
 export class ViewTabs extends UiElement {
@@ -54,6 +55,10 @@ export class ViewTabs extends UiElement {
             pantryTab.classList.add("active-tab");
             await this.handleSelectPantry();
         });
+
+        // Settings icon
+        const settingsLink = new SettingsLink();
+        viewTabsElement.appendChild(settingsLink.link);
 
         this.viewTabsElement = viewTabsElement;
     }

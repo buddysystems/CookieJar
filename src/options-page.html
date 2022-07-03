@@ -1,0 +1,98 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CookieJar</title>
+        <link rel="stylesheet" href="./css/reset.css" />
+        <link rel="stylesheet" href="./css/popup.css" />
+        <link rel="stylesheet" href="./css/options-page.css" />
+    </head>
+    <body class="body">
+        <nav class="nav">
+            <ul class="page-links">
+                <li class="page-link selected" id="dashboard-button">
+                    Dashboard
+                </li>
+                <li class="page-link" id="settings-button">Settings</li>
+            </ul>
+        </nav>
+
+        <main class="page-content-container">
+            <div id="dashboard-container" class="active">
+                <h1>CookieJar Dashboard</h1>
+
+                <h2>About</h2>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    Minima corporis repellendus, doloremque cupiditate deserunt
+                    itaque corrupti ullam reprehenderit fugit in facilis illo
+                    aspernatur, voluptatum amet possimus et laudantium nam
+                    asperiores?
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Voluptates quidem reprehenderit numquam repudiandae error
+                    similique totam repellat quaerat odit sit officiis aut
+                    itaque corporis facilis dolore fugiat, dignissimos natus
+                    animi. Sapiente quasi voluptas nisi magnam laborum odio
+                    repudiandae rem iusto eveniet qui, voluptates nihil quo
+                    perspiciatis. Quam dolores amet, sequi hic quis veritatis
+                    error dolorum, eaque quod velit voluptatum aspernatur!
+                </p>
+
+                <h2>Change Log</h2>
+
+                <div class="release-container">
+                    <h4>Phase III</h4>
+                    <ul class="release-change-list">
+                        <li>Add stuff</li>
+                        <li>Other stuff</li>
+                        <li>more stuff</li>
+                        <li>ok</li>
+                        <li>buy</li>
+                    </ul>
+                </div>
+                <div class="release-container">
+                    <h4>Phase II</h4>
+                    <ul class="release-change-list">
+                        <li>Add stuff</li>
+                        <li>Other stuff</li>
+                        <li>more stuff</li>
+                        <li>ok</li>
+                        <li>buy</li>
+                    </ul>
+                </div>
+                <div class="release-container">
+                    <h4>Phase I</h4>
+                    <ul class="release-change-list">
+                        <li>Add stuff</li>
+                        <li>Other stuff</li>
+                        <li>more stuff</li>
+                        <li>ok</li>
+                        <li>buy</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="settings-container" class="inactive">
+                <h1>CookieJar Settings</h1>
+
+                <div class="labeled-input">
+                    <label>Style</label>
+                    <select>
+                        <option>Light</option>
+                        <option>Dark</option>
+                    </select>
+                </div>
+
+                <div class="labeled-input">
+                    <label>Disable all rules</label>
+                    <input type="checkbox" class="checkbox" />
+                </div>
+            </div>
+        </main>
+
+        <script type="module" src="./options-page.js"></script>
+    </body>
+</html>

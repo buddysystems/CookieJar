@@ -1,0 +1,102 @@
+.active {
+    display: block;
+}
+
+.inactive {
+    display: none;
+}
+
+* {
+    color: var(--font-gray);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--font-brown-transparent);
+}
+
+h1 {
+    font-size: 36pt;
+    margin-bottom: 0.5em;
+}
+
+h2 {
+    font-size: 24pt;
+    margin-top: 0.5em;
+    margin-bottom: 0.2em;
+}
+
+p {
+    line-height: 1.5em;
+}
+
+.body {
+    display: grid;
+    grid-template-columns: 12em 12fr;
+}
+
+.nav {
+    background-color: var(--beige-dark);
+}
+
+.page-links {
+    display: flex;
+    flex-direction: column;
+}
+
+.page-link {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding: var(--m3);
+    background-color: var(--beige-dark);
+    border-bottom: 1px solid var(--border-gray);
+}
+
+.page-link:hover {
+    background-color: var(--beige);
+}
+
+.page-link.selected {
+    background-color: var(--beige-light);
+    text-decoration: underline;
+}
+
+.page-content-container {
+    padding: var(--m5);
+}
+
+.release-container {
+    margin-top: var(--m3);
+}
+
+.release-container h4 {
+    font-size: 14pt;
+}
+
+.release-change-list {
+    list-style: disc;
+    list-style-position: inside;
+}
+
+.release-change-list > li {
+    margin-left: 36px;
+}
+
+.labeled-input {
+    display: grid;
+    grid-template-columns: 200px 300px;
+    margin-bottom: var(--m2);
+}
+
+.labeled-input .checkbox {
+    justify-self: flex-start;
+    padding: 0;
+    margin: 0;
+}
